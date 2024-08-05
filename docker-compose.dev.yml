@@ -1,0 +1,21 @@
+version: "1"
+services:
+
+  #  Добавить возможность выгружать файлы из docker контейнера
+
+  client:
+    build: client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/app/client/src
+    container_name: Your_name-client-dev
+    command: ["npm", "run", "dev"]
+  server:
+    build: server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/src:/app/server/src
+    container_name: Your_name-server-dev
+    command: ["npm", "run", "dev"]
