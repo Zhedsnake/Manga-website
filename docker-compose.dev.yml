@@ -9,13 +9,16 @@ services:
       - "3000:3000"
     volumes:
       - ./client/src:/app/client/src
-    container_name: Your_name-client-dev
+    container_name: manga_website-client-dev
     command: ["npm", "run", "dev"]
+    depends_on:
+      - server
+
   server:
     build: server
     ports:
       - "5000:5000"
     volumes:
       - ./server/src:/app/server/src
-    container_name: Your_name-server-dev
+    container_name: manga_website-server-dev
     command: ["npm", "run", "dev"]
