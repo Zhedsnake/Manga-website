@@ -6,6 +6,7 @@ import cors from "cors";
 // import fileUpload from "express-fileupload";
 
 import cloudinaryService from "./cloudinary/cloudinaryService";
+import {UploadApiResponse} from "cloudinary";
 
 const app = express()
 
@@ -17,12 +18,12 @@ app.use(express.json());
 
 
 (async function () {
-    const respManga = await cloudinaryService.uploadMangaImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser1/example')
+    const respManga: void | UploadApiResponse = await cloudinaryService.uploadMangaImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser1/example')
         .catch((error) => {
             console.log(error);
         })
 
-    const respMangas = await cloudinaryService.uploadMultipleMangaImages(
+    const respMangas: void | UploadApiResponse[] = await cloudinaryService.uploadMultipleMangaImages(
         [
             {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes1'},
             {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes2'},
@@ -34,19 +35,20 @@ app.use(express.json());
             console.log(error);
         })
 
-    const respAvatar = await cloudinaryService.uploadAvatarImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser2/example')
-        .catch((error) => {
-            console.log(error);
-        })
+    // const respAvatar: void | UploadApiResponse = await cloudinaryService.uploadAvatarImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser2/example')
+    //     .catch((error) => {
+    //         console.log(error);
+    //     })
 
     // const opturl = await cloudinaryService.optimizeUrlImage('shoes')
     //     .catch((error) => {
     //         console.log(error);
     //     })
-
-    console.log(respManga);
+    if(respManga) {
+        console.log(respManga.secure_url);
+    }
     console.log(respMangas);
-    console.log(respAvatar);
+    // console.log(respAvatar);
     // console.log(opturl);
 })();
 
