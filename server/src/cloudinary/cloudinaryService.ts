@@ -13,32 +13,32 @@ class CloudinaryService {
     async uploadMangaImage(image: string, public_id: string, folder: string): Promise<UploadApiResponse> {
         const uploadResult = await cloudinary.uploader.upload(image, {
             public_id: public_id,
-            folder: `Mangas/${folder}`
+            folder: `Mangas/${folder}`,
         });
 
-        // Приведение типа к UploadCloudinaryResponse
         return uploadResult;
     }
 
-    async uploadMultipleMangaImages(images: { path: string, public_id: string }[], folder: string): Promise<UploadApiResponse[]> {
-        const uploadPromises = images.map(image =>
-            this.uploadMangaImage(image.path, image.public_id, folder)
-        );
-
-        const uploadResults = await Promise.all(uploadPromises);
-
-        return uploadResults;
-    }
-
-    async uploadAvatarImage(image: string, public_id: string, folder: string): Promise<UploadApiResponse> {
-        const uploadResult = await cloudinary.uploader.upload(image, {
-            public_id: public_id,
-            folder: `Avatars/${folder}`
-        });
-
-        // Приведение типа к UploadCloudinaryResponse
-        return uploadResult;
-    }
+    // async uploadMultipleMangaImages(images: { path: string, public_id: string }[], folder: string): Promise<UploadApiResponse[]> {
+    //     const uploadPromises = images.map(image =>
+    //         this.uploadOneImage(image.path, image.public_id, folder)
+    //     );
+    //
+    //     const uploadResults = await Promise.all(uploadPromises);
+    //
+    //     return uploadResults;
+    // }
+    //
+    // async uploadAvatarImage(image: string, public_id: string, folder: string): Promise<UploadApiResponse> {
+    //     const uploadResult = await cloudinary.uploader.upload(image, {
+    //         public_id: public_id,
+    //         folder: `Avatars/${folder}`,
+    //         format: 'webp'
+    //     });
+    //
+    //     return uploadResult;
+    // }
 }
+
 
 export default new CloudinaryService();
