@@ -17,13 +17,37 @@ app.use(express.json());
 
 
 (async function () {
-    const resp = await cloudinaryService
-        .uploadImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes')
+    const respManga = await cloudinaryService.uploadMangaImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser1/example')
         .catch((error) => {
             console.log(error);
         })
 
-    console.log(resp);
+    const respMangas = await cloudinaryService.uploadMultipleMangaImages(
+        [
+            {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes1'},
+            {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes2'},
+            {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes3'},
+            {path: 'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', public_id: 'shoes4'},
+        ],
+        'someuser2/example')
+        .catch((error) => {
+            console.log(error);
+        })
+
+    const respAvatar = await cloudinaryService.uploadAvatarImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes', 'someuser2/example')
+        .catch((error) => {
+            console.log(error);
+        })
+
+    // const opturl = await cloudinaryService.optimizeUrlImage('shoes')
+    //     .catch((error) => {
+    //         console.log(error);
+    //     })
+
+    console.log(respManga);
+    console.log(respMangas);
+    console.log(respAvatar);
+    // console.log(opturl);
 })();
 
 
