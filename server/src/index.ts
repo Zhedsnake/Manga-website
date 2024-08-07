@@ -5,12 +5,28 @@ import cors from "cors";
 // import router from "./router.ts";
 // import fileUpload from "express-fileupload";
 
+import cloudinaryService from "./cloudinary/cloudinaryService";
+
 const app = express()
 
 app.use(cors({origin: "*",}));
 app.use(express.json());
 // app.use(fileUpload({}))
 // app.use('/api', router)
+
+
+
+(async function () {
+    const resp = await cloudinaryService
+        .uploadImage('https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg', 'shoes')
+        .catch((error) => {
+            console.log(error);
+        })
+
+    console.log(resp);
+})();
+
+
 
 if (!process.env.DB_URL) {
     process.exit(1);
