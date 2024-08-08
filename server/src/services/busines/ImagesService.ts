@@ -2,12 +2,12 @@ import { UploadApiResponse } from 'cloudinary';
 import CloudinaryService from "../cloudinary/cloudinaryService";
 import ImagesBDService from "../mongodb/ImagesBDService";
 
-interface UploadMangaImageBody {
+interface UploadImageBody {
     title?: string;
     description?: string;
 }
 
-interface UploadMangaImageFile {
+interface UploadImage {
     fieldname: string;
     originalname: string;
     encoding: string;
@@ -21,42 +21,35 @@ interface UploadMangaImageFile {
 
 class ImagesService {
 
-    async uploadMangaImage(
-        body: UploadMangaImageBody,
-        image: { file: UploadMangaImageFile }
+    async uploadMultipleImages(
+        body: UploadImageBody,
+        images: { files: UploadImage[] }
     ) {
-        if (!image.file || Object.keys(image.file).length === 0) {
-            throw new Error('Файл не загружен');
+        try {
+            const uploadPromises: Promise<UploadApiResponse>[] = images.files.map(file =>
+                CloudinaryService.uploadImage(file.path, file.originalname, 'Mangas/example')
+            );
+
+            const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
+
+
+            const savePromises = responseCloudinary.map(saveImageData =>
+                ImagesBDService.uploadImages(
+                    saveImageData.original_filename,
+                    saveImageData.secure_url
+                )
+            );
+
+            const responseDB = await Promise.all(savePromises);
+
+            if(responseDB){
+                return ({message: 'Файлы загружены'})
+            } else {
+                return ({message:'Произошла ошибка при загрузке файлов'})
+            }
+        } catch (e) {
+            console.error(e);
         }
-
-        const responseCloudinary: UploadApiResponse = await CloudinaryService.uploadImage(
-            image.file.path,
-            image.file.originalname, 'Mangas/example'
-        );
-
-        const responseDB = await ImagesBDService.uploadImages(
-            responseCloudinary.original_filename,
-            responseCloudinary.secure_url
-        )
-
-        console.log(responseDB);
-
-        return ('Файл загружен')
-    }
-
-    async uploadMultipleMangaImages(
-        body: UploadMangaImageBody,
-        images: { files: UploadMangaImageFile[] }
-    ) {
-
-        console.log(`Body is`, body);
-        console.log(`Image is`, images);
-
-        const uploadPromises = images.files.map(file =>
-            CloudinaryService.uploadImage(file.path, file.originalname, 'Mangas/example')
-        );
-
-        return await Promise.all(uploadPromises);
     }
 
 }

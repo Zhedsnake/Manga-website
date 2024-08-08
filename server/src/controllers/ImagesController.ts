@@ -5,31 +5,27 @@ import ImagesService from "../services/busines/ImagesService";
 
 class ImagesController {
     async uploadMangaImage (req: Request, res: Response) {
-        try {
-            if (!req.file) {
-                return res.status(400).send('Файл не загружен');
-            }
-
-            const post = await ImagesService
-                .uploadMangaImage(req.body, { file: req.file })
-            res.json(post)
-        } catch (e) {
-            res.status(500).json(e)
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).send({message: 'Файл не загружен'});
         }
+
+        if (Array.isArray(req.files) && req.files.length > 1) {
+            return res.status(400).send({message: 'Вы загрузили больше одного файла'});
+        }
+
+        const post = await ImagesService
+            .uploadMultipleImages(req.body, { files: req.files as Express.Multer.File[] });
+        res.json(post);
     }
 
     async uploadMultipleMangaImages (req: Request, res: Response) {
-        try {
-            if (!req.files || req.files.length === 0) {
-                return res.status(400).send('Файлы не загружены');
-            }
-
-            const post = await ImagesService
-                .uploadMultipleMangaImages(req.body, { files: req.files as Express.Multer.File[] });
-            res.json(post);
-        } catch (e) {
-            res.status(500).json(e);
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).send({message: 'Файлы не загружены'});
         }
+
+        const post = await ImagesService
+            .uploadMultipleImages(req.body, { files: req.files as Express.Multer.File[] });
+        res.json(post);
     }
 }
 
