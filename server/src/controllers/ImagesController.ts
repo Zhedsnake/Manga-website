@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import CloudinaryService from "../services/cloudinaryService";
-import ImagesService from "../services/ImagesService";
+import CloudinaryService from "../services/cloudinary/cloudinaryService";
+import ImagesService from "../services/busines/ImagesService";
 
 
 class ImagesController {

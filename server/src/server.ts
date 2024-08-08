@@ -21,19 +21,25 @@ mongoose.connect(process.env.DB_URL)
         const server = app.listen(
             process.env.PORT,
             () => {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const day = now.getDate();
-            const monthNames = [
-                "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-                "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-            ];
-            const month = monthNames[now.getMonth()];
-            const year = now.getFullYear();
+                const now = new Date();
+                const hours = now.getHours();
 
-            console.log(`SERVER STARTED ON PORT ${process.env.PORT} at ${hours}:${minutes}, day ${day}, month ${month}, year ${year}`);
-        }
+                // Для docker
+                const myHours = hours + 3;
+
+                const stringMyHours = myHours.toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const day = now.getDate();
+                const monthNames = [
+                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+                ];
+                const month = monthNames[now.getMonth()];
+                const year = now.getFullYear();
+
+                console.log(`SERVER STARTED ON PORT ${process.env.PORT}` +
+                    ` at ${stringMyHours}:${minutes}, day ${day}, month ${month}, year ${year}`);
+            }
         );
 
         return server

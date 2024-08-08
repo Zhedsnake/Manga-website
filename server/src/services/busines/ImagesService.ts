@@ -1,4 +1,4 @@
-import CloudinaryService from "./cloudinaryService";
+import CloudinaryService from "../cloudinary/cloudinaryService";
 
 interface UploadMangaImageBody {
     title?: string;
