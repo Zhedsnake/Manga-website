@@ -1,4 +1,6 @@
+import { UploadApiResponse } from 'cloudinary';
 import CloudinaryService from "../cloudinary/cloudinaryService";
+import ImagesBDService from "../mongodb/ImagesBDService";
 
 interface UploadMangaImageBody {
     title?: string;
@@ -23,12 +25,23 @@ class ImagesService {
         body: UploadMangaImageBody,
         image: { file: UploadMangaImageFile }
     ) {
+        if (!image.file || Object.keys(image.file).length === 0) {
+            throw new Error('Файл не загружен');
+        }
 
-        console.log(`Body is`, body);
-        console.log(`Image is`, image);
+        const responseCloudinary: UploadApiResponse = await CloudinaryService.uploadImage(
+            image.file.path,
+            image.file.originalname, 'Mangas/example'
+        );
 
-        return await CloudinaryService
-            .uploadImage(image.file.path, image.file.originalname, 'Mangas/example');
+        const responseDB = await ImagesBDService.uploadImages(
+            responseCloudinary.original_filename,
+            responseCloudinary.secure_url
+        )
+
+        console.log(responseDB);
+
+        return ('Файл загружен')
     }
 
     async uploadMultipleMangaImages(
