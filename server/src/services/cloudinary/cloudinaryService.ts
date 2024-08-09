@@ -11,7 +11,7 @@ class CloudinaryService {
     }
 
     async uploadImage(image: string, public_id: string, folder: string): Promise<UploadApiResponse> {
-        const uploadResult = await cloudinary.uploader.upload(image, {
+        const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(image, {
             public_id: public_id,
             folder: `${folder}`,
         });

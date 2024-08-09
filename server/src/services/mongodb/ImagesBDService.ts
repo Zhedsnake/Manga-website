@@ -1,5 +1,6 @@
 import { Model } from "mongoose";
 import {ImagesModel, ImagesType} from "../../models/imagesModel";
+import ImagesService from "../busines/ImagesService";
 
 
 class ImagesBDService {
@@ -14,6 +15,20 @@ class ImagesBDService {
         return await newDeck.save();
     }
 
+    async getTotalCountImages() {
+        const count = await this.model.countDocuments();
+        return count;
+    }
+
+    async getImageUrlByNumber(number: number) {
+        const imageUrlByNumber = await this.model.findOne().skip(number - 1);
+        return imageUrlByNumber;
+    }
+
+    async getAllImages(): Promise<ImagesType[]> {
+        const images = await this.model.find();
+        return images;
+    }
 }
 
 export default new ImagesBDService();
