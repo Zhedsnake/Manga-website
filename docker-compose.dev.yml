@@ -6,7 +6,7 @@ services:
   client:
     build: client
     ports:
-      - "3000:3000"
+      - "4000:3000"
     volumes:
       - ./client/src:/app/client/src
     container_name: manga_website-client-dev
