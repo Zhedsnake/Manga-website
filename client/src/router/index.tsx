@@ -9,14 +9,17 @@ export interface RoutesTypes {
     component: React.ReactNode
 }
 
-const privateRoutes: RoutesTypes[] = [
+const commonRoutes: RoutesTypes[] = [
     {path: '/', component: <Home />},
     {path: '/upload-new-manga', component: <UploadNewManga />},
 ]
 
+const privateRoutes: RoutesTypes[] = [
+    ...commonRoutes
+]
+
 const publicRoutes: RoutesTypes[] = [
-    {path: '/', component: <Home />},
-    {path: '/upload-new-manga', component: <UploadNewManga />},
+    ...commonRoutes
 ]
 
 export {privateRoutes, publicRoutes};
