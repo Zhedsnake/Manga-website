@@ -11,30 +11,37 @@ import store from "./store";
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import {b} from "vite/dist/node/types.d-aGj9QkWt";
 
 
 
 const App: React.FC = () => {
-    const [isAuth, setIsAuth] = useState<boolean>(false);
+    const [isUser, setIsUser] = useState<boolean>(false);
+    const [isGuest, setIsGuest] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const token: boolean = !!localStorage.getItem('authToken');
-        setIsAuth(token);
+        const userToken: string = localStorage.getItem('userToken');
+        const guestToken: string = localStorage.getItem('guestToken');
+
+        if (userToken {
+
+        } else if (guestToken) {
+
+        } else if (!guestToken) {
+
+        }
 
         setLoading(false);
     }, [])
 
-
-    if (isLoading) {
-        return (<Loader/>)
-    }
-
     return (
         <Provider store={store}>
             <AuthContext.Provider value={{
-                isAuth,
-                setIsAuth,
+                isUser,
+                setIsUser,
+                isGuest,
+                setIsGuest,
                 isLoading,
             }}>
                 <AppRouter/>
