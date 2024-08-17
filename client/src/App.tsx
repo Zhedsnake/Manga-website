@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {AuthContext} from "./context";
 import AppRouter from "./components/AppRouter";
-import Loader from "./components/UI/Loader/Loader.tsx";
 
 
 //Redux
@@ -11,7 +10,6 @@ import store from "./store";
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {b} from "vite/dist/node/types.d-aGj9QkWt";
 
 
 
@@ -23,14 +21,16 @@ const App: React.FC = () => {
     useEffect(() => {
         const userToken: string = localStorage.getItem('userToken');
         const guestToken: string = localStorage.getItem('guestToken');
+        
+        (async function () {
+            if (userToken {
 
-        if (userToken {
+            } else if (guestToken) {
 
-        } else if (guestToken) {
+            } else if (!guestToken) {
 
-        } else if (!guestToken) {
-
-        }
+            }
+        })()
 
         setLoading(false);
     }, [])
