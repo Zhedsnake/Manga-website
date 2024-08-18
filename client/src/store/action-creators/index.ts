@@ -1,4 +1,4 @@
-import * as GuestActionCreators from "./Guest.ts";
+import * as GuestActionCreators from "./guest.ts";
 
 export default {
     ...GuestActionCreators

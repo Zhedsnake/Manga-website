@@ -1,6 +1,5 @@
 import { Model } from "mongoose";
 import {ImagesModel, ImagesType} from "../../models/imagesModel";
-import ImagesService from "../busines/ImagesService";
 
 
 class ImagesBDService {

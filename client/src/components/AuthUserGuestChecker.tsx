@@ -9,11 +9,12 @@ interface AuthProp {
 
 const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const {
-        setLoading
+        setLoading,
+        setIsUser
     } = useContext(AuthContext);
 
 
-    const { guestToken, loading, error } = useTypedSelector(state => state.getGuestToken);
+    const { guestToken: guestTokenResponse } = useTypedSelector(state => state.getGuestToken);
     const { getGuestToken } = useActions();
 
     useEffect(() => {
@@ -23,18 +24,26 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
         (async function () {
             // if (userToken {
             //
-            // } else if (guestToken) {
-            //
-            // } else if (!guestToken) {
-            //
-            // }
-            if (!guestToken) {
+            // } else
+            if (guestToken) {
+                setIsUser(true)
+            } else if (!guestToken) {
+                setLoading(true)
+
                 await getGuestToken()
+                setIsUser(true)
+
+                setLoading(false);
             }
         })()
 
-        setLoading(false);
     }, [])
+
+    useEffect(() => {
+        if (guestTokenResponse) {
+            localStorage.setItem("guestToken", guestTokenResponse);
+        }
+    }, [guestTokenResponse]);
 
     return (
         <>

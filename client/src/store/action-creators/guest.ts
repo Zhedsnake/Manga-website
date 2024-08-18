@@ -7,7 +7,6 @@ export const getGuestToken = () => {
         try {
             dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN})
             const response = await guestService.getGuestToken()
-            console.log(response)
             dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN_SUCCESS, payload: response.data})
         } catch (e) {
             console.error(e)

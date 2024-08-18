@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import guestController from "../../controllers/guestController";
+import GuestController from "../../controllers/GuestController";
 
 const guestRouter = Router();
 
-guestRouter.get('/create-guest', guestController.createGuest);
+guestRouter.get('/get-guest-token', GuestController.getGuestToken);
 
 export default guestRouter;
