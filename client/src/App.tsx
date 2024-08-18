@@ -17,7 +17,7 @@ import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 const App: React.FC = () => {
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
-    const [isLoading, setLoading] = useState<boolean>(true);
+    const [isAuthLoading, setAuthLoading] = useState<boolean>(true);
 
 
 
@@ -28,8 +28,8 @@ const App: React.FC = () => {
                 setIsUser,
                 isGuest,
                 setIsGuest,
-                isLoading,
-                setLoading
+                isAuthLoading,
+                setAuthLoading
             }}>
                 <AuthUserGuestChecker>
                     <AppRouter/>
