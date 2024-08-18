@@ -1,13 +1,13 @@
 import 'dotenv/config'
 import express from "express";
 import mongoose from "mongoose";
-
+import cors from "cors";
 import routers from "./router";
 import { Server, Socket } from "socket.io";
 
 const app = express()
 
-// app.use(cors({origin: "*",}));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(routers)
 

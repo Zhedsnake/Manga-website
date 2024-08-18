@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {AuthContext} from "./context";
 import AppRouter from "./components/AppRouter";
 
@@ -10,6 +10,7 @@ import store from "./store";
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 
 
 
@@ -18,22 +19,7 @@ const App: React.FC = () => {
     const [isGuest, setIsGuest] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const userToken: string = localStorage.getItem('userToken');
-        const guestToken: string = localStorage.getItem('guestToken');
-        
-        (async function () {
-            if (userToken {
 
-            } else if (guestToken) {
-
-            } else if (!guestToken) {
-
-            }
-        })()
-
-        setLoading(false);
-    }, [])
 
     return (
         <Provider store={store}>
@@ -43,8 +29,11 @@ const App: React.FC = () => {
                 isGuest,
                 setIsGuest,
                 isLoading,
+                setLoading
             }}>
-                <AppRouter/>
+                <AuthUserGuestChecker>
+                    <AppRouter/>
+                </AuthUserGuestChecker>
             </AuthContext.Provider>
         </Provider>
     )

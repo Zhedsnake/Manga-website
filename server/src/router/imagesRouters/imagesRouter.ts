@@ -4,10 +4,10 @@ import { upload } from "../../middlewares/multer";
 
 const imagesRouter = Router();
 
-imagesRouter.post('/uploadImage', upload, imagesControllers.uploadImage);
-imagesRouter.post('/uploadMultipleImages', upload, imagesControllers.uploadMultipleImages);
-imagesRouter.get('/getTotalCountImages', imagesControllers.getTotalCountImages);
-imagesRouter.get('/getImageByNumber', imagesControllers.getImageUrlByNumber);
-imagesRouter.get('/getAllImages', imagesControllers.getAllImages);
+imagesRouter.post('/images/uploadImage', upload, imagesControllers.uploadImage);
+imagesRouter.post('/images/uploadMultipleImages', upload, imagesControllers.uploadMultipleImages);
+imagesRouter.get('/images/getTotalCountImages', imagesControllers.getTotalCountImages);
+imagesRouter.get('/images/getImageByNumber', imagesControllers.getImageUrlByNumber);
+imagesRouter.get('/images/getAllImages', imagesControllers.getAllImages);
 
 export default imagesRouter;

@@ -6,6 +6,7 @@ export interface AuthContextType {
     isGuest: boolean;
     setIsGuest: Dispatch<SetStateAction<boolean>>;
     isLoading: boolean;
+    setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 
