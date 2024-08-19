@@ -17,7 +17,7 @@ import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 const App: React.FC = () => {
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
-    const [isAuthLoading, setAuthLoading] = useState<boolean>(true);
+    const [isAuthLoading, setAuthLoading] = useState<boolean>(false);
 
 
 

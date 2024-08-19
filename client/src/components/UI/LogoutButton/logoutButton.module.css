@@ -1,0 +1,70 @@
+.logoutButton {
+    display: flex;
+    position: relative;
+}
+
+.logoutButton__text {
+    border-radius: 8px;
+    width: 81px;
+    height: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: none;
+    border: 1px solid #f8f8f8;
+    color: #f8f8f8;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    align-items: center;
+}
+
+.logoutButton__icon {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.logoutButton__icon img {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 525px) {
+    .app__user-list-header .logoutButton__text {
+        display: none;
+    }
+
+    .app__user-list-header .logoutButton__icon {
+        display: block;
+    }
+}
+
+@media (max-width: 791px) {
+    .app__user-list-header .logoutButton {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}
+
+@media (max-width: 602px) {
+    .user-detail__header .logoutButton__text {
+        display: none;
+    }
+
+    .user-detail__header .logoutButton__icon {
+        display: block;
+    }
+
+    .user-detail__header .logoutButton {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .user-detail__header .logoutButton {
+        order: 2;
+    }
+}

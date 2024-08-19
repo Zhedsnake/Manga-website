@@ -2,14 +2,14 @@ import React, {useContext} from 'react';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 
 import {privateRoutes, publicRoutes} from "../router";
-import {AuthContext} from "../context";
+import {AuthContext, AuthContextType} from "../context";
 
 
 const AppRouter: React.FC = () => {
-    const {isAuth} = useContext(AuthContext);
+    const {isUser} = useContext<AuthContextType>(AuthContext);
 
     return (
-        isAuth
+        isUser
             ?
             <BrowserRouter>
                 <Routes>

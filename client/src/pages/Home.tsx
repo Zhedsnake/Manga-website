@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
+import MainContent from "../components/mainPage/MainContent.tsx";
+import LeftPanel from "../components/mainPage/LeftPanel.tsx";
 
-const Home = () => {
+const Home: React.FC = () => {
 
 
     useEffect((): void => {
         // getStuffsAction(page)
-    // }, [page]);
+        // }, [page]);
     }, []);
 
     useEffect(() => {
@@ -15,8 +17,11 @@ const Home = () => {
     }, []);
 
     return (
-        <div>
-
+        <div className="container">
+            <div className="row">
+                <MainContent/>
+                <LeftPanel/>
+            </div>
         </div>
     );
 };

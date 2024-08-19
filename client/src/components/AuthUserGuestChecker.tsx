@@ -1,7 +1,9 @@
 import React, {useContext, useEffect} from 'react';
-import {AuthContext} from "../context";
+import {AuthContext, AuthContextType} from "../context";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
+import {setToken} from "../util/setTocken.ts";
+import {Tokens} from "../util/setTocken.ts";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -10,29 +12,29 @@ interface AuthProp {
 const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const {
         setAuthLoading,
+        setIsGuest,
         setIsUser
-    } = useContext(AuthContext);
+    } = useContext<AuthContextType>(AuthContext);
 
 
     const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
-    const { getGuestToken } = useActions();
+    const { getGuestToken, defGuestToken } = useActions();
 
     useEffect(() => {
-        const userToken: string | null = localStorage.getItem('userToken');
-        const guestToken: string | null = localStorage.getItem('guestToken');
+        const userToken: boolean = !!localStorage.getItem(Tokens.userToken);
+        const guestToken: boolean = !!localStorage.getItem(Tokens.guestToken);
 
         (async function () {
-            // if (userToken {
-            //
-            // } else
-            if (guestToken) {
-                setIsUser(true)
+            if (userToken) {
+                setIsUser(userToken)
+            } else if (guestToken) {
+                setIsGuest(guestToken)
             } else if (!guestToken) {
                 setAuthLoading(true)
                 await getGuestToken()
 
                 if (!guestTokenError) {
-                    setIsUser(true)
+                    defGuestToken()
                 } else if (guestTokenError) {
                     console.error(guestTokenError)
                 }
@@ -45,7 +47,8 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
     useEffect(() => {
         if (guestTokenResponse) {
-            localStorage.setItem("guestToken", guestTokenResponse);
+            const tokenIsSet: boolean = setToken(Tokens.guestToken, guestTokenResponse);
+            setIsGuest(tokenIsSet)
         }
     }, [guestTokenResponse]);
 

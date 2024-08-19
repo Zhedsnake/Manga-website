@@ -1,6 +1,7 @@
 import React from "react";
 import Home from "../pages/Home.tsx";
 import UploadNewManga from "../pages/UploadNewManga.tsx";
+import Auth from "../pages/Auth.tsx";
 
 
 
@@ -15,11 +16,12 @@ const commonRoutes: RoutesTypes[] = [
 ]
 
 const privateRoutes: RoutesTypes[] = [
-    ...commonRoutes
+    ...commonRoutes,
 ]
 
 const publicRoutes: RoutesTypes[] = [
-    ...commonRoutes
+    ...commonRoutes,
+    {path: '/auth', component: <Auth />},
 ]
 
 export {privateRoutes, publicRoutes};
