@@ -1,4 +1,8 @@
 
+export interface ToggleShowType {
+    toggleShowPassword: boolean;
+    toggleShowConfirmPassword: boolean;
+}
 export interface AuthFormState {
     name: string,
     email: string,

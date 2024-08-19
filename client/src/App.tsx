@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {AuthContext} from "./context";
 import AppRouter from "./components/AppRouter";
+import {ToggleShowType} from "./types/AuthForm";
 
 
 //Redux
@@ -18,6 +19,11 @@ const App: React.FC = () => {
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
     const [isAuthLoading, setAuthLoading] = useState<boolean>(false);
+    const defToggleShowFormPasswoeds: ToggleShowType = {
+        toggleShowPassword: false,
+        toggleShowConfirmPassword: false
+    };
+    const [toggleShowFormPasswords, setToggleShowFormPasswords] = useState<ToggleShowType>({...defToggleShowFormPasswoeds});
 
 
 
@@ -29,7 +35,9 @@ const App: React.FC = () => {
                 isGuest,
                 setIsGuest,
                 isAuthLoading,
-                setAuthLoading
+                setAuthLoading,
+                toggleShowFormPasswords,
+                setToggleShowFormPasswords
             }}>
                 <AuthUserGuestChecker>
                     <AppRouter/>

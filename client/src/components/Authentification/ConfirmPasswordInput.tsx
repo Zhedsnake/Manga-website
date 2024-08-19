@@ -15,8 +15,8 @@ import {useActions} from "../../hooks/useActions";
 
 const ConfirmPasswordInput: React.FC = () => {
     const {
-        toggleShow,
-        setToggleShow
+        toggleShowFormPasswords,
+        setToggleShowFormPasswords
     } = useContext(AuthContext);
 
     const { confirmPasswordError } = useTypedSelector(state => state.authForm);
@@ -43,7 +43,7 @@ const ConfirmPasswordInput: React.FC = () => {
             <Label htmlFormName={"confirmPassword"}>Подтвердить пароль</Label>
             <PasswordContainer>
                 <InputAuth
-                    type={toggleShow.toggleShowConfirmPassword ? 'text' : 'password'}
+                    type={toggleShowFormPasswords.toggleShowConfirmPassword ? 'text' : 'password'}
                     id="confirmPassword"
                     value={confirmPasswordForm}
                     maxLength={30}
@@ -51,9 +51,9 @@ const ConfirmPasswordInput: React.FC = () => {
                 />
                 <PasswordToggleButton
                     type="button"
-                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => setToggleShow({...toggleShow, toggleShowConfirmPassword: true})}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => setToggleShowFormPasswords({...toggleShowFormPasswords, toggleShowConfirmPassword: true})}
                 >
-                    <FontAwesomeIcon icon={toggleShow.toggleShowConfirmPassword ? faEyeSlash : faEye} />
+                    <FontAwesomeIcon icon={toggleShowFormPasswords.toggleShowConfirmPassword ? faEyeSlash : faEye} />
                 </PasswordToggleButton>
             </PasswordContainer>
             {confirmPasswordErrorForm && <ErrorForm>{confirmPasswordErrorForm}</ErrorForm>}

@@ -14,6 +14,6 @@ const InputAuth: React.FC<InputAuthProps> = (props) => {
     return (
         <input {...props}/>
     );
-});
+};
 
 export default InputAuth;

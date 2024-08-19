@@ -15,8 +15,8 @@ import {useActions} from "../../hooks/useActions";
 
 const PasswordInput: React.FC = () => {
     const {
-        toggleShow,
-        setToggleShow
+        toggleShowFormPasswords,
+        setToggleShowFormPasswords
     } = useContext(AuthContext);
 
     const [passwordForm, setPasswordForm] = useState('');
@@ -43,7 +43,7 @@ const PasswordInput: React.FC = () => {
             <Label htmlFormName={"password"}>Пароль</Label>
             <PasswordContainer>
                 <InputAuth
-                  type={toggleShow.toggleShowPassword ? 'text' : 'password'}
+                  type={toggleShowFormPasswords.toggleShowPassword ? 'text' : 'password'}
                   id="password"
                   value={passwordForm}
                   maxLength={30}
@@ -51,9 +51,9 @@ const PasswordInput: React.FC = () => {
                 />
                 <PasswordToggleButton
                     type="button"
-                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => setToggleShow({...toggleShow, toggleShowPassword: true})}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => setToggleShowFormPasswords({...toggleShowFormPasswords, toggleShowPassword: true})}
                 >
-                    <FontAwesomeIcon icon={toggleShow.toggleShowPassword ? faEyeSlash : faEye} />
+                    <FontAwesomeIcon icon={toggleShowFormPasswords.toggleShowPassword ? faEyeSlash : faEye} />
                 </PasswordToggleButton>
             </PasswordContainer>
             {passwordErrorForm && <ErrorForm>{passwordErrorForm}</ErrorForm>}
