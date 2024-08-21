@@ -7,13 +7,13 @@ export const logInAction = (name: string, email: string, password: string) => {
     return async (dispatch: Dispatch<LogInAction>) => {
         try {
             dispatch({type: LogInActionTypes.LOG_IN})
-            const response = await AuthService.logInRequest(name, email, password);
+            const response= await AuthService.logInRequest(name, password);
             dispatch({type: LogInActionTypes.LOG_IN_SUCCESS, payload: response.data.userToken})
         } catch (e) {
             if (e instanceof Error) {
                 dispatch({
                     type: LogInActionTypes.LOG_IN_ERROR,
-                    payload: `${e.message}`
+                    payload: e.response.data.error
                 })
             }
         }

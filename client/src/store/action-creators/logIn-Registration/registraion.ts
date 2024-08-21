@@ -13,7 +13,7 @@ export const registrationAction = (name: string, email: string, password: string
             if (e instanceof Error) {
                 dispatch({
                     type: RegistrationActionTypes.REGISTRATION_ERROR,
-                    payload: `${e.message}`
+                    payload: e.response.data.error
                 })
             }
         }

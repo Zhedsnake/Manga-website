@@ -4,7 +4,6 @@ import AuthHeader from "../UI/authHeader/AuthHeader";
 import NameInput from "./NameInput";
 import EmailInput from "./EmailInput";
 import PasswordInput from "./PasswordInput";
-import ConfirmPasswordInput from "./ConfirmPasswordInput";
 import FormButton from "../UI/formButton/FormButton";
 
 interface HandleRegisterType {
@@ -19,7 +18,6 @@ const RegForm: React.FC<HandleRegisterType> = ({handleRegister}) => {
             <NameInput />
             <EmailInput />
             <PasswordInput />
-            <ConfirmPasswordInput />
             <FormButton onClick={handleRegister}>Зарегистрироваться</FormButton>
         </FormAuth>
     );

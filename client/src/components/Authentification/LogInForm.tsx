@@ -2,7 +2,6 @@ import React from 'react';
 import FormAuth from "../UI/formAuth/FormAuth";
 import AuthHeader from "../UI/authHeader/AuthHeader";
 import NameInput from "./NameInput";
-import EmailInput from "./EmailInput";
 import PasswordInput from "./PasswordInput";
 import FormButton from "../UI/formButton/FormButton";
 
@@ -16,7 +15,6 @@ const LogInForm: React.FC<HandleLogInType> = ({handleLogIn}) => {
         <FormAuth>
             <AuthHeader>Вход</AuthHeader>
             <NameInput />
-            <EmailInput />
             <PasswordInput />
             <FormButton onClick={handleLogIn}>Войти</FormButton>
         </FormAuth>
