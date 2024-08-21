@@ -15,6 +15,11 @@ class GuestBDService {
 
         return newGuest.id
     }
+
+    // async removeGuest(id: string): Promise<boolean> {
+    //     const result = await this.model.findByIdAndDelete({ _id: id });
+    //     return true;
+    // }
 }
 
 export default new GuestBDService();

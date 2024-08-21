@@ -3,6 +3,7 @@ import GuestControllers from "../../controllers/GuestControllers";
 
 const guestRouter = Router();
 
-guestRouter.get('/get-guest-token', GuestControllers.getGuestToken);
+guestRouter.post('/guest', GuestControllers.registerGuest);
+// guestRouter.delete('/guest', GuestControllers.removeGuest);
 
 export default guestRouter;

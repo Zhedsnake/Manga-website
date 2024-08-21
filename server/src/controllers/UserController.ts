@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UserService from "../services/busines/auth/UserService";
+import UserService from "../services/busines/UserService";
 import registerRequestTypes from "../types/registerRequestTypes";
 
 

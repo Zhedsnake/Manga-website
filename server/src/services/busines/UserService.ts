@@ -1,6 +1,6 @@
-import JwtService from "../../jwt/JwtService";
-import registerRequestTypes from "../../../types/registerRequestTypes";
-import UserBDService from "../../mongodb/UserBDService";
+import JwtService from "../jwt/JwtService";
+import registerRequestTypes from "../../types/registerRequestTypes";
+import UserBDService from "../mongodb/UserBDService";
 
 
 class UserService {
@@ -23,10 +23,6 @@ class UserService {
                     return { userToken: userToken};
                 }
             }
-
-            // const jwtToken = JwtService.getGuestToken(payload);
-
-            // return jwtToken
 
         } catch (e) {
             console.error(e);
