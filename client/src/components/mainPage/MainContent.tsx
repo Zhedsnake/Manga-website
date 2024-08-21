@@ -2,7 +2,7 @@ import React from 'react';
 
 const MainContent : React.FC= () => {
     return (
-        <main className="col-lg-8 p-0">
+        <main className="col-sm-8 p-0">
             <div className="container">
                 <div className="row m-0 p-0">
                     <section className="m-0 p-0">

@@ -13,8 +13,8 @@ const Auth: React.FC = () => {
     const [loggedEarlier, setLoggedEarlier] = useState<boolean>(false);
     const {
         setIsAuth,
-        setToggleShow,
-        defToggleShow
+        setToggleShowFormPasswords,
+        defToggleShowFormPasswords
     } = useContext<AuthContextType>(AuthContext);
 
 
@@ -36,14 +36,17 @@ const Auth: React.FC = () => {
 
     const handleToggleForm = (prop: boolean) => {
         setDefInputs()
-        setToggleShow({...defToggleShow});
+        setToggleShowFormPasswords({...defToggleShowFormPasswords});
         setLoggedEarlier(prop);
     };
 
     useEffect(() => {
         if (logInToken) {
             const tokenIsSet: boolean = setToken(Tokens.userToken, logInToken);
-            setIsAuth(tokenIsSet);
+
+            if (tokenIsSet) {
+                setIsAuth(tokenIsSet);
+            }
 
             defGuestToken()
         }
@@ -52,7 +55,10 @@ const Auth: React.FC = () => {
     useEffect(() => {
         if (regToken) {
             const tokenIsSet: boolean = setToken(Tokens.userToken, regToken);
-            setIsAuth(tokenIsSet);
+
+            if (tokenIsSet) {
+                setIsAuth(tokenIsSet);
+            }
 
             defGuestToken()
         }
@@ -60,7 +66,7 @@ const Auth: React.FC = () => {
 
     useEffect(() => {
         return () => {
-            setToggleShow({...defToggleShow});
+            setToggleShowFormPasswords({...defToggleShowFormPasswords});
             defLogIn()
             defReg()
             setDefInputs()

@@ -7,7 +7,7 @@ const LeftPanel: React.FC = () => {
     const {isUser, isAuthLoading} = useContext(AuthContext);
 
     return (
-        <div className="col-lg-4 m-0 p-0">
+        <div className="col-sm-4 m-0 p-0">
             <div className="container">
                 <div className="row m-0 p-0">
                     <section data-empty-placeholder className="m-0 p-0">

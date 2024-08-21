@@ -4,7 +4,7 @@ import {API_URL} from './config';
 
 export default class AuthService {
     static async logInRequest(name: string, email: string, password: string) {
-        const response = await axios.post(`${API_URL}/log-in`, {name, email, password});
+        const response = await axios.post(`${API_URL}/login`, {name, email, password});
         return response;
     }
 

@@ -16,20 +16,23 @@ import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 
 
 const App: React.FC = () => {
+    const [isAuth, setIsAuth] = useState(false)
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
     const [isAuthLoading, setAuthLoading] = useState<boolean>(false);
-    const defToggleShowFormPasswoeds: ToggleShowType = {
+    const defToggleShowFormPasswords: ToggleShowType = {
         toggleShowPassword: false,
         toggleShowConfirmPassword: false
     };
-    const [toggleShowFormPasswords, setToggleShowFormPasswords] = useState<ToggleShowType>({...defToggleShowFormPasswoeds});
+    const [toggleShowFormPasswords, setToggleShowFormPasswords] = useState<ToggleShowType>({...defToggleShowFormPasswords});
 
 
 
     return (
         <Provider store={store}>
             <AuthContext.Provider value={{
+                isAuth,
+                setIsAuth,
                 isUser,
                 setIsUser,
                 isGuest,
@@ -37,7 +40,8 @@ const App: React.FC = () => {
                 isAuthLoading,
                 setAuthLoading,
                 toggleShowFormPasswords,
-                setToggleShowFormPasswords
+                setToggleShowFormPasswords,
+                defToggleShowFormPasswords
             }}>
                 <AuthUserGuestChecker>
                     <AppRouter/>

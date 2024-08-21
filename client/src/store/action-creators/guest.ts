@@ -1,12 +1,12 @@
 import {Dispatch} from "redux";
 import {GuestTokenAction, GuestTokenActionTypes} from "../../types/getGuestToken.ts";
-import guestService from "../../api/guestService.ts";
+import guestService from "../../api/GuestService.ts";
 
 export const getGuestToken = () => {
     return async (dispatch: Dispatch<GuestTokenAction>) => {
         try {
             dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN})
-            const response = await guestService.getGuestToken()
+            const response = await guestService.registerGuest()
             dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN_SUCCESS, payload: response.data})
         } catch (e) {
             console.error(e)

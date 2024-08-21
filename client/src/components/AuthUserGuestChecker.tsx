@@ -11,6 +11,7 @@ interface AuthProp {
 
 const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const {
+        isAuth,
         setAuthLoading,
         setIsGuest,
         setIsUser
@@ -21,34 +22,42 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const { getGuestToken, defGuestToken } = useActions();
 
     useEffect(() => {
-        const userToken: boolean = !!localStorage.getItem(Tokens.userToken);
-        const guestToken: boolean = !!localStorage.getItem(Tokens.guestToken);
+        const userToken: string | null = localStorage.getItem(Tokens.userToken);
+        const guestToken: string | null = localStorage.getItem(Tokens.guestToken);
 
         (async function () {
             if (userToken) {
-                setIsUser(userToken)
+                setIsUser(true)
+
+                // if (guestToken) {
+                //     await guestService.removeGuest(guestToken)
+                //     localStorage.removeItem(Tokens.guestToken);
+                // }
+
             } else if (guestToken) {
-                setIsGuest(guestToken)
+
+                setIsGuest(true)
+
             } else if (!guestToken) {
                 setAuthLoading(true)
-                await getGuestToken()
 
-                if (!guestTokenError) {
-                    defGuestToken()
-                } else if (guestTokenError) {
-                    console.error(guestTokenError)
-                }
+                await getGuestToken()
 
                 setAuthLoading(false);
             }
         })()
-
-    }, [])
+    }, [isAuth])
 
     useEffect(() => {
         if (guestTokenResponse) {
             const tokenIsSet: boolean = setToken(Tokens.guestToken, guestTokenResponse);
             setIsGuest(tokenIsSet)
+
+            if (!guestTokenError) {
+                defGuestToken()
+            } else if (guestTokenError) {
+                console.error(guestTokenError)
+            }
         }
     }, [guestTokenResponse]);
 
