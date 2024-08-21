@@ -39,7 +39,7 @@ class UserControllers {
             if ("error" in loginResponse) {
                 res.status(400).send(loginResponse);
             } else if ("userToken" in loginResponse) {
-                res.status(201).send(loginResponse);
+                res.status(200).send(loginResponse);
             }
         } else {
             res.status(500).send({ error: "Неизвестная ошибка" });
