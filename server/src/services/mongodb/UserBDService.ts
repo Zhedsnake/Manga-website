@@ -1,6 +1,5 @@
 import { Model } from "mongoose";
 import userModel, {userType} from "../../models/userModel";
-import registerRequestTypes from "../../types/registerRequestTypes";
 
 
 class UserBDService {
@@ -10,8 +9,7 @@ class UserBDService {
         this.model = userModel;
     }
 
-    async register (register: registerRequestTypes): Promise<{ id: string } | {error: string}> {
-        const {name, email, password} = register;
+    async register (name: string, password: string, email: string): Promise<{ id: string } | {error: string}> {
         const userExists = await this.model.findOne({
             $or: [
                 { name: name },
@@ -24,9 +22,20 @@ class UserBDService {
         }
 
         const newUser = new this.model({ name, email, password });
+
         await newUser.save();
 
         return { id: newUser.id};
+    }
+
+    async login(name: string) {
+        const user = await this.model.findOne({ name: name });
+
+        if (!user) {
+            return { error: "Имя или пароль некорректны"};
+        }
+
+        return user;
     }
 }
 

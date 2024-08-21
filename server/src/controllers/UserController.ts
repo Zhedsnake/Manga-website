@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserService from "../services/busines/UserService";
 import registerRequestTypes from "../types/registerRequestTypes";
+import loginRequestTypes from "../types/loginRequestTypes";
 
 
 class UserControllers {
@@ -11,7 +12,7 @@ class UserControllers {
             res.status(400).send({ error: "Пожалуйста, заполните все поля."});
         }
 
-        const regResponse: { error: string; } | { userToken: string; } | undefined = await UserService.register(req.body)
+        const regResponse: { error: string; } | { userToken: string; } | undefined = await UserService.register(name, email, password)
 
         if (regResponse) {
             if ("error" in regResponse) {
@@ -24,8 +25,25 @@ class UserControllers {
         }
     }
 
-    async login (req: Request, res: Response) {
-        console.log(req.body);
+    async login (req: Request<loginRequestTypes>, res: Response) {
+        const { name, password } = req.body;
+
+        if (!name || !password) {
+            res.status(400).send({ error: "Пожалуйста, заполните все поля."});
+        }
+
+        const loginResponse = await UserService.login(name, password)
+
+
+        if (loginResponse) {
+            if ("error" in loginResponse) {
+                res.status(400).send(loginResponse);
+            } else if ("userToken" in loginResponse) {
+                res.status(201).send(loginResponse);
+            }
+        } else {
+            res.status(500).send({ error: "Неизвестная ошибка" });
+        }
     }
 }
 
