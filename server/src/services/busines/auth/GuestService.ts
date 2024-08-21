@@ -1,5 +1,5 @@
-import GuestBDService from "../mongodb/GuestBDService";
-import JwtService from "../jwt/JwtService";
+import GuestBDService from "../../mongodb/GuestBDService";
+import JwtService from "../../jwt/JwtService";
 
 
 class GuestService {

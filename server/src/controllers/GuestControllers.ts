@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
-import GuestService from "../services/busines/GuestService";
+import GuestService from "../services/busines/auth/GuestService";
 
 
-class GuestController {
+class GuestControllers {
     async getGuestToken (req: Request, res: Response) {
         const guestToken: string | undefined = await GuestService.getGuestToken();
+        const tokenError = "Токен не сгенерировался";
 
         if (guestToken) {
             res.status(200).send(guestToken);
         } else if (!guestToken) {
-            res.status(404).send("Токен не сгенерировался");
+            res.status(404).send(tokenError);
+            throw new Error(tokenError);
         }
     }
 }
 
-export default new GuestController();
+export default new GuestControllers();

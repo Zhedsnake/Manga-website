@@ -1,9 +1,10 @@
 import 'dotenv/config'
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import routers from "./router";
 import { Server, Socket } from "socket.io";
+import {connectDB} from "./config/db";
+import {timeDateNow} from "./modules/timeDateNow";
 
 const app = express()
 
@@ -16,29 +17,13 @@ if (!process.env.DB_URL) {
     process.exit(1);
 }
 
-mongoose.connect(process.env.DB_URL)
+connectDB(process.env.DB_URL)
     .then(() => {
         const server = app.listen(
             process.env.PORT,
             () => {
-                const now = new Date();
-                const hours = now.getHours();
-
-                // Для docker
-                const myHours = hours + 3;
-
-                const stringMyHours = myHours.toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const day = now.getDate();
-                const monthNames = [
-                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-                    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-                ];
-                const month = monthNames[now.getMonth()];
-                const year = now.getFullYear();
-
-                console.log(`SERVER STARTED ON PORT ${process.env.PORT}` +
-                    ` at ${stringMyHours}:${minutes}, day ${day}, month ${month}, year ${year}`);
+                const dateStart: string = timeDateNow();
+                console.log(`Сервер запущен. Порт: ${process.env.PORT}. Когда:` + dateStart);
             }
         );
 
@@ -66,4 +51,4 @@ mongoose.connect(process.env.DB_URL)
             // });
         });
     })
-    .catch((e) => console.log(e));
+    .catch((e: Error) => console.log(e));
