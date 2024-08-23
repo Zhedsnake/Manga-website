@@ -15,7 +15,7 @@ export const logInReducer = (state = initialState, action: LogInAction): LogInSt
         case LogInActionTypes.LOG_IN_ERROR:
             return { logInLoading: false, logInError: action.payload, logInToken: '' };
         case LogInActionTypes.DEF_LOG_IN:
-            return { ...state, ...initialState}
+            return {...initialState}
         default:
             return state;
     }

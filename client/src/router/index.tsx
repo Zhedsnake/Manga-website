@@ -17,6 +17,7 @@ const commonRoutes: RoutesTypes[] = [
 
 const privateRoutes: RoutesTypes[] = [
     ...commonRoutes,
+    // {path: '/', component: <Auth />},
 ]
 
 const publicRoutes: RoutesTypes[] = [

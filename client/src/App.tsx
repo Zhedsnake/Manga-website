@@ -17,9 +17,12 @@ import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 
 const App: React.FC = () => {
     const [isAuth, setIsAuth] = useState(false)
+
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
+
     const [isAuthLoading, setAuthLoading] = useState<boolean>(false);
+
     const defToggleShowFormPasswords: ToggleShowType = {
         toggleShowPassword: false,
         toggleShowConfirmPassword: false

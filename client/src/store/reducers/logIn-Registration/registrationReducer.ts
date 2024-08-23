@@ -1,5 +1,4 @@
 import {RegistrationAction, RegistrationActionTypes, RegistrationState} from "../../../types/logInRegistration/registration";
-import {LogInActionTypes} from "../../../types/logInRegistration/logIn";
 
 const initialState: RegistrationState = {
     regToken: '',
@@ -16,7 +15,7 @@ export const registrationReducer = (state = initialState, action: RegistrationAc
         case RegistrationActionTypes.REGISTRATION_ERROR:
             return { regLoading: false, regError: action.payload, regToken: '' };
         case RegistrationActionTypes.DEF_REG:
-            return { ...state, ...initialState}
+            return {...initialState}
         default:
             return state;
     }
