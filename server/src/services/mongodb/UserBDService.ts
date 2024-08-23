@@ -37,6 +37,14 @@ class UserBDService {
 
         return user;
     }
+
+    async GetSmallUserInfoByToken (userId: string) {
+        const userData = await this.model.findById(userId).select('pic name -_id');
+
+        if ( userData && ("name" && "pic" in userData)) {
+            return {name: userData.name, pic: userData.pic};
+        }
+    }
 }
 
 export default new UserBDService();

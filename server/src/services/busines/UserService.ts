@@ -69,6 +69,27 @@ class UserService {
             console.error(e);
         }
     }
+
+    async GetSmallUserInfoByToken(userToken: string) {
+        try {
+            const userId: string | null = JwtService.decode(userToken);
+
+            if (!userId) {
+                return {error: "Токен устарел"}
+            }
+
+            const userData: {name: string, pic: string } | undefined = await UserBDService.GetSmallUserInfoByToken(userId);
+
+            if (userData) {
+                return userData;
+            } else if (!userData) {
+                console.error("Неизвестная ошибка при GetSmallUserInfoByToken из бд")
+            }
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
 
 export default new UserService();
