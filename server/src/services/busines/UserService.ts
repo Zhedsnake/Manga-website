@@ -75,6 +75,23 @@ class UserService {
             console.error("Неизвестная ошибка при GetSmallUserInfoByToken из бд")
         }
     }
+
+    async UpdateUserToken(Token: string) {
+        const userId: string | null = JwtService.decode(Token);
+
+        if (!userId) {
+            return {error: "Токен устарел"}
+        }
+
+        const payload = {
+            user: {
+                id: userId,
+            },
+        };
+
+        const userToken = JwtService.getUserToken(payload);
+        return {userToken: userToken};
+    }
 }
 
 export default new UserService();
