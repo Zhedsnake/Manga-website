@@ -5,22 +5,17 @@ import JwtService from "../jwt/JwtService";
 class GuestService {
 
     async getGuestToken () {
-        try {
-            const guestId: string = await GuestBDService.createGuest();
+        const guestId: string = await GuestBDService.createGuest();
 
-            const payload = {
-                guest: {
-                    id: guestId,
-                },
-            };
+        const payload = {
+            guest: {
+                id: guestId,
+            },
+        };
 
-            const jwtToken: string = JwtService.getGuestToken(payload);
+        const jwtToken: string = JwtService.getGuestToken(payload);
 
-            return jwtToken
-
-        } catch (e) {
-            console.error(e);
-        }
+        return jwtToken
     }
 
     // async removeGuest(guestToken: string) {

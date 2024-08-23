@@ -17,15 +17,15 @@ class UserControllers {
 
             if (userInfoResponse) {
                 if ("name" in userInfoResponse && "pic" in userInfoResponse) {
-                    return res.status(200).send(userInfoResponse);
+                    res.status(200).send(userInfoResponse);
                 } else if ("error" in userInfoResponse) {
-                    return res.status(400).send(userInfoResponse);
+                    res.status(400).send(userInfoResponse);
                 }
             } else if (!userInfoResponse) {
-                return res.status(500).send({ error: "Неизвестная ошибка на сервере" });
+                res.status(500).send({ error: "Неизвестная ошибка на сервере" });
             }
         } else {
-            return res.status(400).send({ error: 'Нет user-token' });
+            res.status(400).send({ error: 'Нет user-token' });
         }
     }
 }

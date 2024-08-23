@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, {JwtPayload} from 'jsonwebtoken';
 
 class JwtService {
 
@@ -21,18 +21,27 @@ class JwtService {
     }
 
     decode(token: string): string | null {
-        if (!process.env.JWT_SECRET) {
+        const secret = process.env.JWT_SECRET;
+        if (!secret) {
             throw new Error('JWT_SECRET is not defined');
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { guest?: { id: string }, user?: { id: string } };
+        try {
+            const decoded = jwt.verify(token, secret) as JwtPayload & { guest?: { id: string }, user?: { id: string } };
 
-        if (decoded.guest) {
-            return decoded.guest.id;
-        } else if (decoded.user) {
-            return decoded.user.id;
-        } else {
-            return null;
+            if (decoded.guest) {
+                return decoded.guest.id;
+            } else if (decoded.user) {
+                return decoded.user.id;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            if (err instanceof jwt.TokenExpiredError) {
+                return null;
+            } else {
+                return null;
+            }
         }
     }
 }
