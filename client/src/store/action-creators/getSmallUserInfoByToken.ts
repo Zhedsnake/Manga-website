@@ -1,7 +1,6 @@
 import {Dispatch} from "react";
 import {GetUserInfoAction, GetUserInfoActionTypes} from "../../types/getUserInfo.ts";
 import UserService from "../../api/UserService.ts";
-import {RegistrationActionTypes} from "../../types/logInRegistration/registration.ts";
 
 
 export const getSmallUserInfoByToken = () => {

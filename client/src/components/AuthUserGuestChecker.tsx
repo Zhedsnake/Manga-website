@@ -4,7 +4,6 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
 import {Tokens} from "../util/setTocken.ts";
-import UserService from "../api/UserService.ts";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -20,7 +19,8 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
 
     const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
-    const { getGuestToken, defGuestToken, getSmallUserInfoByToken } = useActions();
+    const { userToken: updatedUserToken, error: userTokenError  } = useTypedSelector(state => state.updateUserToken);
+    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
 
     useEffect(() => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
@@ -34,6 +34,8 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
                 await getSmallUserInfoByToken()
 
                 setAuthLoading(false);
+
+                await updateUserToken()
 
                 // if (guestToken) {
                 //     await guestService.removeGuest(guestToken)
@@ -66,6 +68,12 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
             }
         }
     }, [guestTokenResponse]);
+
+    useEffect(() => {
+        if (updatedUserToken) {
+            localStorage.setItem(Tokens.userToken, updatedUserToken);
+        }
+    }, [updatedUserToken]);
 
     return (
         <>

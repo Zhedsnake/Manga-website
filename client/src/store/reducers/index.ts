@@ -4,6 +4,7 @@ import {authFormReducer} from "./authFormReducer.ts";
 import {registrationReducer} from "./logIn-Registration/registrationReducer.ts";
 import {logInReducer} from "./logIn-Registration/logInReducer.ts";
 import {getSmallUserInfoByTokenReducer} from "./getSmallUserInfoByTokenReducer.ts";
+import {updateUserTokenReducer} from "./updateUserTokenReducer.ts";
 
 
 export const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
     registration: registrationReducer,
     authForm: authFormReducer,
     getSmallUserInfoByToken: getSmallUserInfoByTokenReducer,
+    updateUserToken: updateUserTokenReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>
