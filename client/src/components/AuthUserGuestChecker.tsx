@@ -20,7 +20,7 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
     const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
     const { userToken: updatedUserToken, error: userTokenError  } = useTypedSelector(state => state.updateUserToken);
-    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken, defUpdateUserToken } = useActions();
+    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, defUpdateUserToken } = useActions();
 
     useEffect(() => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
@@ -34,8 +34,6 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
                 await getSmallUserInfoByToken()
 
                 setAuthLoading(false);
-
-                await updateUserToken()
 
                 // if (guestToken) {
                 //     await guestService.removeGuest(guestToken)
@@ -76,6 +74,14 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
             defUpdateUserToken()
         }
     }, [updatedUserToken]);
+
+    useEffect(() => {
+        if (userTokenError) {
+            if (userTokenError === "Токен устарел") {
+                localStorage.removeItem(Tokens.userToken)
+            }
+        }
+    }, [userTokenError]);
 
     return (
         <>

@@ -1,9 +1,12 @@
 import React, {useEffect} from 'react';
 import MainContent from "../components/mainPage/MainContent.tsx";
 import LeftPanel from "../components/mainPage/LeftPanel.tsx";
+import {useActions} from "../hooks/useActions.ts";
 
 const Home: React.FC = () => {
 
+
+    const { updateUserToken } = useActions();
 
     useEffect((): void => {
         // getStuffsAction(page)
@@ -11,6 +14,8 @@ const Home: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        updateUserToken()
+
         return () => {
             // defStuffs()
         };
