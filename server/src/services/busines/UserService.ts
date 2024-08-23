@@ -35,7 +35,7 @@ class UserService {
     }
 
     async login(name: string, password: string) {
-        const responseBD = await UserBDService.login(name);
+        const responseBD: { error: string } | { name: string, id: string, password: string} | undefined = await UserBDService.login(name);
 
         if (responseBD) {
             if ("password" in responseBD) {
