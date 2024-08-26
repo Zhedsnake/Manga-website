@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import userController from "../controllers/UserControllers";
 import UserControllers from "../controllers/UserControllers";
+import ProtectService from "../middlewares/ProtectService";
 
 const userRouter = Router();
 
-userRouter.get('/user-small-info-by-token', UserControllers.GetSmallUserInfoByToken);
-userRouter.get('/update-user-token', UserControllers.UpdateUserToken);
+userRouter.get('/user-small-info-by-token', ProtectService.checkUserToken, UserControllers.GetSmallUserInfoByToken);
+userRouter.get('/update-user-token', ProtectService.checkUserToken, UserControllers.UpdateUserToken);
 
 export default userRouter;

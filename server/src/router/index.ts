@@ -7,8 +7,8 @@ import authRouter from "./authRouter";
 const routers = Router();
 
 routers.use('/api', authRouter);
-routers.use('/api', guestRouter);
 routers.use('/api', userRouter);
+routers.use('/api', guestRouter);
 routers.use('/api', imagesRouter);
 
 export default routers;
