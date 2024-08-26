@@ -4,7 +4,7 @@ import JwtService from "../jwt/JwtService";
 
 class GuestService {
 
-    async getGuestToken () {
+    async getGuestToken (): Promise<string> {
         const guestId: string = await GuestBDService.createGuest();
 
         const payload = {
