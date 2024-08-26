@@ -28,24 +28,31 @@ class UserBDService {
         return {id: newUser.id};
     }
 
-    async login(name: string) {
-        const user = await this.model.findOne({name: name});
+    async login(name: string): Promise<{ id: string, name: string, password: string  } | { error: string }> {
+        const user = await this.model.findOne({ name });
 
         if (!user) {
-            return {error: "Имя или пароль некорректны"};
+            return { error: "Имя или пароль некорректны" };
         }
 
-        if ("id" && "name" in user) {
-            return {id: user.id, name: user.name, password: user.password};
+        if (user && ("id" && "name" && "password" in user)) {
+            return { id: user.id, name: user.name, password: user.password };
         }
+
+        return { error: "Неизвестная ошибка при логине" };
     }
 
-    async GetSmallUserInfoByToken(userId: string) {
+    async GetSmallUserInfoByToken(userId: string): Promise<{name: string, pic: string} | undefined> {
         const userData = await this.model.findById(userId).select('pic name -_id');
 
         if (userData && ("name" && "pic" in userData)) {
             return {name: userData.name, pic: userData.pic};
         }
+    }
+
+    async findOneUser(userId: string){
+        const userData = await this.model.findById(userId);
+        return userData;
     }
 }
 
