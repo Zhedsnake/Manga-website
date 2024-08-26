@@ -59,7 +59,7 @@ class UserService {
                 },
             };
 
-            const userToken = JwtService.getUserToken(payload);
+            const userToken: string = JwtService.getUserToken(payload);
             return {userToken: userToken};
 
         } else if ("error" in responseBD) {
@@ -81,6 +81,29 @@ class UserService {
 
         const userToken = JwtService.getUserToken(payload);
         return {userToken: userToken};
+    }
+
+    async GetUserInfoByToken(userId: string) {
+        const userData: {
+            name: string
+            registeredAt: string
+            pic: string
+            email: string }
+            | undefined = await UserBDService.GetUserInfoByToken(userId);
+
+
+        if (userData) {
+            const formattedDate = new Date(userData.registeredAt).toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            return {
+                ...userData,
+                registeredAt: formattedDate
+            };
+        }
     }
 }
 
