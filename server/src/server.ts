@@ -12,8 +12,11 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(routers)
 
-
 if (!process.env.DB_URL) {
+    process.exit(1);
+}
+if (!process.env.JWT_SECRET) {
+    console.error("JWT_SECRET is not defined");
     process.exit(1);
 }
 
