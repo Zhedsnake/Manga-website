@@ -5,50 +5,35 @@ import loginRequestTypes from "../types/loginRequestTypes";
 
 
 class UserControllers {
-
     async GetSmallUserInfoByToken(req: Request, res: Response) {
-        const userToken: string | undefined = req.headers['user-token'] as string | undefined;
+        try {
+            const userId: string = req.headers['user-id'] as string;
 
-        if (userToken) {
             const userInfoResponse:
-                { error: string }
-                | { name: string, pic: string }
-                | undefined = await UserService.GetSmallUserInfoByToken(userToken);
+                { name: string, pic: string }
+                | undefined = await UserService.GetSmallUserInfoByToken(userId);
 
             if (userInfoResponse) {
-                if ("name" && "pic" in userInfoResponse) {
-                    res.status(200).send(userInfoResponse);
-                } else if ("error" in userInfoResponse) {
-                    res.status(400).send(userInfoResponse);
-                }
-            } else if (!userInfoResponse) {
-                res.status(500).send({ error: "Неизвестная ошибка на сервере" });
+                return res.status(200).send(userInfoResponse);
             }
-        } else {
-            res.status(400).send({ error: 'Нет user-token' });
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({error: "Неизвестная ошибка на сервере"});
         }
     }
 
     async UpdateUserToken(req: Request, res: Response) {
-        const userToken: string | undefined = req.headers['user-token'] as string | undefined;
+        try {
+            const userId: string = req.headers['user-id'] as string;
 
-        if (userToken) {
-            const userInfoResponse:
-                { error: string }
-                | { userToken: string }
-                | undefined = await UserService.UpdateUserToken(userToken);
+            const userInfoResponse: { userToken: string } = await UserService.UpdateUserToken(userId);
 
             if (userInfoResponse) {
-                if ( "userToken" in userInfoResponse) {
-                    res.status(200).send(userInfoResponse);
-                } else if ("error" in userInfoResponse) {
-                    res.status(400).send(userInfoResponse);
-                }
-            } else if (!userInfoResponse) {
-                res.status(500).send({ error: "Неизвестная ошибка на сервере" });
+                return res.status(200).send(userInfoResponse);
             }
-        } else {
-            res.status(400).send({ error: 'Нет user-token' });
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({error: "Неизвестная ошибка на сервере"});
         }
     }
 }
