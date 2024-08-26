@@ -54,6 +54,23 @@ class UserBDService {
         const userData = await this.model.findById(userId);
         return userData;
     }
+
+    async GetUserInfoByToken(userId: string): Promise<{name: string, registeredAt: string, pic: string, email: string} | undefined> {
+        const userData = await this.model.findById(userId).select('-password');
+
+        if (userData && ("name" && "pic" && "email" && "createdAt" in userData)) {
+            const registeredAt = userData.createdAt instanceof Date
+                ? userData.createdAt.toISOString()
+                : String(userData.createdAt);
+
+            return {
+                name: userData.name,
+                email: userData.email,
+                pic: userData.pic,
+                registeredAt: registeredAt
+            };
+        }
+    }
 }
 
 export default new UserBDService();
