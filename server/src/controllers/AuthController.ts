@@ -8,55 +8,66 @@ import loginRequestTypes from "../types/loginRequestTypes";
 class AuthControllers {
 
     async registerGuest (req: Request, res: Response) {
-        const guestToken: string | undefined = await GuestService.getGuestToken();
-        const tokenError = "Токен не сгенерировался";
+        try {
+            const guestToken: string = await GuestService.getGuestToken();
+            const tokenError = "Токен не сгенерировался";
 
-        if (guestToken) {
-            res.status(201).send(guestToken);
-        } else if (!guestToken) {
-            res.status(404).send(tokenError);
-            throw new Error(tokenError);
+            if (guestToken) {
+                return res.status(201).send(guestToken);
+            } else {
+                return res.status(500).send(tokenError);
+            }
+        } catch (error) {
+            console.error("Ошибка в registerGuest:", error);
         }
     }
 
     async registerUser (req: Request<registerRequestTypes>, res: Response) {
-        const { name, email, password } = req.body;
+        try {
+            const { name, email, password } = req.body;
 
-        if (!name || !email || !password) {
-            res.status(400).send({ error: "Пожалуйста, заполните все поля."});
-        }
-
-        const regResponse: { error: string; } | { userToken: string; } | undefined = await UserService.register(name, email, password)
-
-        if (regResponse) {
-            if ("error" in regResponse) {
-                res.status(400).send(regResponse);
-            } else if ("userToken" in regResponse) {
-                res.status(201).send(regResponse);
+            if (!name || !email || !password) {
+                return res.status(400).send({ error: "Пожалуйста, заполните все поля."});
             }
-        } else {
-            res.status(500).send({ error: "Неизвестная ошибка" });
+
+            const regResponse: { error: string; } | { userToken: string; } | undefined = await UserService.register(name, email, password)
+
+            if (regResponse) {
+                if ("error" in regResponse) {
+                    return res.status(400).send(regResponse);
+                } else if ("userToken" in regResponse) {
+                    return res.status(201).send(regResponse);
+                }
+            } else {
+                return res.status(500).send({ error: "Неизвестная ошибка" });
+            }
+        } catch (error) {
+            console.error("Ошибка в registerUser:", error);
         }
     }
 
     async loginUser (req: Request<loginRequestTypes>, res: Response) {
-        const { name, password } = req.body;
+        try {
+            const { name, password } = req.body;
 
-        if (!name || !password) {
-            res.status(400).send({ error: "Пожалуйста, заполните все поля."});
-        }
-
-        const loginResponse = await UserService.login(name, password)
-
-
-        if (loginResponse) {
-            if ("error" in loginResponse) {
-                res.status(400).send(loginResponse);
-            } else if ("userToken" in loginResponse) {
-                res.status(200).send(loginResponse);
+            if (!name || !password) {
+                return res.status(400).send({ error: "Пожалуйста, заполните все поля."});
             }
-        } else {
-            res.status(500).send({ error: "Неизвестная ошибка" });
+
+            const loginResponse = await UserService.login(name, password)
+
+
+            if (loginResponse) {
+                if ("error" in loginResponse) {
+                    return res.status(400).send(loginResponse);
+                } else if ("userToken" in loginResponse) {
+                    return res.status(200).send(loginResponse);
+                }return
+            } else {
+                return res.status(500).send({ error: "Неизвестная ошибка" });
+            }
+        } catch (error) {
+            console.error("Ошибка в loginUser:", error);
         }
     }
 }
