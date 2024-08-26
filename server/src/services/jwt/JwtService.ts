@@ -1,33 +1,30 @@
 import jwt, {JwtPayload} from 'jsonwebtoken';
 
 class JwtService {
+    private secret: string;
 
-    getGuestToken(payload: { guest: { id: string } }): string {
-        if (!process.env.JWT_SECRET) {
+    constructor() {
+        const jwt_secret: string | undefined = process.env.JWT_SECRET;
+        if (!jwt_secret) {
             throw new Error('JWT_SECRET is not defined');
         }
+        this.secret = jwt_secret;
+    }
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+    getGuestToken(payload: { guest: { id: string } }): string {
+        const token: string = jwt.sign(payload, this.secret);
         return token;
     }
 
     getUserToken(payload: { user: { id: string } }): string {
-        if (!process.env.JWT_SECRET) {
-            throw new Error('JWT_SECRET is not defined');
-        }
-
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "30d" });
+        const token: string = jwt.sign(payload, this.secret, { expiresIn: "30d" });
         return token;
     }
 
     decode(token: string): string | null {
-        const secret = process.env.JWT_SECRET;
-        if (!secret) {
-            throw new Error('JWT_SECRET is not defined');
-        }
-
         try {
-            const decoded = jwt.verify(token, secret) as JwtPayload & { guest?: { id: string }, user?: { id: string } };
+            const decoded = jwt.verify(token, this.secret) as JwtPayload & { guest?: { id: string }, user?: { id: string } };
 
             if (decoded.guest) {
                 return decoded.guest.id;
