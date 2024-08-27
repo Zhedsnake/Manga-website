@@ -1,12 +1,11 @@
 import {GetUserInfoAction, GetUserInfoActionTypes, GetUserInfoState} from "../../types/getUserInfo.ts";
 
 const initialState: GetUserInfoState = {
-    data: {
-        name: "undefined",
-        email: "undefined",
-        pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-        registeredAt: "undefined"
-    },
+    name: "Неизвестно",
+    email: "Неизвестно",
+    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    registeredAt: "Неизвестно",
+    birthday: "Неизвестно",
     loading: false,
     error: null
 }
@@ -15,24 +14,14 @@ export const getUserInfoByTokenReducer = (state = initialState, action: GetUserI
     switch (action.type) {
         case GetUserInfoActionTypes.USER_INFO:
             return {
-                data: {
-                    name: "undefined",
-                    email: "undefined",
-                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-                    registeredAt: "undefined"
-                },
+                ...initialState,
                 loading: true,
                 error: null }
         case GetUserInfoActionTypes.USER_INFO_SUCCESS:
-            return { data: action.payload, loading: false, error: null }
+            return { ...initialState, ...action.payload, loading: false, error: null }
         case GetUserInfoActionTypes.USER_INFO_ERROR:
             return {
-                data: {
-                    name: "undefined",
-                    email: "undefined",
-                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-                    registeredAt: "undefined"
-                },
+                ...initialState,
                 loading: false,
                 error: action.payload }
         case GetUserInfoActionTypes.DEF_USER_INFO:

@@ -1,10 +1,9 @@
 export interface GetUserInfoState {
-    data: {
-        name: string,
-        email: string,
-        pic: string,
-        registeredAt: string
-    };
+    name: string,
+    email: string,
+    pic: string,
+    registeredAt: string
+    birthday?: string
     loading: boolean;
     error: null | string;
 }
@@ -26,7 +25,8 @@ interface UserInfoSuccessAction {
         name: string,
         email: string,
         pic: string,
-        registeredAt: string
+        registeredAt: string,
+        birthday: string
     }
 }
 
