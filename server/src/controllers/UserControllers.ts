@@ -77,6 +77,32 @@ class UserControllers {
             return res.status(500).send({error: "Неизвестная ошибка на сервере"});
         }
     }
+
+    async EditUserEmailByToken(req: Request, res: Response) {
+        try {
+            const userId: string = req.headers['user-id'] as string;
+            const userEmail: string = req.body.email as string;
+
+            if (!userEmail) {
+                res.status(400).send({error: "Не указано имя"})
+            }
+
+            const updates = {email: userEmail}
+
+            const userInfoResponse: {  message: string } | { error: string } = await UserService.EditUserEmailByToken(userId, updates);
+
+            if ( "message" in userInfoResponse) {
+                return res.status(200).send(userInfoResponse);
+            } else if ( "error" in userInfoResponse) {
+                return res.status(400).send(userInfoResponse);
+            }
+
+            res.status(200).send(req.body.name);
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({error: "Неизвестная ошибка на сервере"});
+        }
+    }
 }
 
 export default new UserControllers();

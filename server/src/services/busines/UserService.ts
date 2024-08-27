@@ -110,6 +110,11 @@ class UserService {
         const updateName: { message: string } | { error: string } = await UserBDService.EditUserNameByToken(userId, updates)
         return updateName;
     }
+
+    async EditUserEmailByToken(userId: string, updates: { email: string }) {
+        const updateName: { message: string } | { error: string } = await UserBDService.EditUserEmailByToken(userId, updates)
+        return updateName;
+    }
 }
 
 export default new UserService();

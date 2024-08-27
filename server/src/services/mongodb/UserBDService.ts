@@ -91,6 +91,21 @@ class UserBDService {
 
         return {message: "Данные пользователя успешно обновлены"};
     }
+
+    async EditUserEmailByToken(
+        userId: string,
+        updates: { email: string }
+    ): Promise<{ message: string } | { error: string }> {
+        const userExists = await this.model.findOne({email: updates.email});
+
+        if (userExists) {
+            return {error: "Пользователь с такой почтой уже существует"};
+        }
+
+        const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
+
+        return {message: "Данные пользователя успешно обновлены"};
+    }
 }
 
 export default new UserBDService();
