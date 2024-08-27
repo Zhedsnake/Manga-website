@@ -11,10 +11,14 @@ const LeftPanel: React.FC = () => {
     const [userImg, setUserImg] = useState<string>("")
     const [name, setName] = useState("")
 
-    const {data: smallUserInfoByToken, error: smallUserInfoByTokenError} = useTypedSelector(state => state.getSmallUserInfoByToken);
+    const {
+        data: smallUserInfoByToken,
+        error: smallUserInfoByTokenError,
+        loading: smallUserInfoByTokenLoading,
+    } = useTypedSelector(state => state.getSmallUserInfoByToken);
 
     useEffect(() => {
-        if ( "pic" && "name" in smallUserInfoByToken) {
+        if ("pic" && "name" in smallUserInfoByToken) {
             setUserImg(smallUserInfoByToken.pic);
             setName(smallUserInfoByToken.name);
         }
@@ -50,9 +54,18 @@ const LeftPanel: React.FC = () => {
                                         )
                                         : (
                                             <>
-                                                <img src={userImg} alt={"Картинка пользователя"}/>
-                                                <br/>
-                                                <div>{name}</div>
+                                                {smallUserInfoByTokenLoading
+                                                    ? <Loader/>
+                                                    :
+                                                    <Link to={`/user-profile`}>
+                                                        <button>
+                                                            <img src={userImg} alt={"Картинка пользователя"}/>
+                                                            <br/>
+                                                            <div>{name}
+                                                            </div>
+                                                        </button>
+                                                    </Link>
+                                                }
                                             </>
                                         )
                                 )
