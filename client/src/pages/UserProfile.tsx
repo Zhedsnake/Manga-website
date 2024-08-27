@@ -18,16 +18,7 @@ const UserProfile: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (userData.name.length > 0) {
-            setUserdataState(userData)
-        } else {
-            setUserdataState({
-                name: "undefined",
-                email: "undefined",
-                pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-                registeredAt: "undefined"
-            })
-        }
+        setUserdataState(userData)
     }, [userData]);
 
     useEffect(() => {

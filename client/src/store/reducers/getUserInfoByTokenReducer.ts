@@ -2,10 +2,10 @@ import {GetUserInfoAction, GetUserInfoActionTypes, GetUserInfoState} from "../..
 
 const initialState: GetUserInfoState = {
     data: {
-        name: "",
-        email:"",
-        pic: "",
-        registeredAt: ""
+        name: "undefined",
+        email: "undefined",
+        pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        registeredAt: "undefined"
     },
     loading: false,
     error: null
@@ -16,10 +16,10 @@ export const getUserInfoByTokenReducer = (state = initialState, action: GetUserI
         case GetUserInfoActionTypes.USER_INFO:
             return {
                 data: {
-                    name: "",
-                    email:"",
-                    pic: "",
-                    registeredAt: ""
+                    name: "undefined",
+                    email: "undefined",
+                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                    registeredAt: "undefined"
                 },
                 loading: true,
                 error: null }
@@ -28,10 +28,10 @@ export const getUserInfoByTokenReducer = (state = initialState, action: GetUserI
         case GetUserInfoActionTypes.USER_INFO_ERROR:
             return {
                 data: {
-                    name: "",
-                    email:"",
-                    pic: "",
-                    registeredAt: ""
+                    name: "undefined",
+                    email: "undefined",
+                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                    registeredAt: "undefined"
                 },
                 loading: false,
                 error: action.payload }
