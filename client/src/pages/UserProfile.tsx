@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useActions} from "../hooks/useActions.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
+import {Link} from "react-router-dom";
 
 const UserProfile: React.FC = () => {
     const [userdataState, setUserdataState] = useState({})
@@ -125,7 +126,17 @@ const UserProfile: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-lg-6 p-0 pg-empty-placeholder">
+                                <div className="col-lg-6 p-0">
+                                    <div className="row">
+                                        <div>
+                                            <Link to={`/edit-user-profile`}>
+                                                <button type="button" className="btn btn-light">
+                                                    <span>Редактировать профиль</span>
+                                                </button>
+                                            </Link>
+                                        </div>
+                                        <div></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
