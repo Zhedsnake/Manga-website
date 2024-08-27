@@ -1,7 +1,9 @@
 export interface GetUserInfoState {
     data: {
         name: string,
-        pic: string
+        email: string,
+        pic: string,
+        registeredAt: string
     };
     loading: boolean;
     error: null | string;
@@ -22,7 +24,9 @@ interface UserInfoSuccessAction {
     type: GetUserInfoActionTypes.USER_INFO_SUCCESS;
     payload: {
         name: string,
-        pic: string
+        email: string,
+        pic: string,
+        registeredAt: string
     }
 }
 
