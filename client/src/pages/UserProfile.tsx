@@ -4,10 +4,14 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 
 const UserProfile: React.FC = () => {
-    const [userdataState, setUserdataState] = useState<object>({})
+    const [userdataState, setUserdataState] = useState({})
 
     const {
-        data: userData,
+        name,
+        email,
+        pic,
+        registeredAt,
+        birthday,
         error: userError,
         loading: userLoading
     } = useTypedSelector(state => state.getUserInfoByToken);
@@ -18,8 +22,14 @@ const UserProfile: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        setUserdataState(userData)
-    }, [userData]);
+        setUserdataState({
+            name,
+            email,
+            pic,
+            registeredAt,
+            birthday
+        })
+    }, [name]);
 
     useEffect(() => {
         if (userError) {
@@ -94,7 +104,7 @@ const UserProfile: React.FC = () => {
                                                     </div>
                                                     <div className="col-12 p-0"
                                                          style={{height: "50px", textAlign: "right"}}>
-                                                        <span>День рождения:</span>
+                                                        <span>{userdataState.birthday}</span>
                                                     </div>
                                                 </div>
                                             </div>
