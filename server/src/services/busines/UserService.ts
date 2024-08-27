@@ -115,6 +115,28 @@ class UserService {
         const updateName: { message: string } | { error: string } = await UserBDService.EditUserEmailByToken(userId, updates)
         return updateName;
     }
+
+    async EditUserPasswordByToken(userId: string, userPassword: string, updates: { password: string }) {
+        const findUser = await UserBDService.findOneUser(userId);
+
+        if ( findUser && "password" in findUser) {
+
+            const isMatch: boolean = await bcrypt.compare(userPassword, findUser.password);
+
+            if (!isMatch) {
+                return {error: 'Пароль некорректны'};
+            }
+
+            const saltRounds: number = parseInt(this.salt);
+            const salt: string = await bcrypt.genSalt(saltRounds);
+            const hashedPassword: string = await bcrypt.hash(updates.password, salt);
+
+            const hashedUpdates = { password: hashedPassword};
+
+            const updateName: { message: string } | { error: string } = await UserBDService.EditUserPasswordByToken(userId, hashedUpdates)
+            return updateName;
+        }
+    }
 }
 
 export default new UserService();

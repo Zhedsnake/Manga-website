@@ -71,7 +71,6 @@ class UserControllers {
                 return res.status(400).send(userInfoResponse);
             }
 
-            res.status(200).send(req.body.name);
         } catch (error) {
             console.error(error)
             return res.status(500).send({error: "Неизвестная ошибка на сервере"});
@@ -97,7 +96,36 @@ class UserControllers {
                 return res.status(400).send(userInfoResponse);
             }
 
-            res.status(200).send(req.body.name);
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({error: "Неизвестная ошибка на сервере"});
+        }
+    }
+
+    async EditUserPasswordByToken(req: Request, res: Response) {
+        try {
+            const userId: string = req.headers['user-id'] as string;
+            const userPassword: string = req.body.password as string;
+            const userNewPassword: string = req.body.newPassword as string;
+
+            if (!userPassword) {
+                res.status(400).send({error: "Не указан пароль"})
+            }
+
+            if (!userNewPassword) {
+                res.status(400).send({error: "Не указан новый пароль"})
+            }
+
+            const updates = {password: userNewPassword}
+
+            const userInfoResponse = await UserService.EditUserPasswordByToken(userId, userPassword, updates);
+
+            if ( userInfoResponse && "message" in userInfoResponse) {
+                return res.status(200).send(userInfoResponse);
+            } else if ( userInfoResponse && "error" in userInfoResponse) {
+                return res.status(400).send(userInfoResponse);
+            }
+
         } catch (error) {
             console.error(error)
             return res.status(500).send({error: "Неизвестная ошибка на сервере"});

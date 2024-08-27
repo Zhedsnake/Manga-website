@@ -106,6 +106,16 @@ class UserBDService {
 
         return {message: "Данные пользователя успешно обновлены"};
     }
+
+    async EditUserPasswordByToken(
+        userId: string,
+        updates: { password: string }
+    ): Promise<{ message: string } | { error: string }> {
+
+        const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
+
+        return {message: "Данные пользователя успешно обновлены"};
+    }
 }
 
 export default new UserBDService();
