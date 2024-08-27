@@ -3,6 +3,7 @@ import Home from "../pages/Home.tsx";
 import UploadNewManga from "../pages/UploadNewManga.tsx";
 import Auth from "../pages/Auth.tsx";
 import UserProfile from "../pages/UserProfile.tsx";
+import EditUserProfile from "../pages/EditUserProfile.tsx";
 
 
 
@@ -19,6 +20,7 @@ const commonRoutes: RoutesTypes[] = [
 const privateRoutes: RoutesTypes[] = [
     ...commonRoutes,
     {path: '/user-profile', component: <UserProfile />},
+    {path: '/edit-user-profile', component: <EditUserProfile />},
 ]
 
 const publicRoutes: RoutesTypes[] = [
