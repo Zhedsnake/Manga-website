@@ -1,6 +1,9 @@
-import {GetUserInfoAction, GetUserInfoActionTypes, GetUserInfoState} from "../../types/getUserInfo.ts";
+import {
+    GetSmallUserInfoAction,
+    GetSmallUserInfoActionTypes, GetSmallUserInfoState
+} from "../../types/getSmallUserInfo.ts";
 
-const initialState: GetUserInfoState = {
+const initialState: GetSmallUserInfoState = {
     data: {
         name: "",
         pic: ""
@@ -9,9 +12,9 @@ const initialState: GetUserInfoState = {
     error: null
 }
 
-export const getSmallUserInfoByTokenReducer = (state = initialState, action: GetUserInfoAction): GetUserInfoState => {
+export const getSmallUserInfoByTokenReducer = (state = initialState, action: GetSmallUserInfoAction): GetSmallUserInfoState => {
     switch (action.type) {
-        case GetUserInfoActionTypes.USER_INFO:
+        case GetSmallUserInfoActionTypes.SMALL_USER_INFO:
             return {
                 data: {
                     name: "",
@@ -19,9 +22,9 @@ export const getSmallUserInfoByTokenReducer = (state = initialState, action: Get
                 },
                 loading: true,
                 error: null }
-        case GetUserInfoActionTypes.USER_INFO_SUCCESS:
+        case GetSmallUserInfoActionTypes.SMALL_USER_INFO_SUCCESS:
             return { data: action.payload, loading: false, error: null }
-        case GetUserInfoActionTypes.USER_INFO_ERROR:
+        case GetSmallUserInfoActionTypes.SMALL_USER_INFO_ERROR:
             return {
                 data: {
                     name: "",
@@ -29,7 +32,7 @@ export const getSmallUserInfoByTokenReducer = (state = initialState, action: Get
                 },
                 loading: false,
                 error: action.payload }
-        case GetUserInfoActionTypes.DEF_USER_INFO:
+        case GetSmallUserInfoActionTypes.DEF_SMALL_USER_INFO:
             return { ...initialState }
         default:
             return state
