@@ -4,6 +4,7 @@ import * as LogInActionCreators from "./logIn-Registration/logIn.ts";
 import * as AuthFormActions from "./authForm.ts";
 import * as getSmallUserInfoByToken from "./getSmallUserInfoByToken.ts";
 import * as updateUserToken from "./updateUserToken.ts";
+import * as getUserInfoByToken from "./getUserInfoByToken.ts";
 
 export default {
     ...GuestActionCreators,
@@ -11,5 +12,6 @@ export default {
     ...LogInActionCreators,
     ...AuthFormActions,
     ...getSmallUserInfoByToken,
-    ...updateUserToken
+    ...updateUserToken,
+    ...getUserInfoByToken
 }
