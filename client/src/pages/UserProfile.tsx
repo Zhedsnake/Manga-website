@@ -113,6 +113,21 @@ const UserProfile: React.FC = () => {
                             </section>
                         </div>
                         <div className="col-lg-9 p-0">
+                            <div className="row p-0">
+                                <div className="col-lg-6 p-0">
+                                    <div className="row p-0">
+                                        <span>{userdataState.name}</span>
+                                    </div>
+                                    <div className="p-0 row">
+                                        <div>
+                                            <span>Пользователь, </span>
+                                            <span>{userdataState.birthday}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-6 p-0 pg-empty-placeholder">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
