@@ -105,6 +105,11 @@ class UserService {
             };
         }
     }
+
+    async EditUserNameByToken(userId: string, updates: { name: string }) {
+        const updateName: { message: string } | { error: string } = await UserBDService.EditUserNameByToken(userId, updates)
+        return updateName;
+    }
 }
 
 export default new UserService();

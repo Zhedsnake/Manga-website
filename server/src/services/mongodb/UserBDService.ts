@@ -28,21 +28,21 @@ class UserBDService {
         return {id: newUser.id};
     }
 
-    async login(name: string): Promise<{ id: string, name: string, password: string  } | { error: string }> {
-        const user = await this.model.findOne({ name });
+    async login(name: string): Promise<{ id: string, name: string, password: string } | { error: string }> {
+        const user = await this.model.findOne({name});
 
         if (!user) {
-            return { error: "Имя или пароль некорректны" };
+            return {error: "Имя или пароль некорректны"};
         }
 
         if (user && ("id" && "name" && "password" in user)) {
-            return { id: user.id, name: user.name, password: user.password };
+            return {id: user.id, name: user.name, password: user.password};
         }
 
-        return { error: "Неизвестная ошибка при логине" };
+        return {error: "Неизвестная ошибка при логине"};
     }
 
-    async GetSmallUserInfoByToken(userId: string): Promise<{name: string, pic: string} | undefined> {
+    async GetSmallUserInfoByToken(userId: string): Promise<{ name: string, pic: string } | undefined> {
         const userData = await this.model.findById(userId).select('pic name -_id');
 
         if (userData && ("name" && "pic" in userData)) {
@@ -50,12 +50,17 @@ class UserBDService {
         }
     }
 
-    async findOneUser(userId: string){
+    async findOneUser(userId: string) {
         const userData = await this.model.findById(userId);
         return userData;
     }
 
-    async GetUserInfoByToken(userId: string): Promise<{name: string, registeredAt: string, pic: string, email: string} | undefined> {
+    async GetUserInfoByToken(userId: string): Promise<{
+        name: string,
+        registeredAt: string,
+        pic: string,
+        email: string
+    } | undefined> {
         const userData = await this.model.findById(userId).select('-password');
 
         if (userData && ("name" && "pic" && "email" && "createdAt" in userData)) {
@@ -70,6 +75,21 @@ class UserBDService {
                 registeredAt: registeredAt
             };
         }
+    }
+
+    async EditUserNameByToken(
+        userId: string,
+        updates: { name: string }
+    ): Promise<{ message: string } | { error: string }> {
+        const userExists = await this.model.findOne({name: updates.name});
+
+        if (userExists) {
+            return {error: "Пользователь с таким именем уже существует"};
+        }
+
+        const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
+
+        return {message: "Данные пользователя успешно обновлены"};
     }
 }
 
