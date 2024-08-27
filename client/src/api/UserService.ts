@@ -17,4 +17,11 @@ export default class UserService {
         const response = await axios.get(`${API_URL}/update-user-token`);
         return response;
     }
+
+    static async getUserInfoByToken() {
+        const token = localStorage.getItem(Tokens.userToken);
+        axios.defaults.headers.common['user-token'] = token;
+        const response = await axios.get(`${API_URL}/user-info-by-token`);
+        return response;
+    }
 }
