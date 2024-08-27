@@ -4,6 +4,7 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
 import {Tokens} from "../util/setTocken.ts";
+import Loader from "./UI/Loader/Loader.tsx";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -43,6 +44,7 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
             } else if (guestToken) {
 
                 setIsGuest(true)
+                setAuthLoading(false);
 
             } else if (!guestToken) {
                 setAuthLoading(true)
