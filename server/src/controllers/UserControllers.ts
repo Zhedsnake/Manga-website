@@ -2,6 +2,8 @@ import {Request, Response} from "express";
 import UserService from "../services/busines/UserService";
 import registerRequestTypes from "../types/registerRequestTypes";
 import loginRequestTypes from "../types/loginRequestTypes";
+import ImagesService from "../services/busines/ImagesService";
+import userService from "../services/busines/UserService";
 
 
 class UserControllers {
@@ -105,11 +107,11 @@ class UserControllers {
     async EditUserPasswordByToken(req: Request, res: Response) {
         try {
             const userId: string = req.headers['user-id'] as string;
-            const userPassword: string = req.body.password as string;
+            const userOldPassword: string = req.body.oldPassword as string;
             const userNewPassword: string = req.body.newPassword as string;
 
-            if (!userPassword) {
-                res.status(400).send({error: "Не указан пароль"})
+            if (!userOldPassword) {
+                res.status(400).send({error: "Не указан старый пароль"})
             }
 
             if (!userNewPassword) {
@@ -118,12 +120,37 @@ class UserControllers {
 
             const updates = {password: userNewPassword}
 
-            const userInfoResponse = await UserService.EditUserPasswordByToken(userId, userPassword, updates);
+            const userInfoResponse = await UserService.EditUserPasswordByToken(userId, userOldPassword, updates);
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
             } else if ( userInfoResponse && "error" in userInfoResponse) {
                 return res.status(400).send(userInfoResponse);
+            }
+
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send({error: "Неизвестная ошибка на сервере"});
+        }
+    }
+
+    async EditUserAvatarByToken(req: Request, res: Response) {
+        try {
+            const userId: string = req.headers['user-id'] as string;
+            const userAvatar = req.files;
+
+            if (!userAvatar || userAvatar.length === 0) {
+                return res.status(400).send({message: 'Файл не загружен'});
+            }
+
+            if (Array.isArray(userAvatar) && userAvatar.length > 1) {
+                return res.status(400).send({message: 'Вы загрузили больше одного файла'});
+            }
+
+            const userInfoResponse: { message: string } | undefined = await userService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
+
+            if ( userInfoResponse && "message" in userInfoResponse) {
+                return res.status(200).send(userInfoResponse);
             }
 
         } catch (error) {
