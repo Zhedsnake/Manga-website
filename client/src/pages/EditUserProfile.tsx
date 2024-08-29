@@ -3,14 +3,15 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import EditName from "../components/EditUserInfo/EditName.tsx";
 import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
 import {useActions} from "../hooks/useActions.ts";
+import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
 
 const EditUserProfile : React.FC = () => {
     const [message, setMessage] = useState<string>("")
 
-
     const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
     const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
-    const {defEditName, defEditEmail} = useActions();
+    const {message: passwordMessage, error: passwordError} = useTypedSelector(state => state.passwordForm);
+    const {defEditName, defEditEmail, defEditPassword} = useActions();
 
     useEffect(() => {
         if (nameMessage) {
@@ -20,7 +21,11 @@ const EditUserProfile : React.FC = () => {
         if (emailMessage) {
             setMessage(emailMessage)
         }
-    }, [nameMessage, emailMessage]);
+
+        if (passwordMessage) {
+            setMessage(passwordMessage)
+        }
+    }, [nameMessage, passwordMessage, emailMessage]);
 
     useEffect(() => {
         if (nameError) {
@@ -31,12 +36,17 @@ const EditUserProfile : React.FC = () => {
             setMessage("")
         }
 
-    }, [nameError, emailError]);
+        if (passwordError) {
+            setMessage("")
+        }
+
+    }, [nameError, emailError, passwordError]);
 
     useEffect(() => {
         if (message) {
             defEditName()
             defEditEmail()
+            defEditPassword()
         }
     }, [message]);
 
@@ -64,15 +74,7 @@ const EditUserProfile : React.FC = () => {
                             <EditEmail/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <form role="form">
-                                <div className="mb-3">
-                                <label htmlFor="InputOldPassword">Старый пароль</label>
-                                    <input type="password" className="form-control" id="InputOldPassword"/>
-                                        <label htmlFor="InputNewPassword">Новый пароль</label>
-                                        <input type="password" className="form-control" id="InputNewPassword"/>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Поменять пароль</button>
-                            </form>
+                            <EditPassword/>
                         </div>
                         <div className="col-md-6 col-xl-3">
                             <form>
