@@ -20,7 +20,6 @@ export const upload = (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
-      console.log(`ошибка здесь`);
       return res.status(400).send({message: 'Файлы не загружены'});
     }
 
