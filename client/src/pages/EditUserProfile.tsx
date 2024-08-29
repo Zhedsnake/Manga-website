@@ -1,34 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
+import EditName from "../components/EditUserInfo/EditName.tsx";
+import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
 import {useActions} from "../hooks/useActions.ts";
-import Loader from "../components/UI/Loader/Loader.tsx";
 
 const EditUserProfile : React.FC = () => {
-    const [name, setName] = useState<string>("")
+    const [message, setMessage] = useState<string>("")
 
-    const {message: nameMessage, loading: nameLoading, error: nameError} = useTypedSelector(state => state.nameForm);
-    const {editName} = useActions();
 
-    const handleEditName = async (e: React.FormEvent) => {
-        e.preventDefault();
-        await editName(name);
-    }
-
-    const handlerSetName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value)
-    }
+    const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
+    const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
+    const {defEditName, defEditEmail} = useActions();
 
     useEffect(() => {
-        console.log("nameMessage ответ:" + nameMessage);
-        console.log("nameError ответ:" + nameError);
-    }, [nameMessage, nameError]);
+        if (nameMessage) {
+            setMessage(nameMessage)
+        }
 
+        if (emailMessage) {
+            setMessage(emailMessage)
+        }
+    }, [nameMessage, emailMessage]);
+
+    useEffect(() => {
+        if (nameError) {
+            setMessage("")
+        }
+
+        if (emailError) {
+            setMessage("")
+        }
+
+    }, [nameError, emailError]);
+
+    useEffect(() => {
+        if (message) {
+            defEditName()
+            defEditEmail()
+        }
+    }, [message]);
 
     return (
         <div className="container">
             <section>
                 <div className="container">
-                    {nameMessage && <div className="row">{nameMessage}</div>}
+                    {message &&
+                        <div className="row">{message}</div>
+                    }
                     <div className="row">
                         <div className="col-md-6 col-xl-3">
                             <form role="form">
@@ -40,38 +58,10 @@ const EditUserProfile : React.FC = () => {
                             </form>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            {nameError && <div>{nameError}</div>}
-                            {nameLoading
-                                ? <Loader/>
-                                :
-                                    <form role="form">
-                                        <div className="mb-3">
-                                            <label htmlFor="InputName">Никнейм</label>
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                id="InputName"
-                                                aria-describedby="emailHelp"
-                                                value={name}
-                                                onChange={handlerSetName}
-                                            />
-                                        </div>
-                                        <button onClick={handleEditName} type="submit" className="btn btn-primary">Поменять
-                                            никнейм
-                                        </button>
-                                    </form>
-                            }
-
+                            <EditName/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <form role="form">
-                                <div className="mb-3">
-                                    <label htmlFor="Inputemail">Почту</label>
-                                    <input type="email" className="form-control" id="Inputemail"
-                                           aria-describedby="emailHelp"/>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Поменять почту</button>
-                            </form>
+                            <EditEmail/>
                         </div>
                         <div className="col-md-6 col-xl-3">
                             <form role="form">
