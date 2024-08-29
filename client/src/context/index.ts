@@ -3,6 +3,8 @@ import {createContext, Dispatch, SetStateAction} from "react";
 export interface AuthContextType {
     isAuth: boolean;
     setIsAuth: Dispatch<SetStateAction<boolean>>;
+    tokenOutdated: boolean;
+    setTokenOutdated: Dispatch<SetStateAction<boolean>>;
     isUser: boolean;
     setIsUser: Dispatch<SetStateAction<boolean>>;
     isGuest: boolean;
