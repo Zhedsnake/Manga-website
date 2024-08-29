@@ -1,7 +1,22 @@
 import JwtService from "../jwt/JwtService";
 import UserBDService from "../mongodb/UserBDService";
 import bcrypt from "bcrypt";
+import cloudinaryService from "../cloudinary/CloudinaryService";
+import {UploadApiResponse} from "cloudinary";
+import CloudinaryService from "../cloudinary/CloudinaryService";
+import userBDService from "../mongodb/UserBDService";
 
+interface UploadImage {
+    fieldname: string;
+    originalname: string;
+    encoding: string;
+    mimetype: string;
+    size: number;
+    destination: string;
+    filename: string;
+    path: string;
+    buffer: Buffer;
+}
 
 class UserService {
     private salt: string;
@@ -135,6 +150,27 @@ class UserService {
 
             const updateName: { message: string } | { error: string } = await UserBDService.EditUserPasswordByToken(userId, hashedUpdates)
             return updateName;
+        }
+    }
+
+    async EditUserAvatarByToken(
+        userId: string,
+        avatar: { file: UploadImage[] }
+    ) {
+        const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
+            CloudinaryService.uploadImage(file.path, file.originalname, 'Users/Avatars')
+        );
+
+        const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
+
+        if (responseCloudinary.length > 0 && responseCloudinary[0].secure_url) {
+            const avatarUpdate = { pic: responseCloudinary[0].secure_url };
+
+            const responseDB: { message: string } | undefined = await userBDService.EditUserAvatarByToken(userId, avatarUpdate);
+
+            if (responseDB) {
+                return responseDB;
+            }
         }
     }
 }
