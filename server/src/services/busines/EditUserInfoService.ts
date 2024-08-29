@@ -5,6 +5,7 @@ import cloudinaryService from "../cloudinary/CloudinaryService";
 import {UploadApiResponse} from "cloudinary";
 import CloudinaryService from "../cloudinary/CloudinaryService";
 import userBDService from "../mongodb/UserBDService";
+import EditUserInfoBDService from "../mongodb/EditUserInfoBDService";
 
 interface UploadImage {
     fieldname: string;
@@ -30,12 +31,12 @@ class EditUserInfoService {
     }
 
     async EditUserNameByToken(userId: string, updates: { name: string }) {
-        const updateName: { message: string } | { error: string } = await UserBDService.EditUserNameByToken(userId, updates)
+        const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserNameByToken(userId, updates)
         return updateName;
     }
 
     async EditUserEmailByToken(userId: string, updates: { email: string }) {
-        const updateName: { message: string } | { error: string } = await UserBDService.EditUserEmailByToken(userId, updates)
+        const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
         return updateName;
     }
 
@@ -56,7 +57,7 @@ class EditUserInfoService {
 
             const hashedUpdates = { password: hashedPassword};
 
-            const updateName: { message: string } | { error: string } = await UserBDService.EditUserPasswordByToken(userId, hashedUpdates)
+            const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserPasswordByToken(userId, hashedUpdates)
             return updateName;
         }
     }
@@ -74,7 +75,7 @@ class EditUserInfoService {
         if (responseCloudinary.length > 0 && responseCloudinary[0].secure_url) {
             const avatarUpdate = { pic: responseCloudinary[0].secure_url };
 
-            const responseDB: { message: string } | undefined = await userBDService.EditUserAvatarByToken(userId, avatarUpdate);
+            const responseDB: { message: string } | undefined = await EditUserInfoBDService.EditUserAvatarByToken(userId, avatarUpdate);
 
             if (responseDB) {
                 return responseDB;
