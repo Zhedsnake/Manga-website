@@ -89,7 +89,7 @@ class UserBDService {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Данные пользователя успешно обновлены"};
+        return {message: "Ваш никнейм успешно обновлен"};
     }
 
     async EditUserEmailByToken(
@@ -104,17 +104,28 @@ class UserBDService {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Данные пользователя успешно обновлены"};
+        return {message: "Ваша почта успешно обновлена"};
     }
 
     async EditUserPasswordByToken(
         userId: string,
         updates: { password: string }
-    ): Promise<{ message: string } | { error: string }> {
+    ): Promise<{ message: string }> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Данные пользователя успешно обновлены"};
+        return {message: "Ваш пароль успешно обновлен"};
+    }
+
+
+    async EditUserAvatarByToken(
+        userId: string,
+        updates: { pic: string }
+    ): Promise<{ message: string }> {
+
+        const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
+
+        return {message: "Ваш аватар успешно обновлен"};
     }
 }
 
