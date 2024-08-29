@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CloudinaryService from "../services/cloudinary/cloudinaryService";
+import CloudinaryService from "../services/cloudinary/CloudinaryService";
 import ImagesService from "../services/busines/ImagesService";
 import {ImagesType} from "../models/imagesModel";
 
@@ -14,8 +14,7 @@ class ImagesController {
             return res.status(400).send({message: 'Вы загрузили больше одного файла'});
         }
 
-        const post = await ImagesService
-            .uploadImages(req.body, { files: req.files as Express.Multer.File[] });
+        const post = await ImagesService.uploadImages(req.body, { files: req.files as Express.Multer.File[] });
         return res.json(post);
     }
 
