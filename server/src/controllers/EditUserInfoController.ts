@@ -4,6 +4,7 @@ import registerRequestTypes from "../types/registerRequestTypes";
 import loginRequestTypes from "../types/loginRequestTypes";
 import ImagesService from "../services/busines/ImagesService";
 import userService from "../services/busines/UserService";
+import EditUserInfoService from "../services/busines/EditUserInfoService";
 
 
 class EditUserInfoController {
@@ -18,7 +19,7 @@ class EditUserInfoController {
 
             const updates = {name: userName}
 
-            const userInfoResponse: {  message: string } | { error: string } = await UserService.EditUserNameByToken(userId, updates);
+            const userInfoResponse: {  message: string } | { error: string } = await EditUserInfoService.EditUserNameByToken(userId, updates);
 
             if ( "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
@@ -43,7 +44,7 @@ class EditUserInfoController {
 
             const updates = {email: userEmail}
 
-            const userInfoResponse: {  message: string } | { error: string } = await UserService.EditUserEmailByToken(userId, updates);
+            const userInfoResponse: {  message: string } | { error: string } = await EditUserInfoService.EditUserEmailByToken(userId, updates);
 
             if ( "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
@@ -73,7 +74,7 @@ class EditUserInfoController {
 
             const updates = {password: userNewPassword}
 
-            const userInfoResponse = await UserService.EditUserPasswordByToken(userId, userOldPassword, updates);
+            const userInfoResponse = await EditUserInfoService.EditUserPasswordByToken(userId, userOldPassword, updates);
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
@@ -100,7 +101,7 @@ class EditUserInfoController {
                 return res.status(400).send({message: 'Вы загрузили больше одного файла'});
             }
 
-            const userInfoResponse: { message: string } | undefined = await userService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
+            const userInfoResponse: { message: string } | undefined = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
