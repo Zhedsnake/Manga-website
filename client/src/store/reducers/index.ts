@@ -7,6 +7,7 @@ import {updateUserTokenReducer} from "./updateUserTokenReducer.ts";
 import {getSmallUserInfoByTokenReducer} from "./getSmallUserInfoByTokenReducer.ts";
 import {getUserInfoByTokenReducer} from "./getUserInfoByTokenReducer.ts";
 import {nameFormReducer} from "./editUserInfo/nameFormReducer.ts";
+import {emailFormReducer} from "./editUserInfo/emailFormReducer.ts";
 
 
 export const rootReducer = combineReducers({
@@ -17,7 +18,8 @@ export const rootReducer = combineReducers({
     getSmallUserInfoByToken: getSmallUserInfoByTokenReducer,
     updateUserToken: updateUserTokenReducer,
     getUserInfoByToken: getUserInfoByTokenReducer,
-    nameForm: nameFormReducer
+    nameForm: nameFormReducer,
+    emailForm: emailFormReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

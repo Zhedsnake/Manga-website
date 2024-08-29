@@ -6,6 +6,7 @@ import * as getSmallUserInfoByToken from "./getSmallUserInfoByToken.ts";
 import * as updateUserToken from "./updateUserToken.ts";
 import * as getUserInfoByToken from "./getUserInfoByToken.ts";
 import * as nameForm from "./editUserInfo/nameForm.ts";
+import * as emailForm from "./editUserInfo/emailForm.ts";
 
 export default {
     ...GuestActionCreators,
@@ -15,5 +16,6 @@ export default {
     ...getSmallUserInfoByToken,
     ...updateUserToken,
     ...getUserInfoByToken,
-    ...nameForm
+    ...nameForm,
+    ...emailForm
 }
