@@ -1,5 +1,5 @@
 import { UploadApiResponse } from 'cloudinary';
-import CloudinaryService from "../cloudinary/cloudinaryService";
+import CloudinaryService from "../cloudinary/CloudinaryService";
 import ImagesBDService from "../mongodb/ImagesBDService";
 import {ImagesType} from "../../models/imagesModel";
 
