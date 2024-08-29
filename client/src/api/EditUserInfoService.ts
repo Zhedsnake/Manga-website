@@ -10,4 +10,18 @@ export default class EditUserInfoService {
         const response = await axios.put(`${API_URL}/edit-user-name-by-token`, {name});
         return response;
     }
+
+    static async editEmailRequest(email: string) {
+        const token = localStorage.getItem(Tokens.userToken);
+        axios.defaults.headers.common['user-token'] = token;
+        const response = await axios.put(`${API_URL}/edit-user-email-by-token`, {email});
+        return response;
+    }
+
+    static async editPasswordRequest(oldPassword: string, newPassword: string) {
+        const token = localStorage.getItem(Tokens.userToken);
+        axios.defaults.headers.common['user-token'] = token;
+        const response = await axios.put(`${API_URL}/edit-user-password-by-token`, {oldPassword, newPassword});
+        return response;
+    }
 }
