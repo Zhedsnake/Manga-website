@@ -7,8 +7,5 @@ const userRouter = Router();
 userRouter.get('/update-user-token', ProtectService.checkUserToken, UserControllers.UpdateUserToken);
 userRouter.get('/user-small-info-by-token', ProtectService.checkUserToken, UserControllers.GetSmallUserInfoByToken);
 userRouter.get('/user-info-by-token', ProtectService.checkUserToken, UserControllers.GetUserInfoByToken);
-userRouter.put('/edit-user-name-by-token', ProtectService.checkUserToken, UserControllers.EditUserNameByToken);
-userRouter.put('/edit-user-email-by-token', ProtectService.checkUserToken, UserControllers.EditUserEmailByToken);
-userRouter.put('/edit-user-password-by-token', ProtectService.checkUserToken, UserControllers.EditUserPasswordByToken);
 
 export default userRouter;
