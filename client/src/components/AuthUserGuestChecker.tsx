@@ -4,7 +4,6 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
 import {Tokens} from "../util/setTocken.ts";
-import Loader from "./UI/Loader/Loader.tsx";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -13,53 +12,80 @@ interface AuthProp {
 const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const {
         isAuth,
+        setIsAuth,
+        tokenOutdated,
+        setTokenOutdated,
         setAuthLoading,
         setIsGuest,
         setIsUser
     } = useContext<AuthContextType>(AuthContext);
 
-
+    const { userToken: updatedUserToken } = useTypedSelector(state => state.updateUserToken);
     const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
-    const { userToken: updatedUserToken, error: userTokenError  } = useTypedSelector(state => state.updateUserToken);
-    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, defUpdateUserToken } = useActions();
+    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
 
-    useEffect(() => {
+    const guestToken: string | null = localStorage.getItem(Tokens.guestToken);
+
+    const check = async () => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
-        const guestToken: string | null = localStorage.getItem(Tokens.guestToken);
 
-        (async function () {
-            if (userToken) {
+        setAuthLoading(true);
+
+        if (userToken) {
+            await updateUserToken()
+
+            if (updatedUserToken) {
                 setIsUser(true);
-                setAuthLoading(true);
 
                 await getSmallUserInfoByToken()
 
                 setAuthLoading(false);
 
-                // if (guestToken) {
-                //     await guestService.removeGuest(guestToken)
-                //     localStorage.removeItem(Tokens.guestToken);
-                // }
-
-            } else if (guestToken) {
-
-                setIsGuest(true)
-                setAuthLoading(false);
-
-            } else if (!guestToken) {
-                setAuthLoading(true)
-
-                await getGuestToken()
-
-                setAuthLoading(false);
+            } else if (!updatedUserToken) {
+                checkGuest()
             }
-        })()
-    }, [isAuth])
+
+            setAuthLoading(false);
+
+            // if (guestToken) {
+            //     await guestService.removeGuest(guestToken)
+            //     localStorage.removeItem(Tokens.guestToken);
+            // }
+
+        } else if (!userToken) {
+            checkGuest()
+
+            setAuthLoading(false);
+        }
+    }
+
+    const checkGuest = async () => {
+        if (guestToken) {
+            setIsGuest(true)
+
+        } else if (!guestToken) {
+            await getGuestToken()
+        }
+    }
+
+    useEffect(() => {
+        check()
+    }, [])
+
+    useEffect(() => {
+        if (isAuth || tokenOutdated) {
+            check()
+
+            setIsAuth(false);
+            setTokenOutdated(false);
+        }
+    }, [isAuth, tokenOutdated]);
 
     useEffect(() => {
         if (guestTokenResponse) {
-            const tokenIsSet: boolean = setToken(Tokens.guestToken, guestTokenResponse);
-            setIsGuest(tokenIsSet)
+            setToken(Tokens.guestToken, guestTokenResponse);
+
+            setIsGuest(true)
 
             if (!guestTokenError) {
                 defGuestToken()
@@ -69,21 +95,6 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
         }
     }, [guestTokenResponse]);
 
-    useEffect(() => {
-        if (updatedUserToken) {
-            localStorage.setItem(Tokens.userToken, updatedUserToken);
-
-            defUpdateUserToken()
-        }
-    }, [updatedUserToken]);
-
-    useEffect(() => {
-        if (userTokenError) {
-            if (userTokenError === "Токен устарел") {
-                localStorage.removeItem(Tokens.userToken)
-            }
-        }
-    }, [userTokenError]);
 
     return (
         <>
