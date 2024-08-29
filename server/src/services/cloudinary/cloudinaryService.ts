@@ -1,5 +1,4 @@
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
-import 'dotenv/config';
 
 class CloudinaryService {
     constructor() {
@@ -10,9 +9,9 @@ class CloudinaryService {
         });
     }
 
-    async uploadImage(image: string, public_id: string, folder: string): Promise<UploadApiResponse> {
-        const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(image, {
-            public_id: public_id,
+    async uploadImage(imagePath: string, originalname: string, folder: string): Promise<UploadApiResponse> {
+        const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(imagePath, {
+            public_id: originalname,
             folder: `${folder}`,
         });
 
