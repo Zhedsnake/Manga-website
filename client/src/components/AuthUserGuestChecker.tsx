@@ -34,19 +34,6 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
         if (userToken) {
             await updateUserToken()
 
-            if (updatedUserToken) {
-                setIsUser(true);
-
-                await getSmallUserInfoByToken()
-
-                setAuthLoading(false);
-
-            } else if (!updatedUserToken) {
-                checkGuest()
-            }
-
-            setAuthLoading(false);
-
             // if (guestToken) {
             //     await guestService.removeGuest(guestToken)
             //     localStorage.removeItem(Tokens.guestToken);
@@ -67,6 +54,23 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
             await getGuestToken()
         }
     }
+
+    useEffect(() => {
+        (async function (){
+            if (updatedUserToken) {
+                setIsUser(true);
+
+                await getSmallUserInfoByToken()
+
+                setAuthLoading(false);
+
+            } else if (!updatedUserToken) {
+                checkGuest()
+
+                setAuthLoading(false);
+            }
+        })()
+    }, [updatedUserToken]);
 
     useEffect(() => {
         check()
