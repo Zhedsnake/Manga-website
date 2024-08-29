@@ -16,7 +16,8 @@ import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 
 
 const App: React.FC = () => {
-    const [isAuth, setIsAuth] = useState(false)
+    const [isAuth, setIsAuth] = useState<boolean>(false);
+    const [tokenOutdated, setTokenOutdated] = useState<boolean>(false)
 
     const [isUser, setIsUser] = useState<boolean>(false);
     const [isGuest, setIsGuest] = useState<boolean>(false);
@@ -30,12 +31,13 @@ const App: React.FC = () => {
     const [toggleShowFormPasswords, setToggleShowFormPasswords] = useState<ToggleShowType>({...defToggleShowFormPasswords});
 
 
-
     return (
         <Provider store={store}>
             <AuthContext.Provider value={{
                 isAuth,
                 setIsAuth,
+                tokenOutdated,
+                setTokenOutdated,
                 isUser,
                 setIsUser,
                 isGuest,
