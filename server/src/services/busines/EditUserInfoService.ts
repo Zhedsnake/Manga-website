@@ -79,6 +79,11 @@ class EditUserInfoService {
         const avatarFile = Array.isArray(avatar.file) ? avatar.file[0] : null;
 
         if (avatarFile && "size" in avatarFile && "mimetype" in avatarFile) {
+
+            if (avatarFile.mimetype !== "image/jpeg" && avatarFile.mimetype !== "image/png" && avatarFile.mimetype !== "image/jpg") {
+                return { error: 'Изображение должно быть в формате jpg или png' };
+            }
+
             if (avatarFile.size > 368000) { // 3.68 MB in bytes
                 return { error: "Размер файла не должен превышать 3.68 MB." };
             }
@@ -90,26 +95,43 @@ class EditUserInfoService {
                 return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
             }
 
-            if (avatarFile.mimetype !== "image/jpeg" && avatarFile.mimetype !== "image/png") {
-                return { error: 'Изображение должно быть в формате jpg или png' };
-            }
-        }
+            const webpImageBuffer = await sharp(imageBuffer)
+                .webp()
+                .toBuffer();
 
-        const hashedUserId: string = await bcrypt.hash(userId, this.salt);
+            const webpFilePath = `/tmp/${avatarFile.filename.split('.')[0]}.webp`;
+            await sharp(webpImageBuffer).toFile(webpFilePath);
 
-        const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
-            CloudinaryService.uploadImage(file.path, file.originalname, `Users/Avatars/${hashedUserId}`)
-        );
+            const hashedUserId: string = await bcrypt.hash(userId, this.salt);
 
-        const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
+            const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
+                CloudinaryService.uploadImage(file.path, file.originalname, `Users/Avatars/${userId}`)
+            );
 
-        if (responseCloudinary.length > 0 && responseCloudinary[0].secure_url) {
-            const avatarUpdate = { pic: responseCloudinary[0].secure_url };
+            const uploadWebpPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
+                CloudinaryService.uploadImage(webpFilePath, file.originalname, `Users/Avatars/${userId}`)
+            );
 
-            const responseDB: { message: string } | undefined = await EditUserInfoBDService.EditUserAvatarByToken(userId, avatarUpdate);
+            const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
 
-            if (responseDB) {
-                return responseDB;
+            const responseWebpCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadWebpPromises);
+
+            if (
+                (responseCloudinary.length > 0 && responseCloudinary[0].secure_url)
+                &&
+                (responseWebpCloudinary.length > 0 && responseWebpCloudinary[0].secure_url)
+            ) {
+
+                const avatarUpdate = {
+                    pic: responseCloudinary[0].secure_url,
+                    picWebp: responseWebpCloudinary[0].secure_url
+                };
+
+                const responseDB: { message: string } | undefined = await EditUserInfoBDService.EditUserAvatarByToken(userId, avatarUpdate);
+
+                if (responseDB) {
+                    return responseDB;
+                }
             }
         }
     }
