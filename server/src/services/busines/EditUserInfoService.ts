@@ -1,11 +1,10 @@
-import JwtService from "../jwt/JwtService";
 import UserBDService from "../mongodb/UserBDService";
 import bcrypt from "bcrypt";
-import cloudinaryService from "../cloudinary/CloudinaryService";
+import EditUserInfoBDService from "../mongodb/EditUserInfoBDService";
+import sharp from "sharp";
 import {UploadApiResponse} from "cloudinary";
 import CloudinaryService from "../cloudinary/CloudinaryService";
-import userBDService from "../mongodb/UserBDService";
-import EditUserInfoBDService from "../mongodb/EditUserInfoBDService";
+
 
 interface UploadImage {
     fieldname: string;
@@ -72,6 +71,22 @@ class EditUserInfoService {
         userId: string,
         avatar: { file: UploadImage[] }
     ) {
+        const avatarFile = Array.isArray(avatar.file) ? avatar.file[0] : null;
+
+        if (avatarFile && "size" in avatarFile) {
+            if (avatarFile.size > 368000) { // 3.68 MB in bytes
+                return { error: "Размер файла не должен превышать 3.68 MB." };
+            }
+
+            const imageBuffer = avatarFile.path;
+            const metadata = await sharp(imageBuffer).metadata();
+
+            if (metadata.width !== metadata.height) {
+                return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
+            }
+
+        }
+
         const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
             CloudinaryService.uploadImage(file.path, file.originalname, 'Users/Avatars')
         );

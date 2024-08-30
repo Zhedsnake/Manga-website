@@ -1,9 +1,4 @@
 import {Request, Response} from "express";
-import UserService from "../services/busines/UserService";
-import registerRequestTypes from "../types/registerRequestTypes";
-import loginRequestTypes from "../types/loginRequestTypes";
-import ImagesService from "../services/busines/ImagesService";
-import userService from "../services/busines/UserService";
 import EditUserInfoService from "../services/busines/EditUserInfoService";
 
 
@@ -101,7 +96,7 @@ class EditUserInfoController {
                 return res.status(400).send({message: 'Вы загрузили больше одного файла'});
             }
 
-            const userInfoResponse: { message: string } | undefined = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
+            const userInfoResponse: { message: string }| { error: string } | undefined = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
