@@ -24,4 +24,15 @@ export default class EditUserInfoService {
         const response = await axios.put(`${API_URL}/edit-user-password-by-token`, {oldPassword, newPassword});
         return response;
     }
+
+    static async editAvatarRequest(imageFormData) {
+        const token = localStorage.getItem(Tokens.userToken);
+        axios.defaults.headers.common['user-token'] = token;
+        const response = await axios.put(`${API_URL}/edit-user-avatar-by-token`, imageFormData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response;
+    }
 }
