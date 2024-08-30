@@ -51,6 +51,12 @@ class EditUserInfoService {
                 return {error: 'Пароль некорректны'};
             }
 
+            const isMatchOld: boolean = await bcrypt.compare(updates.password, findUser.password);
+
+            if (isMatchOld) {
+                return {error: 'Вы ввели свой старый пароль, как новый'};
+            }
+
             const saltRounds: number = parseInt(this.salt);
             const salt: string = await bcrypt.genSalt(saltRounds);
             const hashedPassword: string = await bcrypt.hash(updates.password, salt);
