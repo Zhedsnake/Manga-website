@@ -29,7 +29,7 @@ const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
         e.preventDefault()
         setMessage("")
 
-        if (avatar && (avatar.type === "image/jpeg" || avatar.type === "image/png")) {
+        if (avatar && (avatar.type === "image/jpeg" || avatar.type === "image/png" || avatar.type === "image/jpg")) {
             if (avatar.size > 368000) { // 3.68 MB in bytes
                 setAvatarErrorState("Размер файла не должен превышать 3.68 MB.");
                 return;
