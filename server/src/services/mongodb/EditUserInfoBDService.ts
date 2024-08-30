@@ -52,7 +52,11 @@ class UserBDService {
 
     async EditUserAvatarByToken(
         userId: string,
-        updates: { pic:string, picWebp:string }
+        updates: {
+            pic:string,
+            minPic: string,
+            minPicWebp: string,
+            picWebp:string }
     ): Promise<{ message: string }> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
