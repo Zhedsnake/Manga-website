@@ -5,6 +5,7 @@ export interface userType extends Document {
     email: string;
     password: string;
     pic: string;
+    picWebp?: string;
     isAdmin?: boolean;
 }
 
@@ -29,6 +30,10 @@ const userSchema: Schema<userType> = new Schema<userType>(
             required: true,
             default:
                 "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        },
+        picWebp: {
+            type: String,
+            required: false,
         },
         isAdmin: {
             type: Boolean,
