@@ -40,7 +40,6 @@ const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
 
             img.onload = async () => {
                 if (img.width === img.height) {
-                    console.log(avatar);
                     setAvatarErrorState("")
                     const imageFormData = new FormData();
                     imageFormData.append('avatar', avatar);
@@ -87,22 +86,29 @@ const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
                     )}
                     <form>
                         <div className="mb-3">
-                            <label htmlFor="InputImage">Аватарка в формате jpg/png</label>
-                            <input
-                                type="file"
-                                accept="image/jpeg, image/png"
-                                onChange={handleCoverChange}
-                                style={{display: 'none'}}
-                                id="InputImage"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => document.getElementById('InputImage')?.click()}
-                            >
-                                Выберите файл
-                            </button>
+                            <div>
+                                <label htmlFor="InputImage">Аватарка</label>
+                            </div>
+                            <div>
+                                <input
+                                    type="file"
+                                    accept="image/jpeg, image/png"
+                                    onChange={handleCoverChange}
+                                    style={{display: 'none'}}
+                                    id="InputImage"
+                                />
+                            </div>
+                            <div>
+                                <button
+                                    type="button"
+                                    onClick={() => document.getElementById('InputImage')?.click()}
+                                >
+                                    Выберите файл
+                                </button>
+                            </div>
                         </div>
-                        <button onClick={handleEditAvatar} type="submit" className="btn btn-primary">Поменять аватарку</button>
+                        <button onClick={handleEditAvatar} type="submit" className="btn btn-primary">Поменять аватарку
+                        </button>
                     </form>
                 </>
             )}
