@@ -8,6 +8,7 @@ import * as getUserInfoByToken from "./getUserInfoByToken.ts";
 import * as nameForm from "./editUserInfo/nameForm.ts";
 import * as emailForm from "./editUserInfo/emailForm.ts";
 import * as passwordForm from "./editUserInfo/passwordForm.ts";
+import * as avatarForm from "./editUserInfo/avatarForm.ts";
 
 export default {
     ...GuestActionCreators,
@@ -19,5 +20,6 @@ export default {
     ...getUserInfoByToken,
     ...nameForm,
     ...emailForm,
-    ...passwordForm
+    ...passwordForm,
+    ...avatarForm
 }
