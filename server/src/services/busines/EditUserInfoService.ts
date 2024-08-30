@@ -78,7 +78,7 @@ class EditUserInfoService {
     ) {
         const avatarFile = Array.isArray(avatar.file) ? avatar.file[0] : null;
 
-        if (avatarFile && "size" in avatarFile) {
+        if (avatarFile && "size" in avatarFile && "mimetype" in avatarFile) {
             if (avatarFile.size > 368000) { // 3.68 MB in bytes
                 return { error: "Размер файла не должен превышать 3.68 MB." };
             }
@@ -90,6 +90,9 @@ class EditUserInfoService {
                 return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
             }
 
+            if (avatarFile.mimetype !== "image/jpeg" && avatarFile.mimetype !== "image/png") {
+                return { error: 'Изображение должно быть в формате jpg или png' };
+            }
         }
 
         const hashedUserId: string = await bcrypt.hash(userId, this.salt);
