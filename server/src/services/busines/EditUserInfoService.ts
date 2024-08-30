@@ -22,11 +22,18 @@ class EditUserInfoService {
     private salt: string;
 
     constructor() {
+        this.salt = '';
+        this.initSalt();
+    }
+
+    private async initSalt() {
         const salt: string | undefined = process.env.SALT;
         if (!salt) {
             throw new Error('JWT_SECRET is not defined');
         }
-        this.salt = salt;
+
+        const saltRounds: number = parseInt(salt);
+        this.salt = await bcrypt.genSalt(saltRounds);
     }
 
     async EditUserNameByToken(userId: string, updates: { name: string }) {
@@ -56,9 +63,7 @@ class EditUserInfoService {
                 return {error: 'Вы ввели свой старый пароль, как новый'};
             }
 
-            const saltRounds: number = parseInt(this.salt);
-            const salt: string = await bcrypt.genSalt(saltRounds);
-            const hashedPassword: string = await bcrypt.hash(updates.password, salt);
+            const hashedPassword: string = await bcrypt.hash(updates.password, this.salt);
 
             const hashedUpdates = { password: hashedPassword};
 
@@ -87,8 +92,10 @@ class EditUserInfoService {
 
         }
 
+        const hashedUserId: string = await bcrypt.hash(userId, this.salt);
+
         const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
-            CloudinaryService.uploadImage(file.path, file.originalname, 'Users/Avatars')
+            CloudinaryService.uploadImage(file.path, file.originalname, `Users/Avatars/${hashedUserId}`)
         );
 
         const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);

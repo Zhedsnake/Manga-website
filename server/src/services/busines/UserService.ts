@@ -22,17 +22,22 @@ class UserService {
     private salt: string;
 
     constructor() {
+        this.salt = '';
+        this.initSalt();
+    }
+
+    private async initSalt() {
         const salt: string | undefined = process.env.SALT;
         if (!salt) {
             throw new Error('JWT_SECRET is not defined');
         }
-        this.salt = salt;
+
+        const saltRounds: number = parseInt(salt);
+        this.salt = await bcrypt.genSalt(saltRounds);
     }
 
     async register(name: string, email: string, password: string) {
-        const saltRounds: number = parseInt(this.salt);
-        const salt: string = await bcrypt.genSalt(saltRounds);
-        const hashedPassword: string = await bcrypt.hash(password, salt);
+        const hashedPassword: string = await bcrypt.hash(password, this.salt);
 
         const responseBD: { id: string } | {
             error: string
