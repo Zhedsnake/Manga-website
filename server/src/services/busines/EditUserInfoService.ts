@@ -102,6 +102,18 @@ class EditUserInfoService {
             const webpFilePath = `/tmp/${avatarFile.filename.split('.')[0]}.webp`;
             await sharp(webpImageBuffer).toFile(webpFilePath);
 
+            const resizedImageBuffer = await sharp(imageBuffer)
+                .resize(480, 480, { fit: 'cover' })
+                .toBuffer();
+            const resizedFilePath = `/tmp/${avatarFile.filename.split('.')[0]}-480p.${avatarFile.mimetype.split('/')[1]}`;
+            await sharp(resizedImageBuffer).toFile(resizedFilePath);
+
+            const webpResizedFilePath = `/tmp/${avatarFile.filename.split('.')[0]}-480p.webp`;
+            await sharp(resizedImageBuffer)
+                .webp()
+                .toFile(webpResizedFilePath);
+
+
             const hashedUserId: string = await bcrypt.hash(userId, this.salt);
 
             const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
@@ -112,18 +124,42 @@ class EditUserInfoService {
                 CloudinaryService.uploadImage(webpFilePath, file.originalname, `Users/Avatars/${userId}`)
             );
 
+            const uploadResizedPromise: Promise<UploadApiResponse>[] = avatar.file.map(file =>
+                CloudinaryService.uploadImage(
+                    resizedFilePath,
+                    `${avatarFile.filename.split('.')[0]}-480p.${avatarFile.mimetype.split('/')[1]}`,
+                    `Users/Avatars/${userId}`
+                )
+            );
+
+            const uploadWebpResizedPromise = CloudinaryService.uploadImage(
+                webpResizedFilePath,
+                `${avatarFile.filename.split('.')[0]}-480p.webp`,
+                `Users/Avatars/${userId}`
+            );
+
             const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
 
             const responseWebpCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadWebpPromises);
+
+            const responseResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadResizedPromise);
+
+            const responseWebpResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadResizedPromise);
 
             if (
                 (responseCloudinary.length > 0 && responseCloudinary[0].secure_url)
                 &&
                 (responseWebpCloudinary.length > 0 && responseWebpCloudinary[0].secure_url)
+                &&
+                (responseResizedPromise.length > 0 && responseResizedPromise[0].secure_url)
+                &&
+                (responseWebpResizedPromise.length > 0 && responseResizedPromise[0].secure_url)
             ) {
 
                 const avatarUpdate = {
                     pic: responseCloudinary[0].secure_url,
+                    minPic: responseResizedPromise[0].secure_url,
+                    minPicWebp: responseWebpResizedPromise[0].secure_url,
                     picWebp: responseWebpCloudinary[0].secure_url
                 };
 
