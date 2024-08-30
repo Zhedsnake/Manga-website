@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
 import {useActions} from "../../hooks/useActions.ts";
 
-const EditPassword = () => {
+interface setMessageInterface {
+    setMessage: Dispatch<SetStateAction<string>>;
+}
+
+const EditPassword: React.FC<setMessageInterface> = ({setMessage}) => {
     const [oldPassword, setOldPassword] = useState<string>("")
     const [newPassword, setNewPassword] = useState<string>("")
 
@@ -12,6 +16,7 @@ const EditPassword = () => {
 
     const handleEditPassword = async (e: React.FormEvent) => {
         e.preventDefault();
+        setMessage("")
 
         await editPassword(oldPassword, newPassword);
 

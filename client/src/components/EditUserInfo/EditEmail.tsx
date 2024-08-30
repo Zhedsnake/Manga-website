@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
 import {useActions} from "../../hooks/useActions.ts";
 
-const EditEmail : React.FC = () => {
+interface setMessageInterface {
+    setMessage: Dispatch<SetStateAction<string>>;
+}
+
+const EditEmail : React.FC<setMessageInterface> = ({setMessage}) => {
     const [email, setEmail] = useState<string>("")
 
     const {loading: emailLoading, error: emailError} = useTypedSelector(state => state.emailForm);
@@ -11,6 +15,7 @@ const EditEmail : React.FC = () => {
 
     const handleEditEmail = async (e: React.FormEvent) => {
         e.preventDefault();
+        setMessage()
         await editEmail(email);
         setEmail("")
     }

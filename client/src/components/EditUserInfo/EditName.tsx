@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
 import {useActions} from "../../hooks/useActions.ts";
 
-const EditName : React.FC = () => {
+interface setMessageInterface {
+    setMessage: Dispatch<SetStateAction<string>>;
+}
+
+const EditName : React.FC<setMessageInterface> = ({setMessage}) => {
     const [name, setName] = useState<string>("")
 
     const {loading: nameLoading, error: nameError} = useTypedSelector(state => state.nameForm);
@@ -11,6 +15,7 @@ const EditName : React.FC = () => {
 
     const handleEditName = async (e: React.FormEvent) => {
         e.preventDefault();
+        setMessage("")
         await editName(name);
         setName("")
     }
