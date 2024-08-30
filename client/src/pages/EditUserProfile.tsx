@@ -4,6 +4,7 @@ import EditName from "../components/EditUserInfo/EditName.tsx";
 import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
 import {useActions} from "../hooks/useActions.ts";
 import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
+import EditAvatar from "../components/EditUserInfo/EditAvatar.tsx";
 
 const EditUserProfile : React.FC = () => {
     const [message, setMessage] = useState<string>("")
@@ -11,9 +12,15 @@ const EditUserProfile : React.FC = () => {
     const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
     const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
     const {message: passwordMessage, error: passwordError} = useTypedSelector(state => state.passwordForm);
-    const {defEditName, defEditEmail, defEditPassword} = useActions();
+    const {message: avatarMessage, error: avatarError} = useTypedSelector(state => state.avatarForm);
+    const {defEditAvatar, defEditName, defEditEmail, defEditPassword} = useActions();
+
 
     useEffect(() => {
+        if (avatarMessage) {
+            setMessage(avatarMessage)
+        }
+
         if (nameMessage) {
             setMessage(nameMessage)
         }
@@ -25,9 +32,13 @@ const EditUserProfile : React.FC = () => {
         if (passwordMessage) {
             setMessage(passwordMessage)
         }
-    }, [nameMessage, passwordMessage, emailMessage]);
+    }, [nameMessage, passwordMessage, emailMessage, avatarMessage]);
 
     useEffect(() => {
+        if (avatarError) {
+            setMessage("")
+        }
+
         if (nameError) {
             setMessage("")
         }
@@ -40,10 +51,11 @@ const EditUserProfile : React.FC = () => {
             setMessage("")
         }
 
-    }, [nameError, emailError, passwordError]);
+    }, [avatarError, nameError, emailError, passwordError]);
 
     useEffect(() => {
         if (message) {
+            defEditAvatar()
             defEditName()
             defEditEmail()
             defEditPassword()
@@ -59,22 +71,16 @@ const EditUserProfile : React.FC = () => {
                     }
                     <div className="row">
                         <div className="col-md-6 col-xl-3">
-                            <form role="form">
-                                <div className="mb-3">
-                                    <label htmlFor="InputImage">Аватарка</label>
-                                    <input type="file" id="InputImage"/>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Поменять аватарку</button>
-                            </form>
+                            <EditAvatar setMessage={setMessage}/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditName/>
+                            <EditName setMessage={setMessage}/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditEmail/>
+                            <EditEmail setMessage={setMessage}/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditPassword/>
+                            <EditPassword setMessage={setMessage}/>
                         </div>
                         <div className="col-md-6 col-xl-3">
                             <form>
