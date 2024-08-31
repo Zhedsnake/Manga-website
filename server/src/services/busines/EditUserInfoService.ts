@@ -4,6 +4,7 @@ import EditUserInfoBDService from "../mongodb/EditUserInfoBDService";
 import sharp from "sharp";
 import {UploadApiResponse} from "cloudinary";
 import CloudinaryService from "../cloudinary/CloudinaryService";
+import SharpService from "./SharpService";
 
 
 interface UploadImage {
@@ -37,19 +38,23 @@ class EditUserInfoService {
     }
 
     async EditUserNameByToken(userId: string, updates: { name: string }) {
-        const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserNameByToken(userId, updates)
+        const updateName: { message: string } | {
+            error: string
+        } = await EditUserInfoBDService.EditUserNameByToken(userId, updates)
         return updateName;
     }
 
     async EditUserEmailByToken(userId: string, updates: { email: string }) {
-        const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
+        const updateName: { message: string } | {
+            error: string
+        } = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
         return updateName;
     }
 
     async EditUserPasswordByToken(userId: string, userPassword: string, updates: { password: string }) {
         const findUser = await UserBDService.findOneUser(userId);
 
-        if ( findUser && "password" in findUser) {
+        if (findUser && "password" in findUser) {
 
             const isMatch: boolean = await bcrypt.compare(userPassword, findUser.password);
 
@@ -65,9 +70,11 @@ class EditUserInfoService {
 
             const hashedPassword: string = await bcrypt.hash(updates.password, this.salt);
 
-            const hashedUpdates = { password: hashedPassword};
+            const hashedUpdates = {password: hashedPassword};
 
-            const updateName: { message: string } | { error: string } = await EditUserInfoBDService.EditUserPasswordByToken(userId, hashedUpdates)
+            const updateName: { message: string } | {
+                error: string
+            } = await EditUserInfoBDService.EditUserPasswordByToken(userId, hashedUpdates)
             return updateName;
         }
     }
@@ -76,68 +83,56 @@ class EditUserInfoService {
         userId: string,
         avatar: { file: UploadImage[] }
     ) {
-        const avatarFile = Array.isArray(avatar.file) ? avatar.file[0] : null;
+        const avatarFile: UploadImage | null = Array.isArray(avatar.file) ? avatar.file[0] : null;
 
         if (avatarFile && "size" in avatarFile && "mimetype" in avatarFile) {
 
             if (avatarFile.mimetype !== "image/jpeg" && avatarFile.mimetype !== "image/png" && avatarFile.mimetype !== "image/jpg") {
-                return { error: 'Изображение должно быть в формате jpg или png' };
+                return {error: 'Изображение должно быть в формате jpg или png'};
             }
 
             if (avatarFile.size > 368000) { // 3.68 MB in bytes
-                return { error: "Размер файла не должен превышать 3.68 MB." };
+                return {error: "Размер файла не должен превышать 3.68 MB."};
             }
 
-            const imageBuffer = avatarFile.path;
+            //
+            const imageBuffer: string = avatarFile.path;
             const metadata = await sharp(imageBuffer).metadata();
 
             if (metadata.width !== metadata.height) {
-                return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
+                return {error: 'Изображение должно иметь соотношение сторон 1:1.'};
             }
 
             await CloudinaryService.ClearImages(`Users/Avatars/${userId}`).then()
 
-            const webpImageBuffer = await sharp(imageBuffer)
-                .webp()
-                .toBuffer();
-
-            const webpFilePath = `/tmp/${avatarFile.filename.split('.')[0]}.webp`;
-            await sharp(webpImageBuffer).toFile(webpFilePath);
-
-            const resizedImageBuffer = await sharp(imageBuffer)
-                .resize(480, 480, { fit: 'cover' })
-                .toBuffer();
-            const resizedFilePath = `/tmp/${avatarFile.filename.split('.')[0]}-480p.${avatarFile.mimetype.split('/')[1]}`;
-            await sharp(resizedImageBuffer).toFile(resizedFilePath);
-
-            const webpResizedFilePath = `/tmp/${avatarFile.filename.split('.')[0]}-480p.webp`;
-            await sharp(resizedImageBuffer)
-                .webp()
-                .toFile(webpResizedFilePath);
-
-
-            const hashedUserId: string = await bcrypt.hash(userId, this.salt);
+            const {
+                webp,
+                minimizedWebp,
+                minimized
+            } = await SharpService.CompileImageInThreeFormats(imageBuffer, avatarFile)
 
             const uploadPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
                 CloudinaryService.uploadImage(file.path, file.originalname, `Users/Avatars/${userId}`)
             );
 
             const uploadWebpPromises: Promise<UploadApiResponse>[] = avatar.file.map(file =>
-                CloudinaryService.uploadImage(webpFilePath, file.originalname, `Users/Avatars/${userId}`)
+                CloudinaryService.uploadImage(webp, file.originalname, `Users/Avatars/${userId}`)
             );
 
             const uploadResizedPromise: Promise<UploadApiResponse>[] = avatar.file.map(file =>
                 CloudinaryService.uploadImage(
-                    resizedFilePath,
+                    minimized,
                     `${avatarFile.filename.split('.')[0]}-480p.${avatarFile.mimetype.split('/')[1]}`,
                     `Users/Avatars/${userId}`
                 )
             );
 
-            const uploadWebpResizedPromise = CloudinaryService.uploadImage(
-                webpResizedFilePath,
-                `${avatarFile.filename.split('.')[0]}-480p.webp`,
-                `Users/Avatars/${userId}`
+            const uploadWebpResizedPromise: Promise<UploadApiResponse>[] = avatar.file.map(file =>
+                CloudinaryService.uploadImage(
+                    minimizedWebp,
+                    `${avatarFile.filename.split('.')[0]}-480p.webp`,
+                    `Users/Avatars/${userId}`
+                )
             );
 
             const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
@@ -146,7 +141,7 @@ class EditUserInfoService {
 
             const responseResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadResizedPromise);
 
-            const responseWebpResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadResizedPromise);
+            const responseWebpResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadWebpResizedPromise);
 
             if (
                 (responseCloudinary.length > 0 && responseCloudinary[0].secure_url)
@@ -165,7 +160,9 @@ class EditUserInfoService {
                     picWebp: responseWebpCloudinary[0].secure_url
                 };
 
-                const responseDB: { message: string } | undefined = await EditUserInfoBDService.EditUserAvatarByToken(userId, avatarUpdate);
+                const responseDB: {
+                    message: string
+                } | undefined = await EditUserInfoBDService.EditUserAvatarByToken(userId, avatarUpdate);
 
                 if (responseDB) {
                     return responseDB;
