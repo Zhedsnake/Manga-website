@@ -88,20 +88,18 @@ class EditUserInfoService {
         }
     }
 
-    async EditUserAvatarByToken(
-        userId: string,
-        avatar: { file: UploadedImageByMulter[] }
-    ): Promise<void | { error: string } | { message: string }> {
+    async EditUserAvatarByToken( userId: string, avatar: { file: UploadedImageByMulter[] }): Promise<void | { error: string } | { message: string }> {
+
+        const avatarFile = avatar.file[0];
+        const avatarBuffer: string = avatarFile.path;
 
         const verificationResponse: { error: string } | null = await VerificationService.VerifyAvatar(avatar.file);
         if (verificationResponse && "error" in verificationResponse) {
-            await this.cleanupTmpDir();
+            await fs.promises.unlink(avatarBuffer);
 
             return verificationResponse;
         }
 
-        const avatarFile = avatar.file[0];
-        const avatarBuffer: string = avatarFile.path;
 
         await CloudinaryService.ClearImages(`Users/Avatars/${userId}`)
 
