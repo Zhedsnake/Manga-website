@@ -95,6 +95,8 @@ class EditUserInfoService {
                 return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
             }
 
+            await CloudinaryService.ClearImages(`Users/Avatars/${userId}`).then()
+
             const webpImageBuffer = await sharp(imageBuffer)
                 .webp()
                 .toBuffer();

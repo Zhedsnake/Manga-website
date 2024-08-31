@@ -24,6 +24,12 @@ class CloudinaryService {
 
         return uploadResult;
     }
+
+    async ClearImages(folder: string): Promise<void> {
+        const prefix = `${folder}/`;
+
+        await cloudinary.api.delete_resources_by_prefix(prefix);
+    }
 }
 
 
