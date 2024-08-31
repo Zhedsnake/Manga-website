@@ -1,20 +1,9 @@
 import sharp from "sharp";
-
-interface UploadImage {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    size: number;
-    destination: string;
-    filename: string;
-    path: string;
-    buffer: Buffer;
-}
+import {UploadedImageByMulter} from "../../types/uploadedImageByMulter";
 
 class SharpService {
 
-    async CompileImageInThreeFormats(imageBuffer: string, avatarFile: UploadImage): Promise<{webp: string, minimized: string, minimizedWebp: string}> {
+    async CompileImageInThreeFormats(imageBuffer: string, avatarFile: UploadedImageByMulter): Promise<{minimizedFilePath: string, webpFilePath: string, minimizedWebpFilePath: string}> {
 
         // webp
         const webpImageBuffer = await sharp(imageBuffer)
@@ -36,7 +25,7 @@ class SharpService {
             .webp()
             .toFile(webpResizedFilePath);
 
-        return {webp: webpFilePath, minimized: resizedFilePath, minimizedWebp: webpResizedFilePath};
+        return {webpFilePath: webpFilePath, minimizedFilePath: resizedFilePath, minimizedWebpFilePath: webpResizedFilePath};
     }
 }
 
