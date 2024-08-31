@@ -19,7 +19,7 @@ class CloudinaryService {
         const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(imagePath, {
             public_id: modifiedName,
             folder: `${folder}`,
-            format: format, // Использует исходный формат (png, jpg, jpeg или webp)
+            format: format, // (png, jpg, jpeg, webp)
         });
 
         return uploadResult;
