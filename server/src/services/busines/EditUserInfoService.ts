@@ -5,6 +5,7 @@ import sharp from "sharp";
 import {UploadApiResponse} from "cloudinary";
 import CloudinaryService from "../cloudinary/CloudinaryService";
 import SharpService from "./SharpService";
+import * as fs from "node:fs";
 
 
 interface UploadImage {
@@ -136,12 +137,15 @@ class EditUserInfoService {
             );
 
             const responseCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadPromises);
-
             const responseWebpCloudinary: Awaited<UploadApiResponse>[] = await Promise.all(uploadWebpPromises);
-
             const responseResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadResizedPromise);
-
             const responseWebpResizedPromise: Awaited<UploadApiResponse>[] = await Promise.all(uploadWebpResizedPromise);
+
+            await fs.promises.unlink(avatarFile.path);
+            await fs.promises.unlink(webp);
+            await fs.promises.unlink(minimizedWebp);
+            await fs.promises.unlink(minimized);
+
 
             if (
                 (responseCloudinary.length > 0 && responseCloudinary[0].secure_url)
