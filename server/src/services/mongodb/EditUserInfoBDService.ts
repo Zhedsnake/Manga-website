@@ -55,13 +55,16 @@ class UserBDService {
         updates: {
             pic:string,
             minPic: string,
+            picWebp:string,
             minPicWebp: string,
-            picWebp:string }
-    ): Promise<{ message: string }> {
+        }
+    ): Promise<{ message: string } | undefined> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Ваш аватар успешно обновлен"};
+        if (user) {
+            return {message: "Ваш аватар успешно обновлен"};
+        }
     }
 }
 
