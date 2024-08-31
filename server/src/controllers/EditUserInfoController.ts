@@ -88,20 +88,14 @@ class EditUserInfoController {
             const userId: string = req.headers['user-id'] as string;
             const userAvatar = req.files;
 
-            if (!userAvatar || userAvatar.length === 0) {
-                return res.status(400).send({message: 'Файл не загружен'});
-            }
-
-            if (Array.isArray(userAvatar) && userAvatar.length > 1) {
-                return res.status(400).send({message: 'Вы загрузили больше одного файла'});
-            }
-
             const userInfoResponse
-                : { message: string }| { error: string } | undefined
+                : void | {error: string} | {message: string}
                 = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
+            } else if ( userInfoResponse && "error" in userInfoResponse) {
+                return res.status(400).send(userInfoResponse);
             }
 
         } catch (error) {
