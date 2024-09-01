@@ -1,8 +1,32 @@
 import sharp from "sharp";
 import {UploadedImageByMulter} from "../../types/uploadedImageByMulter";
+import userBDService from "../mongodb/UserBDService";
 
 
 class VerificationService {
+
+    async VerifyName(userName: string, prop: { [key: string]: string }): Promise<{ error: string } | null> {
+
+        if (!userName) {
+            return { error: "Не указано имя" };
+        }
+
+        const userExists: true | null = await userBDService.findOneUser(prop);
+        if (userExists === true) {
+            return { error: "Пользователь с таким именем уже существует" };
+        }
+
+        if (userName.length < 4) {
+            return { error: "Имя должно содержать не менее 4 символов" };
+        }
+
+        if (userName.length > 10) {
+            return { error: "Имя должно содержать не более 10 символов" };
+        }
+
+        return null;
+    }
+
     async VerifyAvatar(avatarFile: UploadedImageByMulter[]): Promise<{ error: string } | null> {
 
         if (!avatarFile || avatarFile.length === 0) {
