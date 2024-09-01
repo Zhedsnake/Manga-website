@@ -46,7 +46,7 @@ class EditUserInfoService {
         }
     }
 
-    async EditUserNameByToken(userId: string, userName: string) {
+    async EditUserNameByToken(userId: string, userName: string): Promise<({error: string} & {error: unknown}) | {message: string} | undefined>{
 
         const updates = {name: userName}
 
@@ -62,11 +62,19 @@ class EditUserInfoService {
         }
     }
 
-    async EditUserEmailByToken(userId: string, updates: { email: string }) {
-        const updateName: { message: string } | {
-            error: string
-        } = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
-        return updateName;
+    async EditUserEmailByToken(userId: string, userEmail: string): Promise<({error: string} & {error: unknown}) | {message: string} | undefined>{
+
+        const updates = { email: userEmail }
+
+        const verificationResponse:{error: string} | null = await VerificationService.VerifyEmail(userEmail, updates)
+        if (verificationResponse && "error" in verificationResponse) {
+            return verificationResponse;
+        }
+
+        const updateName: { message: string } | undefined = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
+        if (updateName) {
+            return updateName;
+        }
     }
 
     async EditUserPasswordByToken(userId: string, userPassword: string, updates: { password: string }) {
