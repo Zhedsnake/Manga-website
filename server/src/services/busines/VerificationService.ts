@@ -27,6 +27,26 @@ class VerificationService {
         return null;
     }
 
+    async VerifyEmail(userEmail: string, prop: { [key: string]: string }): Promise<{ error: string } | null> {
+
+        if (!userEmail) {
+            return {error: "Не указано email"};
+        }
+
+        const userExists: true | null = await userBDService.findOneUser(prop);
+        if (userExists === true) {
+            return { error: "Пользователь с таким email уже существует" };
+        }
+
+        const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(userEmail)) {
+            return { error: "Некорректный формат email" };
+        }
+
+        return null
+    }
+
     async VerifyAvatar(avatarFile: UploadedImageByMulter[]): Promise<{ error: string } | null> {
 
         if (!avatarFile || avatarFile.length === 0) {
