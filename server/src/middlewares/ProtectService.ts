@@ -17,7 +17,7 @@ class ProtectService {
                 return res.status(401).send({ error: "Токен устарел" });
             }
 
-            const userFromBd = await userBDService.findOneUser(decodedToken);
+            const userFromBd = await userBDService.findOneUserById(decodedToken);
 
             if (!userFromBd) {
                 return res.status(401).send({ error: "Токен устарел" });
