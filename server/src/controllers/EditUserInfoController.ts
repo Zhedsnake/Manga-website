@@ -27,17 +27,11 @@ class EditUserInfoController {
             const userId: string = req.headers['user-id'] as string;
             const userEmail: string = req.body.email as string;
 
-            if (!userEmail) {
-                res.status(400).send({error: "Не указано имя"})
-            }
+            const userInfoResponse: {  message: string } | { error: string } | undefined = await EditUserInfoService.EditUserEmailByToken(userId, userEmail);
 
-            const updates = {email: userEmail}
-
-            const userInfoResponse: {  message: string } | { error: string } = await EditUserInfoService.EditUserEmailByToken(userId, updates);
-
-            if ( "message" in userInfoResponse) {
+            if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
-            } else if ( "error" in userInfoResponse) {
+            } else if ( userInfoResponse && "error" in userInfoResponse) {
                 return res.status(400).send(userInfoResponse);
             }
 
