@@ -50,7 +50,7 @@ class UserBDService {
         }
     }
 
-    async findOneUser(userId: string) {
+    async findOneUserById(userId: string) {
         const userData = await this.model.findById(userId);
         return userData;
     }
@@ -74,6 +74,16 @@ class UserBDService {
                 pic: userData.pic,
                 registeredAt: registeredAt
             };
+        }
+    }
+
+    async findOneUser(prop: { [key: string]: string }): Promise<true | null>{
+        const userExists = await this.model.findOne(prop);
+
+        if (userExists) {
+            return true;
+        } else {
+            return null;
         }
     }
 }
