@@ -46,11 +46,20 @@ class EditUserInfoService {
         }
     }
 
-    async EditUserNameByToken(userId: string, updates: { name: string }) {
-        const updateName: { message: string } | {
-            error: string
-        } = await EditUserInfoBDService.EditUserNameByToken(userId, updates)
-        return updateName;
+    async EditUserNameByToken(userId: string, userName: string) {
+
+        const updates = {name: userName}
+
+        const verificationResponse:{error: string} | null = await VerificationService.VerifyName(userName, updates)
+        if (verificationResponse && "error" in verificationResponse) {
+            return verificationResponse;
+        }
+
+        const updateName: { message: string } | undefined = await EditUserInfoBDService.EditUserNameByToken(userId, updates)
+
+        if (updateName) {
+            return updateName;
+        }
     }
 
     async EditUserEmailByToken(userId: string, updates: { email: string }) {
@@ -61,7 +70,7 @@ class EditUserInfoService {
     }
 
     async EditUserPasswordByToken(userId: string, userPassword: string, updates: { password: string }) {
-        const findUser = await UserBDService.findOneUser(userId);
+        const findUser = await UserBDService.findOneUserById(userId);
 
         if (findUser && "password" in findUser) {
 
