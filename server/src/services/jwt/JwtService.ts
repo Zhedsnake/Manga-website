@@ -12,12 +12,26 @@ class JwtService {
     }
 
 
-    getGuestToken(payload: { guest: { id: string } }): string {
+    getGuestToken(id: string): string {
+
+        const payload = {
+            guest: {
+                id: id,
+            },
+        };
+
         const token: string = jwt.sign(payload, this.secret);
         return token;
     }
 
-    getUserToken(payload: { user: { id: string } }): string {
+    getUserToken(id: string): string {
+
+        const payload = {
+            user: {
+                id: id,
+            },
+        };
+
         const token: string = jwt.sign(payload, this.secret, { expiresIn: "30d" });
         return token;
     }

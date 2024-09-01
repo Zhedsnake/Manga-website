@@ -44,20 +44,11 @@ class EditUserInfoController {
     async EditUserPasswordByToken(req: Request, res: Response) {
         try {
             const userId: string = req.headers['user-id'] as string;
+
             const userOldPassword: string = req.body.oldPassword as string;
             const userNewPassword: string = req.body.newPassword as string;
 
-            if (!userOldPassword) {
-                res.status(400).send({error: "Не указан старый пароль"})
-            }
-
-            if (!userNewPassword) {
-                res.status(400).send({error: "Не указан новый пароль"})
-            }
-
-            const updates = {password: userNewPassword}
-
-            const userInfoResponse = await EditUserInfoService.EditUserPasswordByToken(userId, userOldPassword, updates);
+            const userInfoResponse: {  message: string } | { error: string } | undefined = await EditUserInfoService.EditUserPasswordByToken(userId, userOldPassword, userNewPassword);
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);

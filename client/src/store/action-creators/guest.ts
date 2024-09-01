@@ -7,7 +7,8 @@ export const getGuestToken = () => {
         try {
             dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN})
             const response = await guestService.registerGuest()
-            dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN_SUCCESS, payload: response.data})
+            dispatch({type: GuestTokenActionTypes.GET_GUEST_TOKEN_SUCCESS, payload: response.data.guestToken})
+
         } catch (e) {
             console.error(e)
 

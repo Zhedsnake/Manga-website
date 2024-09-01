@@ -9,39 +9,6 @@ class UserBDService {
         this.model = userModel;
     }
 
-    async register(name: string, password: string, email: string): Promise<{ id: string } | { error: string }> {
-        const userExists = await this.model.findOne({
-            $or: [
-                {name: name},
-                {email: email}
-            ]
-        });
-
-        if (userExists) {
-            return {error: "Пользователь с таким именем или почтой уже существует"};
-        }
-
-        const newUser = new this.model({name, email, password});
-
-        await newUser.save();
-
-        return {id: newUser.id};
-    }
-
-    async login(name: string): Promise<{ id: string, name: string, password: string } | { error: string }> {
-        const user = await this.model.findOne({name});
-
-        if (!user) {
-            return {error: "Имя или пароль некорректны"};
-        }
-
-        if (user && ("id" && "name" && "password" in user)) {
-            return {id: user.id, name: user.name, password: user.password};
-        }
-
-        return {error: "Неизвестная ошибка при логине"};
-    }
-
     async GetSmallUserInfoByToken(userId: string): Promise<{ name: string, pic: string } | undefined> {
         const userData = await this.model.findById(userId).select('pic name -_id');
 
@@ -55,12 +22,7 @@ class UserBDService {
         return userData;
     }
 
-    async GetUserInfoByToken(userId: string): Promise<{
-        name: string,
-        registeredAt: string,
-        pic: string,
-        email: string
-    } | undefined> {
+    async GetUserInfoByToken(userId: string): Promise<{ name: string, registeredAt: string, pic: string, email: string } | undefined> {
         const userData = await this.model.findById(userId).select('-password');
 
         if (userData && ("name" && "pic" && "email" && "createdAt" in userData)) {

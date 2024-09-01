@@ -82,14 +82,14 @@ const EditUserProfile : React.FC = () => {
                         <div className="col-md-6 col-xl-3">
                             <EditPassword setMessage={setMessage}/>
                         </div>
-                        <div className="col-md-6 col-xl-3">
-                            <form>
-                                <div className="mb-3">
-                                    <label htmlFor="AboutTextarea" className="form-label">О себе</label>
-                                    <textarea className="form-control" id="AboutTextarea" rows="3"></textarea>
-                                </div>
-                            </form>
-                        </div>
+                        {/*<div className="col-md-6 col-xl-3">*/}
+                        {/*    <form>*/}
+                        {/*        <div className="mb-3">*/}
+                        {/*            <label htmlFor="AboutTextarea" className="form-label">О себе</label>*/}
+                        {/*            <textarea className="form-control" id="AboutTextarea" rows="3"></textarea>*/}
+                        {/*        </div>*/}
+                        {/*    </form>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </section>

@@ -9,13 +9,6 @@ class GuestBDService {
         this.model = guestModel;
     }
 
-    async createGuest (): Promise<string> {
-        const newGuest = new this.model({});
-        await newGuest.save();
-
-        return newGuest.id
-    }
-
     // async removeGuest(id: string): Promise<boolean> {
     //     const result = await this.model.findByIdAndDelete({ _id: id });
     //     return true;

@@ -50,7 +50,7 @@ class EditUserInfoService {
 
         const updates = {name: userName}
 
-        const verificationResponse:{error: string} | null = await VerificationService.VerifyName(userName, updates)
+        const verificationResponse:{error: string} | null | undefined = await VerificationService.VerifyEditName(userName, updates)
         if (verificationResponse && "error" in verificationResponse) {
             return verificationResponse;
         }
@@ -66,42 +66,31 @@ class EditUserInfoService {
 
         const updates = { email: userEmail }
 
-        const verificationResponse:{error: string} | null = await VerificationService.VerifyEmail(userEmail, updates)
+        const verificationResponse:{error: string} | null | undefined = await VerificationService.VerifyEditEmail(userEmail, updates)
         if (verificationResponse && "error" in verificationResponse) {
             return verificationResponse;
         }
 
-        const updateName: { message: string } | undefined = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
-        if (updateName) {
-            return updateName;
+        const updateEmail: { message: string } | undefined = await EditUserInfoBDService.EditUserEmailByToken(userId, updates)
+        if (updateEmail) {
+            return updateEmail;
         }
     }
 
-    async EditUserPasswordByToken(userId: string, userPassword: string, updates: { password: string }) {
-        const findUser = await UserBDService.findOneUserById(userId);
+    async EditUserPasswordByToken(userId: string, userOldPassword: string, userNewPassword: string): Promise<({error: string} & {error: unknown}) | {message: string} | undefined>{
 
-        if (findUser && "password" in findUser) {
+        const verificationResponse:{error: string} | null = await VerificationService.VerifyEditPassword(userId, userOldPassword, userNewPassword)
+        if (verificationResponse && "error" in verificationResponse) {
+            return verificationResponse;
+        }
 
-            const isMatch: boolean = await bcrypt.compare(userPassword, findUser.password);
+        const hashedPassword: string = await bcrypt.hash(userNewPassword, this.salt);
 
-            if (!isMatch) {
-                return {error: 'Пароль некорректны'};
-            }
+        const hashedUpdates = {password: hashedPassword};
 
-            const isMatchOld: boolean = await bcrypt.compare(updates.password, findUser.password);
-
-            if (isMatchOld) {
-                return {error: 'Вы ввели свой старый пароль, как новый'};
-            }
-
-            const hashedPassword: string = await bcrypt.hash(updates.password, this.salt);
-
-            const hashedUpdates = {password: hashedPassword};
-
-            const updateName: { message: string } | {
-                error: string
-            } = await EditUserInfoBDService.EditUserPasswordByToken(userId, hashedUpdates)
-            return updateName;
+        const updatePassword: { message: string } | undefined = await EditUserInfoBDService.EditUserPasswordByToken(userId, hashedUpdates)
+        if (updatePassword) {
+            return updatePassword;
         }
     }
 
@@ -110,15 +99,12 @@ class EditUserInfoService {
         const avatarFile = avatar.file[0];
         const avatarBuffer: string = avatarFile.path;
 
-        const verificationResponse: { error: string } | null = await VerificationService.VerifyAvatar(avatar.file);
+        const verificationResponse: { error: string } | null = await VerificationService.VerifyEditAvatar(avatar.file);
         if (verificationResponse && "error" in verificationResponse) {
             await fs.promises.unlink(avatarBuffer);
 
             return verificationResponse;
         }
-
-
-        await CloudinaryService.ClearImages(`Users/Avatars/${userId}`)
 
         const {
             minimizedFilePath,
@@ -132,6 +118,8 @@ class EditUserInfoService {
             {path: webpFilePath},
             {path: minimizedWebpFilePath}
         ]
+
+        await CloudinaryService.ClearImages(`Users/Avatars/${userId}`)
 
         const avatarsSavesPromises: Promise<UploadApiResponse>[] = avatarsArray.map(image =>
             CloudinaryService.uploadImage(

@@ -36,11 +36,13 @@ class EditUserInfoBDService {
     async EditUserPasswordByToken(
         userId: string,
         updates: { password: string }
-    ): Promise<{ message: string }> {
+    ): Promise<{ message: string } | undefined> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Ваш пароль успешно обновлен"};
+        if (user) {
+            return {message: "Ваш пароль успешно обновлен"};
+        }
     }
 
 
