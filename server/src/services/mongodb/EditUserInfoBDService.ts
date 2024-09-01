@@ -2,7 +2,7 @@ import {Model} from "mongoose";
 import userModel, {userType} from "../../models/userModel";
 
 
-class UserBDService {
+class EditUserInfoBDService {
     private model: Model<userType>;
 
     constructor() {
@@ -12,16 +12,13 @@ class UserBDService {
     async EditUserNameByToken(
         userId: string,
         updates: { name: string }
-    ): Promise<{ message: string } | { error: string }> {
-        const userExists = await this.model.findOne({name: updates.name});
-
-        if (userExists) {
-            return {error: "Пользователь с таким именем уже существует"};
-        }
+    ): Promise<{ message: string } | undefined> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Ваш никнейм успешно обновлен"};
+        if (user) {
+            return {message: "Ваш никнейм успешно обновлен"};
+        }
     }
 
     async EditUserEmailByToken(
@@ -68,4 +65,4 @@ class UserBDService {
     }
 }
 
-export default new UserBDService();
+export default new EditUserInfoBDService();
