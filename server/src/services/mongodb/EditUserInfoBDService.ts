@@ -24,16 +24,13 @@ class EditUserInfoBDService {
     async EditUserEmailByToken(
         userId: string,
         updates: { email: string }
-    ): Promise<{ message: string } | { error: string }> {
-        const userExists = await this.model.findOne({email: updates.email});
-
-        if (userExists) {
-            return {error: "Пользователь с такой почтой уже существует"};
-        }
+    ): Promise<{ message: string } | undefined> {
 
         const user = await this.model.findByIdAndUpdate(userId, updates, {new: true});
 
-        return {message: "Ваша почта успешно обновлена"};
+        if (user) {
+            return {message: "Ваша почта успешно обновлена"};
+        }
     }
 
     async EditUserPasswordByToken(
