@@ -3,15 +3,16 @@ import {
     GetSmallUserInfoAction, GetSmallUserInfoActionTypes,
 } from "../../types/getSmallUserInfo.ts";
 import UserService from "../../api/UserService.ts";
+import {AxiosResponse} from "axios";
 
 
 export const getSmallUserInfoByToken = () => {
     return async (dispatch: Dispatch<GetSmallUserInfoAction>) => {
         try {
             dispatch({type: GetSmallUserInfoActionTypes.SMALL_USER_INFO})
-            const response = await UserService.getSmallUserInfoByToken();
+            const response: AxiosResponse<{ name: string, pic: string } | { name: string, minPicWebp: string }> = await UserService.getSmallUserInfoByToken();
 
-            if ( "name" && "pic" in response.data) {
+            if ( "data" in response ) {
                 dispatch({type: GetSmallUserInfoActionTypes.SMALL_USER_INFO_SUCCESS, payload: response.data})
             }
         } catch (e) {
