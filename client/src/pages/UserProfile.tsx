@@ -3,6 +3,7 @@ import {useActions} from "../hooks/useActions.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import {Link} from "react-router-dom";
+import {defUserInfoByToken} from "../store/action-creators/getUserInfoByToken.ts";
 
 const UserProfile: React.FC = () => {
     const [userdataState, setUserdataState] = useState({})
@@ -11,12 +12,13 @@ const UserProfile: React.FC = () => {
         name,
         email,
         pic,
+        picWebp,
         registeredAt,
         birthday,
         error: userError,
         loading: userLoading
     } = useTypedSelector(state => state.getUserInfoByToken);
-    const {getUserInfoByToken} = useActions();
+    const {getUserInfoByToken, defUserInfoByToken} = useActions();
 
     useEffect(() => {
         getUserInfoByToken()
@@ -27,6 +29,7 @@ const UserProfile: React.FC = () => {
             name,
             email,
             pic,
+            picWebp,
             registeredAt,
             birthday
         })
@@ -37,6 +40,12 @@ const UserProfile: React.FC = () => {
             console.error(userError);
         }
     }, [userError]);
+
+    useEffect(() => {
+        return () => {
+            defUserInfoByToken()
+        };
+    }, []);
 
     return (
         <div className="container">
@@ -52,7 +61,7 @@ const UserProfile: React.FC = () => {
                                         <div className="container p-0">
                                             <div className="row p-0">
                                                 <div className="container p-0">
-                                                    <img src={userdataState.pic}
+                                                    <img src={userdataState.picWebp || userdataState.pic}
                                                          style={{width: "50px", height: "50px"}}/>
                                                 </div>
                                             </div>
