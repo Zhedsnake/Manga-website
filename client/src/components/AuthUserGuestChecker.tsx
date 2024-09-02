@@ -3,7 +3,7 @@ import {AuthContext, AuthContextType} from "../context";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
-import {Tokens} from "../util/setTocken.ts";
+import {Tokens} from "../util/Tokens.ts";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -34,7 +34,7 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
             // if (guestToken) {
             //     await guestService.removeGuest(guestToken)
-            //     localStorage.removeItem(Tokens.guestToken);
+            //     localStorage.removeItem(Tokens.ts.guestToken);
             // }
 
         } else if (!userToken) {
