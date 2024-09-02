@@ -5,6 +5,7 @@ import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
 import {useActions} from "../hooks/useActions.ts";
 import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
 import EditAvatar from "../components/EditUserInfo/EditAvatar.tsx";
+import {Link} from "react-router-dom";
 
 const EditUserProfile : React.FC = () => {
     const [message, setMessage] = useState<string>("")
@@ -66,6 +67,17 @@ const EditUserProfile : React.FC = () => {
         <div className="container">
             <section>
                 <div className="container">
+
+                    <div className="row">
+                        <Link to={`/user-profile`}>
+                            <button
+                                className="btn btn-primary"
+                            >
+                                Вернутся к странице профиля
+                            </button>
+                        </Link>
+                    </div>
+
                     {message &&
                         <div className="row">{message}</div>
                     }
