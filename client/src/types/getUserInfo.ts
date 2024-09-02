@@ -2,6 +2,7 @@ export interface GetUserInfoState {
     name: string,
     email: string,
     pic: string,
+    picWebp?: string,
     registeredAt: string
     birthday?: string
     loading: boolean;
