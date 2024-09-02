@@ -1,8 +1,12 @@
 export interface GetSmallUserInfoState {
-    data: {
+    data:  {
         name: string,
         pic: string
-    };
+    } |
+        {
+            name: string,
+            minPicWebp: string
+        };
     loading: boolean;
     error: null | string;
 }
@@ -21,9 +25,13 @@ interface SmallUserInfoAction {
 interface SmallUserInfoSuccessAction {
     type: GetSmallUserInfoActionTypes.SMALL_USER_INFO_SUCCESS;
     payload: {
-        name: string,
-        pic: string
-    }
+            name: string,
+            pic: string
+        }
+        | {
+            name: string,
+            minPicWebp: string
+        }
 }
 
 interface SmallUserInfoErrorAction {
