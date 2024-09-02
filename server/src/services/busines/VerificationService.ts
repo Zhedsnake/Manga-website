@@ -8,6 +8,21 @@ import AuthBDService from "../mongodb/AuthBDService";
 
 class VerificationService {
 
+    async VerifySupWebp(webpTest: string): Promise<{error: string} | null>{
+
+        const noWebpSup = `Не указана поддержка webp в булевом формате ("true","false")`
+
+        if (webpTest) {
+            if (webpTest !== "true" && webpTest !== "false") {
+                return {error: noWebpSup};
+            }
+        } else if (!webpTest) {
+            return {error: noWebpSup}
+        }
+
+        return null
+    }
+
     async VerifyRegister(name: string, email: string, password: string){
 
         if (!name || !email || !password) {

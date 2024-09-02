@@ -10,13 +10,19 @@ class UserControllers {
     async GetSmallUserInfoByToken(req: Request, res: Response) {
         try {
             const userId: string = req.headers['user-id'] as string;
+            const webpTest: string = req.headers['webp-test'] as string;
 
             const userInfoResponse:
-                { name: string, pic: string }
-                | undefined = await UserService.GetSmallUserInfoByToken(userId);
+                { name: string, minPic?: string, pic?: string }
+                | {error: string}
+                | null
+                | undefined
+                    = await UserService.GetSmallUserInfoByToken(userId, webpTest);
 
-            if (userInfoResponse) {
+            if (userInfoResponse && "name" in userInfoResponse && ("pic" in userInfoResponse || "minPicWebp" in userInfoResponse)) {
                 return res.status(200).send(userInfoResponse);
+            } else if (userInfoResponse && "error" in userInfoResponse) {
+                return res.status(400).send(userInfoResponse);
             }
         } catch (error) {
             console.error(error)
@@ -42,11 +48,14 @@ class UserControllers {
     async GetUserInfoByToken(req: Request, res: Response) {
         try {
             const userId: string = req.headers['user-id'] as string;
+            const webpTest: string = req.headers['webp-test'] as string;
 
-            const userInfoResponse = await UserService.GetUserInfoByToken(userId);
+            const userInfoResponse = await UserService.GetUserInfoByToken(userId, webpTest);
 
             if (userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
+            } else if (userInfoResponse && "error" in userInfoResponse) {
+                return res.status(400).send(userInfoResponse);
             }
         } catch (error) {
             console.error(error)

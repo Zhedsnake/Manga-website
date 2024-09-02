@@ -9,12 +9,32 @@ class UserBDService {
         this.model = userModel;
     }
 
-    async GetSmallUserInfoByToken(userId: string): Promise<{ name: string, pic: string } | undefined> {
-        const userData = await this.model.findById(userId).select('pic name -_id');
+    async GetSmallUserInfoByTokenNoWebp(userId: string): Promise<{ name: string, minPic?: string, pic?: string } | null> {
+        const userData = await this.model.findById(userId).select('pic minPic name -_id');
 
-        if (userData && ("name" && "pic" in userData)) {
-            return {name: userData.name, pic: userData.pic};
+        if (userData && "name" in userData && "pic" in userData) {
+            if ("minPic" in userData) {
+                return { name: userData.name, minPic: userData.minPic };
+            } else if ( !("minPic" in userData) ){
+                return {name: userData.name, pic: userData.pic};
+            }
         }
+
+        return null
+    }
+
+    async GetSmallUserInfoByTokenWebp(userId: string): Promise<{ name: string, minPicWebp?: string, pic?: string } | null> {
+        const userData = await this.model.findById(userId).select('minPicWebp pic name -_id');
+
+        if (userData && "name" in userData && "pic" in userData) {
+            if ("minPicWebp" in userData) {
+                return {name: userData.name, minPicWebp: userData.minPicWebp};
+            } else if ( !("minPicWebp" in userData) ){
+                return {name: userData.name, pic: userData.pic};
+            }
+        }
+
+        return null
     }
 
     async findOneUserById(userId: string) {
@@ -22,7 +42,7 @@ class UserBDService {
         return userData;
     }
 
-    async GetUserInfoByToken(userId: string): Promise<{ name: string, registeredAt: string, pic: string, email: string } | undefined> {
+    async GetUserInfoByTokenNoWebp(userId: string): Promise<{ name: string, registeredAt: string, pic: string, email: string } | undefined> {
         const userData = await this.model.findById(userId).select('-password');
 
         if (userData && ("name" && "pic" && "email" && "createdAt" in userData)) {
@@ -35,6 +55,35 @@ class UserBDService {
                 email: userData.email,
                 pic: userData.pic,
                 registeredAt: registeredAt
+            };
+        }
+    }
+
+    async GetUserInfoByTokenWebp(userId: string): Promise<{ name: string, registeredAt: string, picWebp?: string, pic?: string, email: string } | undefined> {
+        const userData = await this.model.findById(userId).select('-password');
+
+        if (userData && ("name" && "pic" && "email" && "createdAt" in userData)) {
+
+            const registeredAt = userData.createdAt instanceof Date
+                ? userData.createdAt.toISOString()
+                : String(userData.createdAt);
+
+            const baseData = {
+                name: userData.name,
+                email: userData.email,
+                registeredAt: registeredAt
+            }
+
+            if ("picWebp" in userData) {
+                return {
+                    ...baseData,
+                    picWebp: userData.picWebp,
+                };
+            }
+
+            return {
+                ...baseData,
+                pic: userData.pic,
             };
         }
     }
