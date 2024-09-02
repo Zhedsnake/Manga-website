@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from 'react';
-import {Tokens} from "../util/setTocken.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {AuthContext, AuthContextType} from "../context";
 import {useActions} from "../hooks/useActions.ts";
+import {Tokens} from "../util/Tokens.ts";
 
 interface childrenProp {
     children: React.ReactNode;
