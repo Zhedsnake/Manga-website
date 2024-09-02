@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {API_URL} from './config';
-import {Tokens} from "../util/setTocken.ts";
+import {Tokens} from "../util/Tokens.ts";
 
 
 export default class EditUserInfoService {
