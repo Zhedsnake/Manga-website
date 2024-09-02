@@ -14,13 +14,13 @@ export interface RoutesTypes {
 
 const commonRoutes: RoutesTypes[] = [
     {path: '/', component: <Home />},
-    {path: '/upload-new-manga', component: <UploadNewManga />},
 ]
 
 const privateRoutes: RoutesTypes[] = [
     ...commonRoutes,
     {path: '/user-profile', component: <UserProfile />},
     {path: '/edit-user-profile', component: <EditUserProfile />},
+    {path: '/upload-new-manga', component: <UploadNewManga />},
 ]
 
 const publicRoutes: RoutesTypes[] = [
