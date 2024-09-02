@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {Tokens} from "../util/Tokens.ts";
 
 interface BrowserCheckProps {
     children: React.ReactNode;
@@ -17,7 +18,7 @@ const BrowserCheck: React.FC<BrowserCheckProps> = ({ children }) => {
     };
 
     // Функция для получения версии браузера
-    const getBrowserVersion = (): string => {
+    const getBrowserVersion = (): string | null => {
         const userAgent = navigator.userAgent;
 
         if (/chrome|chromium|crios/i.test(userAgent)) {
@@ -34,24 +35,30 @@ const BrowserCheck: React.FC<BrowserCheckProps> = ({ children }) => {
             return userAgent.match(/(?:yabrowser)[\/\s](\d+)/i)?.[1] || "Unknown";
         }
 
-        return "Unknown";
+        return null;
     };
 
-    useEffect(() => {
-        const storedBrowserVersion = localStorage.getItem('browserVersion');
-        const currentBrowserVersion = getBrowserVersion();
 
-        // Если версия браузера изменилась, необходимо заново проверить поддержку webp
+    useEffect(() => {
+        const storedBrowserVersion: string | null = localStorage.getItem(Tokens.browserVersion);
+        const currentBrowserVersion: string | null = getBrowserVersion();
+
+        function checkWebp() {
+            checkWebpSupport().then(isSupported => {
+                localStorage.setItem(Tokens.isSupportedWebp, isSupported ? 'true' : 'false');
+
+                if (currentBrowserVersion) {
+                    localStorage.setItem(Tokens.browserVersion, currentBrowserVersion);
+                } else {
+                    localStorage.setItem(Tokens.browserVersion, "false");
+                }
+            });
+        }
+
         if (storedBrowserVersion && (storedBrowserVersion !== currentBrowserVersion)) {
-            checkWebpSupport().then(isSupported => {
-                localStorage.setItem('isSupportedWebp', isSupported ? 'true' : 'false');
-                localStorage.setItem('browserVersion', currentBrowserVersion);
-            });
+            checkWebp()
         } else if (!storedBrowserVersion) {
-            checkWebpSupport().then(isSupported => {
-                localStorage.setItem('isSupportedWebp', isSupported ? 'true' : 'false');
-                localStorage.setItem('browserVersion', currentBrowserVersion);
-            });
+            checkWebp()
         }
     }, []);
 
