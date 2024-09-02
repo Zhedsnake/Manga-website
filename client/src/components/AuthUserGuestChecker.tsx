@@ -24,8 +24,6 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
     const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
 
-    const guestToken: string | null = localStorage.getItem(Tokens.guestToken);
-
     const check = async () => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
 
@@ -47,6 +45,8 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
     }
 
     const checkGuest = async () => {
+        const guestToken: string | null = localStorage.getItem(Tokens.guestToken);
+
         if (guestToken) {
             setIsGuest(true)
 

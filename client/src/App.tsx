@@ -1,8 +1,3 @@
-import React, {useState} from "react";
-import {AuthContext} from "./context";
-import AppRouter from "./components/AppRouter";
-import {ToggleShowType} from "./types/AuthForm";
-
 
 //Redux
 import {Provider} from 'react-redux';
@@ -11,8 +6,14 @@ import store from "./store";
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 
+import React, {useState} from "react";
+import {AuthContext} from "./context";
+import AppRouter from "./components/AppRouter";
+import {ToggleShowType} from "./types/AuthForm";
+import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
+import UpdateUserToken from "./components/UpdateUserToken.tsx";
+import BrowserWebpCheck from "./components/BrowserWebpCheck.tsx";
 
 
 const App: React.FC = () => {
@@ -49,7 +50,11 @@ const App: React.FC = () => {
                 defToggleShowFormPasswords
             }}>
                 <AuthUserGuestChecker>
-                    <AppRouter/>
+                    <UpdateUserToken>
+                        <BrowserWebpCheck>
+                            <AppRouter/>
+                        </BrowserWebpCheck>
+                    </UpdateUserToken>
                 </AuthUserGuestChecker>
             </AuthContext.Provider>
         </Provider>
