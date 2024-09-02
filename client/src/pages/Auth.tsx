@@ -3,11 +3,11 @@ import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {AuthContext, AuthContextType} from "../context";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
-import {Tokens} from "../util/setTocken.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import LogInForm from "../components/Authentification/LogInForm.tsx";
 import FormButton from "../components/UI/formButton/FormButton.tsx";
 import RegForm from "../components/Authentification/RegForm.tsx";
+import {Tokens} from "../util/Tokens.ts";
 
 const Auth: React.FC = () => {
     const [loggedEarlier, setLoggedEarlier] = useState<boolean>(false);
