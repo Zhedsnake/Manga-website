@@ -4,6 +4,7 @@ const initialState: GetUserInfoState = {
     name: "Неизвестно",
     email: "Неизвестно",
     pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    picWebp: "",
     registeredAt: "Неизвестно",
     birthday: "Неизвестно",
     loading: false,
