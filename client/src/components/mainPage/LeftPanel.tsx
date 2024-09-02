@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {AuthContext} from "../../context";
 import Loader from "../UI/Loader/Loader.tsx";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
-import {Tokens} from "../../util/setTocken.ts";
+import {Tokens} from "../../util/Tokens.ts";
 
 const LeftPanel: React.FC = () => {
     const {isUser, isAuthLoading} = useContext(AuthContext);
@@ -11,15 +11,15 @@ const LeftPanel: React.FC = () => {
     const [userImg, setUserImg] = useState<string>("")
     const [name, setName] = useState("")
 
-    const {
-        data: smallUserInfoByToken,
-        error: smallUserInfoByTokenError,
-        loading: smallUserInfoByTokenLoading,
-    } = useTypedSelector(state => state.getSmallUserInfoByToken);
+    const { data: smallUserInfoByToken, error: smallUserInfoByTokenError, loading: smallUserInfoByTokenLoading,} = useTypedSelector(state => state.getSmallUserInfoByToken);
 
     useEffect(() => {
-        if ("pic" && "name" in smallUserInfoByToken) {
+
+        if ("name" in smallUserInfoByToken && "pic" in smallUserInfoByToken) {
             setUserImg(smallUserInfoByToken.pic);
+            setName(smallUserInfoByToken.name);
+        } else if ("name" in smallUserInfoByToken && "minPicWebp" in smallUserInfoByToken){
+            setUserImg(smallUserInfoByToken.minPicWebp);
             setName(smallUserInfoByToken.name);
         }
     }, [smallUserInfoByToken]);
@@ -59,7 +59,7 @@ const LeftPanel: React.FC = () => {
                                                     :
                                                     <Link to={`/user-profile`}>
                                                         <button>
-                                                            <img src={userImg} alt={"Картинка пользователя"}/>
+                                                            <img src={userImg} alt={"Картинка пользователя"} style={{width: "80px", height: "80px"}}/>
                                                             <br/>
                                                             <div>{name}
                                                             </div>
