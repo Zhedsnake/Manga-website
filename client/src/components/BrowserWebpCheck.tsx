@@ -45,12 +45,12 @@ const BrowserCheck: React.FC<BrowserCheckProps> = ({ children }) => {
 
         function checkWebp() {
             checkWebpSupport().then(isSupported => {
-                localStorage.setItem(Tokens.isSupportedWebp, isSupported ? 'true' : 'false');
-
                 if (currentBrowserVersion) {
+                    localStorage.setItem(Tokens.isSupportedWebp, isSupported ? 'true' : 'false');
                     localStorage.setItem(Tokens.browserVersion, currentBrowserVersion);
                 } else {
-                    localStorage.setItem(Tokens.browserVersion, "false");
+                    localStorage.setItem(Tokens.isSupportedWebp, 'false');
+                    localStorage.setItem(Tokens.browserVersion, "null");
                 }
             });
         }
