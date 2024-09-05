@@ -1,40 +1,17 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
-import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
-import {useActions} from "../../hooks/useActions.ts";
+import useInput from "../../hooks/useInput.ts";
+import useHandleEditPassword from "../../hooks/EditUserInfoHooks/useHandleEditPassword.ts";
 
-interface setMessageInterface {
-    setMessage: Dispatch<SetStateAction<string>>;
-}
-
-const EditPassword: React.FC<setMessageInterface> = ({setMessage}) => {
-    const [oldPassword, setOldPassword] = useState<string>("")
-    const [newPassword, setNewPassword] = useState<string>("")
-
-    const {loading: passwordLoading, error: passwordError} = useTypedSelector(state => state.passwordForm);
-    const {editPassword} = useActions();
-
-    const handleEditPassword = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setMessage("")
-
-        await editPassword(oldPassword, newPassword);
-
-        setOldPassword("")
-        setNewPassword("")
-    }
-
-    const handlerSetOldPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setOldPassword(e.target.value)
-    }
-    const handlerSetNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPassword(e.target.value)
-    }
+const EditPassword: React.FC = () => {
+    const oldPassword = useInput<string>("")
+    const newPassword = useInput<string>("")
+    const editHandle = useHandleEditPassword(oldPassword.value, newPassword.value, oldPassword.clear, newPassword.clear)
 
     return (
         <>
-            {passwordError && <div>{passwordError}</div>}
-            {passwordLoading
+            {editHandle.error && <div>{editHandle.error}</div>}
+            {editHandle.passwordLoading
                 ? <Loader/>
                 :
                 <form role="form">
@@ -43,19 +20,19 @@ const EditPassword: React.FC<setMessageInterface> = ({setMessage}) => {
                         <input
                             type="password" className="form-control"
                             id="InputOldPassword"
-                            value={oldPassword}
-                            onChange={handlerSetOldPassword}
+                            value={oldPassword.value}
+                            onChange={oldPassword.onChange}
                         />
                         <label htmlFor="InputNewPassword">Новый пароль</label>
                         <input
                             type="password"
                             className="form-control"
                             id="InputNewPassword"
-                            value={newPassword}
-                            onChange={handlerSetNewPassword}
+                            value={newPassword.value}
+                            onChange={newPassword.onChange}
                         />
                     </div>
-                    <button onClick={handleEditPassword} type="submit" className="btn btn-primary">Поменять пароль</button>
+                    <button onClick={editHandle.handleEditPassword} type="submit" className="btn btn-primary">Поменять пароль</button>
                 </form>
             }
         </>
