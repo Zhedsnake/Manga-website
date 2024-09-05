@@ -23,6 +23,7 @@ const EditName : React.FC = () => {
                             id="InputName"
                             aria-describedby="emailHelp"
                             value={name.value}
+                            maxLength={15}
                             onChange={name.onChange}
                         />
                     </div>

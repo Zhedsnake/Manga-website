@@ -21,6 +21,7 @@ const EditPassword: React.FC = () => {
                             type="password" className="form-control"
                             id="InputOldPassword"
                             value={oldPassword.value}
+                            maxLength={20}
                             onChange={oldPassword.onChange}
                         />
                         <label htmlFor="InputNewPassword">Новый пароль</label>
@@ -28,6 +29,7 @@ const EditPassword: React.FC = () => {
                             type="password"
                             className="form-control"
                             id="InputNewPassword"
+                            maxLength={20}
                             value={newPassword.value}
                             onChange={newPassword.onChange}
                         />
