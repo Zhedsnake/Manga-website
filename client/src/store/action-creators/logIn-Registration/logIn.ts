@@ -3,7 +3,7 @@ import {LogInAction, LogInActionTypes} from "../../../types/logInRegistration/lo
 import AuthService from "../../../api/AuthService";
 
 
-export const logInAction = (name: string, email: string, password: string) => {
+export const logInAction = (name: string, password: string) => {
     return async (dispatch: Dispatch<LogInAction>) => {
         try {
             dispatch({type: LogInActionTypes.LOG_IN})
