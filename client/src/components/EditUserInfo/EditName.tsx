@@ -1,33 +1,17 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
-import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
-import {useActions} from "../../hooks/useActions.ts";
+import useInput from "../../hooks/useInput.ts";
+import useHandleEditName from "../../hooks/EditUserInfoHooks/useHandleEditName.ts";
 
-interface setMessageInterface {
-    setMessage: Dispatch<SetStateAction<string>>;
-}
 
-const EditName : React.FC<setMessageInterface> = ({setMessage}) => {
-    const [name, setName] = useState<string>("")
-
-    const {loading: nameLoading, error: nameError} = useTypedSelector(state => state.nameForm);
-    const {editName} = useActions();
-
-    const handleEditName = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setMessage("")
-        await editName(name);
-        setName("")
-    }
-
-    const handlerSetName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value)
-    }
+const EditName : React.FC = () => {
+    const name = useInput<string>("")
+    const editName = useHandleEditName(name.value, name.clear)
 
     return (
         <>
-            {nameError && <div>{nameError}</div>}
-            {nameLoading
+            {editName.error && <div>{editName.error}</div>}
+            {editName.nameLoading
                 ? <Loader/>
                 :
                 <form role="form">
@@ -38,11 +22,11 @@ const EditName : React.FC<setMessageInterface> = ({setMessage}) => {
                             className="form-control"
                             id="InputName"
                             aria-describedby="emailHelp"
-                            value={name}
-                            onChange={handlerSetName}
+                            value={name.value}
+                            onChange={name.onChange}
                         />
                     </div>
-                    <button onClick={handleEditName} type="submit" className="btn btn-primary">Поменять
+                    <button onClick={editName.handleEditName} type="submit" className="btn btn-primary">Поменять
                         никнейм
                     </button>
                 </form>
