@@ -5,16 +5,18 @@ import EditUserInfoService from "../../../api/EditUserInfoService.ts";
 
 export const editName = (name: string) => {
     return async (dispatch: Dispatch<NameAction>) => {
-        try {
-            dispatch({type: NameActionTypes.EDIT_NAME})
-            const response = await EditUserInfoService.editNameRequest(name)
+        dispatch({type: NameActionTypes.EDIT_NAME})
+        const response = await EditUserInfoService.editNameRequest(name)
+
+        if ("data" in response && "message" in response.data) {
             dispatch({type: NameActionTypes.EDIT_NAME_SUCCESS, payload: response.data.message})
-        } catch (e) {
+        } else if ("error" in response) {
             dispatch({
                 type: NameActionTypes.EDIT_NAME_ERROR,
-                payload: e.response.data.error
+                payload: response.error
             })
         }
+
     }
 }
 export const defEditName = () => {
