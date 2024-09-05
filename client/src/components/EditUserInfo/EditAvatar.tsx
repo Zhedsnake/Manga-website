@@ -1,84 +1,23 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
-import {useActions} from "../../hooks/useActions.ts";
+import React from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
+import useImgInputs from "../../hooks/useImgInputs.ts";
+import useHandleEditAvatar from "../../hooks/EditUserInfoHooks/useHandleEditAvatar.ts";
 
-interface setMessageInterface {
-    setMessage: Dispatch<SetStateAction<string>>;
-}
-
-const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
-    const [avatar, setAvatar] = useState<File | null>(null);
-    const [coverPreview, setCoverPreview] = useState<string | null>(null);
-    const [avatarErrorState, setAvatarErrorState] = useState<string>("")
-
-    const {loading: avatarLoading, error: avatarError} = useTypedSelector(state => state.avatarForm);
-    const {editAvatar} = useActions();
-
-
-    const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file: File = e.target.files?.[0];
-
-        if (file) {
-            setAvatar(file);
-            setCoverPreview(URL.createObjectURL(file));
-        }
-    };
-
-    const handleEditAvatar = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setMessage("")
-
-        if (avatar && (avatar.type === "image/jpeg" || avatar.type === "image/png" || avatar.type === "image/jpg")) {
-            if (avatar.size > 368000) { // 3.68 MB in bytes
-                setAvatarErrorState("Размер файла не должен превышать 3.68 MB.");
-                return;
-            }
-
-            const img = new Image();
-            img.src = URL.createObjectURL(avatar);
-
-            img.onload = async () => {
-                if (img.width === img.height) {
-                    setAvatarErrorState("")
-                    const imageFormData = new FormData();
-                    imageFormData.append('avatar', avatar);
-
-                    await editAvatar(imageFormData)
-                } else {
-                    setAvatarErrorState("Изображение должно иметь соотношение сторон 1:1.");
-                }
-            };
-
-        } else if (!avatar){
-            setAvatarErrorState("Вы не загрузили изображение")
-            return;
-        } else {
-            setAvatarErrorState("Допустимые форматы jpeg или png")
-            return;
-        }
-
-        setAvatar(null);
-        setCoverPreview(null);
-    };
-
-    useEffect(() => {
-        if (avatarError) {
-            setAvatarErrorState(avatarError)
-        }
-    }, [avatarError]);
+const EditAvatar: React.FC = () => {
+    const avatar = useImgInputs(null)
+    const handleEdit = useHandleEditAvatar(avatar.value, avatar.clear)
 
     return (
         <>
-            {avatarErrorState && <div>{avatarErrorState}</div>}
-            {avatarLoading ? (
+            {handleEdit.error && <div>{handleEdit.error}</div>}
+            {handleEdit.avatarLoading ? (
                 <Loader />
             ) : (
                 <>
-                    {coverPreview && (
+                    {avatar.valuePreview && (
                         <div style={{marginTop: '10px'}}>
                             <img
-                                src={coverPreview}
+                                src={avatar.valuePreview}
                                 alt="Cover Preview"
                                 style={{maxWidth: '200px', maxHeight: '200px'}}
                             />
@@ -93,7 +32,7 @@ const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
                                 <input
                                     type="file"
                                     accept="image/jpeg, image/png"
-                                    onChange={handleCoverChange}
+                                    onChange={avatar.onChange}
                                     style={{display: 'none'}}
                                     id="InputImage"
                                 />
@@ -107,7 +46,7 @@ const EditAvatar: React.FC<setMessageInterface> = ({setMessage}) => {
                                 </button>
                             </div>
                         </div>
-                        <button onClick={handleEditAvatar} type="submit" className="btn btn-primary">Поменять аватарку
+                        <button onClick={handleEdit.handleEditAvatar} type="submit" className="btn btn-primary">Поменять аватарку
                         </button>
                     </form>
                 </>
