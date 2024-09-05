@@ -6,25 +6,29 @@ import InputAuth from "../UI/inputAuth/InputAuth";
 import ErrorForm from "../UI/errorForm/ErrorForm";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {useActions} from "../../hooks/useActions";
+import useInput from "../../hooks/useInput.ts";
 
 const EmailInput = () => {
-    const { emailError } = useTypedSelector(state => state.authForm);
-    const {setEmailAction} = useActions()
+    const emailForm = useInput("")
 
-    const [emailForm, setEmailForm] = useState('');
     const [emailErrorForm, setEmailErrorForm] = useState('');
 
+    const { emailError } = useTypedSelector(state => state.authFormError);
+    const { email } = useTypedSelector(state => state.authForm);
+    const {setEmailAction} = useActions()
+
+
     useEffect(() => {
-        setEmailAction(emailForm)
-    }, [emailForm])
+        setEmailAction(emailForm.value)
+    }, [emailForm.value])
 
     useEffect(() => {
         setEmailErrorForm(emailError)
     }, [emailError])
 
-    const handlerSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmailForm(e.target.value)
-    }
+    useEffect(() => {
+        emailForm.setValue(email)
+    }, [email]);
 
     return (
         <FormGroupDiv>
@@ -33,8 +37,8 @@ const EmailInput = () => {
                 type="email"
                 id="email"
                 maxLength={30}
-                value={emailForm}
-                onChange={handlerSetEmail}
+                value={emailForm.value}
+                onChange={emailForm.onChange}
             />
             {emailErrorForm && <ErrorForm>{emailErrorForm}</ErrorForm>}
         </FormGroupDiv>
