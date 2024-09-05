@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 
 import {privateRoutes, publicRoutes} from "../router";
-import {AuthContext, AuthContextType} from "../context";
+import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
 import Loader from "./UI/Loader/Loader.tsx";
 
 
