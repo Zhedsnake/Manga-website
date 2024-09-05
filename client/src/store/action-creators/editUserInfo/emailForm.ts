@@ -4,14 +4,17 @@ import {EmailAction, EmailActionTypes} from "../../../types/editUserInfo/emailFo
 
 export const editEmail = (email: string) => {
     return async (dispatch: Dispatch<EmailAction>) => {
-        try {
-            dispatch({type: EmailActionTypes.EDIT_EMAIL})
-            const response = await EditUserInfoService.editEmailRequest(email)
+        dispatch({type: EmailActionTypes.EDIT_EMAIL})
+
+        const response = await EditUserInfoService.editEmailRequest(email)
+
+        if ("data" in response && "message" in response.data) {
             dispatch({type: EmailActionTypes.EDIT_EMAIL_SUCCESS, payload: response.data.message})
-        } catch (e) {
+
+        } else if ("error" in response) {
             dispatch({
-                type: EmailActionTypes.DEF_EDIT_EMAIL,
-                payload: e.response.data.error
+                type: EmailActionTypes.EDIT_EMAIL_ERROR,
+                payload: response.error
             })
         }
     }
