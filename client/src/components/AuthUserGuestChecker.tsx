@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {AuthContext, AuthContextType} from "../context";
+import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
@@ -90,14 +90,14 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
             setToken(Tokens.guestToken, guestTokenResponse);
 
             setIsGuest(true)
-
-            if (!guestTokenError) {
-                defGuestToken()
-            } else if (guestTokenError) {
-                console.error(guestTokenError)
-            }
         }
-    }, [guestTokenResponse]);
+
+        if (!guestTokenError) {
+            defGuestToken()
+        } else if (guestTokenError) {
+            console.error(guestTokenError)
+        }
+    }, [guestTokenResponse, guestTokenError]);
 
 
     return (
