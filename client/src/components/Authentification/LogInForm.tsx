@@ -4,19 +4,18 @@ import AuthHeader from "../UI/authHeader/AuthHeader";
 import NameInput from "./NameInput";
 import PasswordInput from "./PasswordInput";
 import FormButton from "../UI/formButton/FormButton";
+import useHandleLogIn from "../../hooks/Auth/useHandleLogIn.ts";
 
-interface HandleLogInType {
-    handleLogIn:(e: React.FormEvent) => Promise<void>;
-}
+const LogInForm: React.FC = () => {
 
-const LogInForm: React.FC<HandleLogInType> = ({handleLogIn}) => {
+    const handleLogIn = useHandleLogIn()
 
     return (
         <FormAuth>
             <AuthHeader>Вход</AuthHeader>
             <NameInput />
             <PasswordInput />
-            <FormButton onClick={handleLogIn}>Войти</FormButton>
+            <FormButton onClick={handleLogIn.handleLogIn}>Войти</FormButton>
         </FormAuth>
     );
 };
