@@ -1,34 +1,16 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import Loader from "../UI/Loader/Loader.tsx";
-import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
-import {useActions} from "../../hooks/useActions.ts";
+import useInput from "../../hooks/useInput.ts";
+import useHandleEditEmail from "../../hooks/EditUserInfoHooks/useHandleEditEmail.ts";
 
-interface setMessageInterface {
-    setMessage: Dispatch<SetStateAction<string>>;
-}
-
-const EditEmail : React.FC<setMessageInterface> = ({setMessage}) => {
-    const [email, setEmail] = useState<string>("")
-
-    const {loading: emailLoading, error: emailError} = useTypedSelector(state => state.emailForm);
-    const {editEmail} = useActions();
-
-    const handleEditEmail = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setMessage()
-        await editEmail(email);
-        setEmail("")
-    }
-
-    const handlerSetEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
-    }
-
+const EditEmail : React.FC = () => {
+    const email = useInput("")
+    const editHandle = useHandleEditEmail<string>(email.value, email.clear)
 
     return (
         <>
-            {emailError && <div>{emailError}</div>}
-            {emailLoading
+            {editHandle.error && <div>{editHandle.error}</div>}
+            {editHandle.emailLoading
                 ? <Loader/>
                 :
                 <form role="form">
@@ -39,11 +21,11 @@ const EditEmail : React.FC<setMessageInterface> = ({setMessage}) => {
                             className="form-control"
                             id="Inputemail"
                             aria-describedby="emailHelp"
-                            value={email}
-                            onChange={handlerSetEmail}
+                            value={email.value}
+                            onChange={email.onChange}
                         />
                     </div>
-                    <button onClick={handleEditEmail} type="submit" className="btn btn-primary">Поменять почту</button>
+                    <button onClick={editHandle.handleEditEmail} type="submit" className="btn btn-primary">Поменять почту</button>
                 </form>
             }
         </>
