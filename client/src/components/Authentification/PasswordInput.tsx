@@ -9,9 +9,10 @@ import InputAuth from "../UI/inputAuth/InputAuth";
 import ErrorForm from "../UI/errorForm/ErrorForm";
 import PasswordToggleButton from "../UI/passwordToggleButton/PasswordToggleButton";
 import PasswordContainer from "../UI/passwordContainer/PasswordContainer";
-import {AuthContext} from "../../context";
+import {AuthContext} from "../../contexts/AuthContext.ts";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import {useActions} from "../../hooks/useActions";
+import useInput from "../../hooks/useInput.ts";
 
 const PasswordInput: React.FC = () => {
     const {
@@ -19,24 +20,25 @@ const PasswordInput: React.FC = () => {
         setToggleShowFormPasswords
     } = useContext(AuthContext);
 
-    const [passwordForm, setPasswordForm] = useState('');
+    const passwordForm = useInput("")
+
     const [passwordErrorForm, setPasswordErrorForm] = useState('');
 
-    const { passwordError } = useTypedSelector(state => state.authForm);
+    const { passwordError } = useTypedSelector(state => state.authFormError);
+    const { password } = useTypedSelector(state => state.authForm);
     const {setPasswordAction} = useActions()
 
     useEffect(() => {
-        setPasswordAction(passwordForm)
-    }, [passwordForm])
+        setPasswordAction(passwordForm.value)
+    }, [passwordForm.value])
 
     useEffect(() => {
         setPasswordErrorForm(passwordError)
     }, [passwordError])
 
-    const handlerSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPasswordForm(e.target.value)
-    }
-
+    useEffect(() => {
+        passwordForm.setValue(password)
+    }, [password]);
 
     return (
         <FormGroupDiv>
@@ -45,9 +47,9 @@ const PasswordInput: React.FC = () => {
                 <InputAuth
                   type={toggleShowFormPasswords.toggleShowPassword ? 'text' : 'password'}
                   id="password"
-                  value={passwordForm}
+                  value={passwordForm.value}
                   maxLength={30}
-                  onChange={handlerSetPassword}
+                  onChange={passwordForm.onChange}
                 />
                 <PasswordToggleButton
                     type="button"
