@@ -7,6 +7,23 @@ import AuthBDService from "../mongodb/AuthBDService";
 
 
 class VerificationService {
+    private salt: string;
+
+    constructor() {
+        this.salt = '';
+        this.initSalt();
+    }
+
+    private async initSalt() {
+        const salt: string | undefined = process.env.SALT;
+        if (!salt) {
+            throw new Error('JWT_SECRET is not defined');
+        }
+
+        const saltRounds: number = parseInt(salt);
+        this.salt = await bcrypt.genSalt(saltRounds);
+    }
+
 
     async VerifySupWebp(webpTest: string): Promise<{error: string} | null>{
 
@@ -183,6 +200,10 @@ class VerificationService {
             return {error: "Не указан новый пароль"}
         }
 
+        if (userOldPassword === userNewPassword) {
+            return {error: 'Новый пароль не должен совпадать со старым'};
+        }
+
         const findUser = await UserBDService.findOneUserById(userId);
 
         if (findUser && "password" in findUser) {
@@ -191,12 +212,6 @@ class VerificationService {
 
             if (!isMatch) {
                 return {error: 'Старый пароль некорректен'};
-            }
-
-            const isMatchOld: boolean = await bcrypt.compare(userNewPassword, findUser.password);
-
-            if (isMatchOld) {
-                return {error: 'Новый пароль не должен совпадать с старым'};
             }
 
             const verificationResponse:{error: string} | null | undefined = await this.VerifyPassword(userNewPassword)
@@ -211,7 +226,7 @@ class VerificationService {
     async VerifyEditAvatar(avatarFile: UploadedImageByMulter[]): Promise<{ error: string } | null> {
 
         if (!avatarFile || avatarFile.length === 0) {
-            return { error: 'Файл не загружен' };
+            return { error: 'Вы не загрузили аватарку' };
         }
 
         if (avatarFile.length > 1) {
