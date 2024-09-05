@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
-import {AuthContext, AuthContextType} from "../context";
+import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
 import {useActions} from "../hooks/useActions.ts";
 import {Tokens} from "../util/Tokens.ts";
 
