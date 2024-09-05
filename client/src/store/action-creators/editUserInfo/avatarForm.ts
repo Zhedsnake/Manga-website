@@ -4,14 +4,16 @@ import {AvatarAction, AvatarActionTypes} from "../../../types/editUserInfo/avata
 
 export const editAvatar = (avatar) => {
     return async (dispatch: Dispatch<AvatarAction>) => {
-        try {
-            dispatch({type: AvatarActionTypes.EDIT_AVATAR})
-            const response = await EditUserInfoService.editAvatarRequest(avatar)
+        dispatch({type: AvatarActionTypes.EDIT_AVATAR})
+        const response = await EditUserInfoService.editAvatarRequest(avatar)
+
+        if ("data" in response && "message" in response.data) {
             dispatch({type: AvatarActionTypes.EDIT_AVATAR_SUCCESS, payload: response.data.message})
-        } catch (e) {
+
+        } else if ("error" in response) {
             dispatch({
                 type: AvatarActionTypes.EDIT_AVATAR_ERROR,
-                payload: e.response.data.error
+                payload: response.error
             })
         }
     }
