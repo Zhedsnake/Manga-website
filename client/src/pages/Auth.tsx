@@ -1,68 +1,34 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {useTypedSelector} from "../hooks/useTypedSelector.ts";
-import {AuthContext, AuthContextType} from "../context";
+import React, {useContext, useEffect} from 'react';
+import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
 import {useActions} from "../hooks/useActions.ts";
-import {setToken} from "../util/setTocken.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import LogInForm from "../components/Authentification/LogInForm.tsx";
 import FormButton from "../components/UI/formButton/FormButton.tsx";
 import RegForm from "../components/Authentification/RegForm.tsx";
-import {Tokens} from "../util/Tokens.ts";
+import useInput from "../hooks/useInput.ts";
+import useHandleLogIn from "../hooks/Auth/useHandleLogIn.ts";
+import useHandleReg from "../hooks/Auth/useHandleReg.ts";
 
 const Auth: React.FC = () => {
-    const [loggedEarlier, setLoggedEarlier] = useState<boolean>(false);
     const {
-        setIsAuth,
         setToggleShowFormPasswords,
         defToggleShowFormPasswords
     } = useContext<AuthContextType>(AuthContext);
 
+    const loggedEarlier = useInput<boolean>(false)
+    const logInErrorState = useInput<string>("")
+    const regErrorState = useInput<string>("")
 
-    const {name, email, password} = useTypedSelector(state => state.authForm);
-    const {logInToken, logInError, logInLoading} = useTypedSelector(state => state.logIn);
-    const {regToken, regError, regLoading} = useTypedSelector(state => state.registration);
-    const {logInAction, registrationAction, defLogIn, defReg, setDefInputs, defGuestToken} = useActions();
+    const handleLogIn = useHandleLogIn()
+    const handleReg = useHandleReg()
 
-
-    const handleLogIn = async (e: React.FormEvent) => {
-        e.preventDefault();
-        await logInAction(name, email, password);
-    };
-
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        await registrationAction(name, email, password);
-    };
+    const {defLogIn, defReg, setDefInputs} = useActions();
 
     const handleToggleForm = (prop: boolean) => {
         setDefInputs()
         setToggleShowFormPasswords({...defToggleShowFormPasswords});
-        setLoggedEarlier(prop);
+        loggedEarlier.setValue(prop);
     };
-
-    useEffect(() => {
-        if (logInToken) {
-            const tokenIsSet: boolean = setToken(Tokens.userToken, logInToken);
-
-            if (tokenIsSet) {
-                setIsAuth(tokenIsSet);
-            }
-
-            defGuestToken()
-        }
-    }, [logInToken]);
-
-    useEffect(() => {
-        if (regToken) {
-            const tokenIsSet: boolean = setToken(Tokens.userToken, regToken);
-
-            if (tokenIsSet) {
-                setIsAuth(tokenIsSet);
-            }
-
-            defGuestToken()
-        }
-    }, [regToken]);
 
     useEffect(() => {
         return () => {
@@ -76,28 +42,24 @@ const Auth: React.FC = () => {
     return (
         <div className="auth">
             <main className="auth__form-container">
-                {loggedEarlier ? (
-                    logInLoading ? (
+                {loggedEarlier.value ? (
+                    handleLogIn.logInLoading ? (
                         <Loader/>
                     ) : (
                         <>
-                            {logInError && <h1>{logInError}</h1>}
-                            <LogInForm
-                                handleLogIn={handleLogIn}
-                            />
+                            {logInErrorState.value && <h1>{logInErrorState.value}</h1>}
+                            <LogInForm/>
                             <FormButton onClick={() => handleToggleForm(false)}>Переключитесь на
                                 регистрацию</FormButton>
                         </>
                     )
                 ) : (
-                    regLoading ? (
+                    handleReg.regLoading ? (
                         <Loader/>
                     ) : (
                         <>
-                            {regError && <h1>{regError}</h1>}
-                            <RegForm
-                                handleRegister={handleRegister}
-                            />
+                            {regErrorState.value && <h1>{regErrorState.value}</h1>}
+                            <RegForm/>
                             <FormButton onClick={() => handleToggleForm(true)}>Переключитесь на вход в
                                 систему</FormButton>
                         </>
