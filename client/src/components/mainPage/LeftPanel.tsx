@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import {AuthContext} from "../../context";
+import {AuthContext} from "../../contexts/AuthContext.ts";
 import Loader from "../UI/Loader/Loader.tsx";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
 import {Tokens} from "../../util/Tokens.ts";
