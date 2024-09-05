@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import logoutIcon from '../../../img/Logout-icon.svg';
 import classes from "./logoutButton.module.css";
-import {AuthContext} from "../../../context";
+import {AuthContext} from "../../../contexts/AuthContext.ts";
 
 const LogoutButton: React.FC = () => {
     const { isAuth, setIsAuth } = useContext(AuthContext);
