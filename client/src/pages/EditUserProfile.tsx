@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import EditName from "../components/EditUserInfo/EditName.tsx";
 import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
@@ -6,9 +6,13 @@ import {useActions} from "../hooks/useActions.ts";
 import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
 import EditAvatar from "../components/EditUserInfo/EditAvatar.tsx";
 import {Link} from "react-router-dom";
+import {EditUserInfoContext, EditUserInfoContextType} from "../contexts/EditUserInfoContext.ts";
 
 const EditUserProfile : React.FC = () => {
-    const [message, setMessage] = useState<string>("")
+    const {
+        message,
+        setMessage
+    } = useContext<EditUserInfoContextType>(EditUserInfoContext);
 
     const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
     const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
@@ -36,6 +40,15 @@ const EditUserProfile : React.FC = () => {
     }, [nameMessage, passwordMessage, emailMessage, avatarMessage]);
 
     useEffect(() => {
+        if (message) {
+            defEditAvatar()
+            defEditName()
+            defEditEmail()
+            defEditPassword()
+        }
+    }, [message]);
+
+    useEffect(() => {
         if (avatarError) {
             setMessage("")
         }
@@ -54,14 +67,6 @@ const EditUserProfile : React.FC = () => {
 
     }, [avatarError, nameError, emailError, passwordError]);
 
-    useEffect(() => {
-        if (message) {
-            defEditAvatar()
-            defEditName()
-            defEditEmail()
-            defEditPassword()
-        }
-    }, [message]);
 
     return (
         <div className="container">
@@ -83,16 +88,16 @@ const EditUserProfile : React.FC = () => {
                     }
                     <div className="row">
                         <div className="col-md-6 col-xl-3">
-                            <EditAvatar setMessage={setMessage}/>
+                            <EditAvatar/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditName setMessage={setMessage}/>
+                            <EditName/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditEmail setMessage={setMessage}/>
+                            <EditEmail/>
                         </div>
                         <div className="col-md-6 col-xl-3">
-                            <EditPassword setMessage={setMessage}/>
+                            <EditPassword/>
                         </div>
                         {/*<div className="col-md-6 col-xl-3">*/}
                         {/*    <form>*/}
