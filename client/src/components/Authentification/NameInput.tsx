@@ -6,25 +6,28 @@ import FormGroupDiv from "../UI/formGroupdiv/formGroupdiv";
 import ErrorForm from "../UI/errorForm/ErrorForm";
 import {useActions} from "../../hooks/useActions";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
+import useInput from "../../hooks/useInput.ts";
 
 const NameInput = () => {
-    const { nameError } = useTypedSelector(state => state.authForm);
-    const {setNameAction} = useActions()
+    const nameForm = useInput("")
 
-    const [nameForm, setNameForm] = useState<string>('');
     const [nameErrorForm, setNameErrorForm] = useState<string>('');
 
+    const { nameError } = useTypedSelector(state => state.authFormError);
+    const { name } = useTypedSelector(state => state.authForm);
+    const {setNameAction} = useActions()
+
     useEffect(() => {
-        setNameAction(nameForm)
-    }, [nameForm])
+        setNameAction(nameForm.value)
+    }, [nameForm.value])
 
     useEffect(() => {
         setNameErrorForm(nameError)
     }, [nameError])
 
-    const handlerSetName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNameForm(e.target.value)
-    }
+    useEffect(() => {
+        nameForm.setValue(name)
+    }, [name]);
 
     return (
         <FormGroupDiv>
@@ -32,9 +35,9 @@ const NameInput = () => {
             <InputAuth
                 type="text"
                 id="name"
-                value={nameForm}
+                value={nameForm.value}
                 maxLength={30}
-                onChange={handlerSetName}
+                onChange={nameForm.onChange}
             />
             {nameErrorForm && <ErrorForm>{nameErrorForm}</ErrorForm>}
         </FormGroupDiv>
