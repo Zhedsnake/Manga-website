@@ -21,7 +21,7 @@ describe('timeDateNow', () => {
         expect(spyDate).toHaveBeenCalledTimes(1);
     });
 
-    test('Date и его методы должны быть вызваны один раз', () => {
+    test('Date методы должны быть вызваны один раз', () => {
         const spyGetHours = jest.spyOn(Date.prototype, 'getHours');
         const spyGetMinutes = jest.spyOn(Date.prototype, 'getMinutes');
         const spyGetDate = jest.spyOn(Date.prototype, 'getDate');
