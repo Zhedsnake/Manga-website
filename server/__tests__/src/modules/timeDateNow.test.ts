@@ -39,6 +39,7 @@ describe('timeDateNow', () => {
 
     test('должна быть возвращена правильно отформатированная строка времени и даты', () => {
         expect(timeDateNow()).toBe(' ч:м 16:15, день 5, месяц Сентябрь, год 2024');
+        expect(timeDateNow()).toMatchSnapshot();
     });
 
 });
