@@ -12,15 +12,39 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(routers)
 
-if (!process.env.DB_URL) {
+if (!process.env.DB_PRODUCTION_URL) {
     process.exit(1);
 }
+if (!process.env.DB_DEV_URL) {
+    process.exit(1);
+}
+if (!process.env.DB_TEST_URL) {
+    process.exit(1);
+}
+
 if (!process.env.JWT_SECRET) {
     console.error("JWT_SECRET is not defined");
     process.exit(1);
 }
 
-connectDB(process.env.DB_URL)
+const setOption = (): string | undefined => {
+    if (process.env.IS_PROD && process.env.DB_PRODUCTION_URL && process.env.IS_PROD === 'true') {
+        console.log(`Режим production`)
+        return process.env.DB_PRODUCTION_URL
+    }
+    if (process.env.IS_DEV && process.env.DB_DEV_URL && process.env.IS_DEV === 'true') {
+        console.log(`Режим development`)
+        return process.env.DB_DEV_URL
+    }
+    if (process.env.IS_TEST && process.env.DB_TEST_URL && process.env.IS_TEST === 'true') {
+        console.log(`Режим test`)
+        return process.env.DB_TEST_URL
+    }
+}
+
+const option: string | undefined = setOption()
+
+connectDB(option!)
     .then(() => {
         const server = app.listen(
             process.env.PORT,
