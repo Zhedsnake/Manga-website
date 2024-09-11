@@ -3,8 +3,12 @@ import { Request, Response, NextFunction } from 'express';
 import FileService from '../../../src/middlewares/multer';
 
 const mockMulter = {
-    array: jest.fn(),
-    single: jest.fn(),
+    array: jest.fn(
+        (fieldName: string, maxCount: number) => (req: Request, res: Response, next: NextFunction) => next()
+    ),
+    single: jest.fn(
+        (fieldName: string) => (req: Request, res: Response, next: NextFunction) => next()
+    ),
 };
 
 jest.mock('multer', () => {
@@ -24,15 +28,15 @@ describe('FileService', () => {
     let mockResponse: Partial<Response>;
     let mockNext: jest.Mock;
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
     beforeEach(() => {
         fileService = new FileService();
         mockRequest = {};
         mockResponse = {};
         mockNext = jest.fn();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     describe('uploadFiles', () => {
@@ -56,7 +60,6 @@ describe('FileService', () => {
     describe('uploadSingleFile', () => {
 
         test('следует настроить multer для промежуточного программного обеспечения для загрузки одного файла', () => {
-
             const uploadMiddleware = fileService.uploadSingleFile();
             uploadMiddleware(mockRequest as Request, mockResponse as Response, mockNext as NextFunction);
 
@@ -80,7 +83,7 @@ describe('FileService', () => {
         });
 
         test('должен возвращать код состояния 400, если указан недопустимый тип файла', () => {
-
+            
             const uploadMiddleware = fileService.uploadSingleFile();
             const mockRequestWithInvalidFile: Partial<Request> = { file: { mimetype: 'text/plain' } as Express.Multer.File };
             const mockResponseWithStatus = { status: jest.fn(() => mockResponseWithStatus), json: jest.fn() } as unknown as Response;
