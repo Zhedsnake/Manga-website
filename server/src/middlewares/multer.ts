@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 const FILE_SIZE = 3.68; // 3.68MB
 const FULL_HD = 1080;
 
-
 class FileService {
 
     private disk() {
@@ -27,18 +26,18 @@ class FileService {
     }
 
     uploadFiles() {
-
         const upload = multer({
             storage: this.disk(),
             limits: { fileSize: FULL_HD * FULL_HD * FILE_SIZE },
             fileFilter: this.fileFilterConfig,
         });
 
-        return upload.array('files', 5);
+        return (req: Request, res: Response, next: NextFunction) => {
+            upload.array('files', 5)(req, res, next);
+        };
     }
 
     uploadSingleFile() {
-
         const upload = multer({
             storage: this.disk(),
             limits: { fileSize: FULL_HD * FULL_HD * FILE_SIZE },
@@ -56,4 +55,4 @@ class FileService {
     }
 }
 
-export default new FileService();
+export default FileService;
