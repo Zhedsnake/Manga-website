@@ -1,13 +1,16 @@
-import multer, { FileFilterCallback } from 'multer';
-import { Request, Response, NextFunction } from 'express';
+import multer, {FileFilterCallback} from 'multer';
+import {Request, Response, NextFunction} from 'express';
 import FileService from '../../../src/middlewares/multer';
 
 const mockMulter = {
-    array: jest.fn(
-        (fieldName: string, maxCount: number) => (req: Request, res: Response, next: NextFunction) => next()
-    ),
+    array: jest.fn((fieldName: string, maxCount: number) => (req: Request, res: Response, next: NextFunction) => next()),
     single: jest.fn(
-        (fieldName: string) => (req: Request, res: Response, next: NextFunction) => next()
+        () => (req: Request, res: Response, next: NextFunction) => {
+            if (req.file && req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png' && req.file.mimetype !== 'image/jpg') {
+                return next(new Error('Недопустимый тип файла. Разрешены только изображения форматов JPEG, PNG и JPG.'));
+            }
+            next();
+        }
     ),
 };
 
@@ -48,7 +51,7 @@ describe('FileService', () => {
 
             expect(multer).toHaveBeenCalledWith(expect.objectContaining({
                 storage: expect.anything(),
-                limits: { fileSize: expect.any(Number) },
+                limits: {fileSize: expect.any(Number)},
                 fileFilter: expect.any(Function)
             }));
 
@@ -65,7 +68,7 @@ describe('FileService', () => {
 
             expect(multer).toHaveBeenCalledWith(expect.objectContaining({
                 storage: expect.anything(),
-                limits: { fileSize: expect.any(Number) },
+                limits: {fileSize: expect.any(Number)},
                 fileFilter: expect.any(Function)
             }));
 
@@ -75,7 +78,7 @@ describe('FileService', () => {
         test('следует вызвать функцию next(), если загрузка файла прошла успешно', () => {
 
             const uploadMiddleware = fileService.uploadSingleFile();
-            const mockRequestWithFile: Partial<Request> = { file: { mimetype: 'image/jpeg' } as Express.Multer.File };
+            const mockRequestWithFile: Partial<Request> = {file: {mimetype: 'image/jpeg'} as Express.Multer.File};
 
             uploadMiddleware(mockRequestWithFile as Request, mockResponse as Response, mockNext as NextFunction);
 
@@ -83,15 +86,17 @@ describe('FileService', () => {
         });
 
         test('должен возвращать код состояния 400, если указан недопустимый тип файла', () => {
-            
             const uploadMiddleware = fileService.uploadSingleFile();
-            const mockRequestWithInvalidFile: Partial<Request> = { file: { mimetype: 'text/plain' } as Express.Multer.File };
-            const mockResponseWithStatus = { status: jest.fn(() => mockResponseWithStatus), json: jest.fn() } as unknown as Response;
+            const mockRequestWithInvalidFile: Partial<Request> = {file: {mimetype: 'text/plain'} as Express.Multer.File};
+            const mockResponseWithStatus = {
+                status: jest.fn(() => mockResponseWithStatus),
+                json: jest.fn()
+            } as unknown as Response;
 
             uploadMiddleware(mockRequestWithInvalidFile as Request, mockResponseWithStatus, mockNext as NextFunction);
 
             expect(mockResponseWithStatus.status).toHaveBeenCalledWith(400);
-            expect(mockResponseWithStatus.json).toHaveBeenCalledWith({ message: 'Недопустимый тип файла. Разрешены только изображения форматов JPEG, PNG и JPG.' });
+            expect(mockResponseWithStatus.json).toHaveBeenCalledWith({message: 'Недопустимый тип файла. Разрешены только изображения форматов JPEG, PNG и JPG.'});
         });
     });
 });
