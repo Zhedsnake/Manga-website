@@ -18,14 +18,6 @@ class FileService {
         });
     }
 
-    fileFilterConfig(req: Request, file: Express.Multer.File, cb: FileFilterCallback) {
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-            cb(null, true);
-        } else {
-            cb(new Error('Недопустимый тип файла. Разрешены только изображения форматов JPEG, PNG и JPG.'));
-        }
-    }
-
     async deleteFile(filePath: string) {
         await fs.promises.unlink(filePath);
     }
@@ -46,27 +38,30 @@ class FileService {
         const upload = multer({
             storage: this.disk(),
             limits: {fileSize: 1024 * 1024 * FILE_SIZE},
-            fileFilter: this.fileFilterConfig,
         });
 
         return (req: Request, res: Response, next: NextFunction) => {
-            upload.single('avatar')(req, res, async (err: any) => {
+            try {
+                upload.single('avatar')(req, res, async (err: any) => {
 
-                if (err) {
+                    if (err) {
 
-                    if (req.file) {
-                        await this.deleteFile(req.file.path);
+                        if (req.file) {
+                            await this.deleteFile(req.file.path);
+                        }
+
+                        return res.status(400).json({error: err.message});
                     }
 
-                    return res.status(400).json({error: err.message});
-                }
+                    if (req.file) {
 
-                if (req.file) {
+                        next();
 
-                    next();
-
-                }
-            });
+                    }
+                });
+            } catch (error) {
+                return res.status(400).json({error: error})
+            }
         };
     }
 }
