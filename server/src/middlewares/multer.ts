@@ -1,9 +1,8 @@
-import multer, {FileFilterCallback} from 'multer';
+import multer from 'multer';
 import {Request, Response, NextFunction} from 'express';
-import sharp, {Metadata} from 'sharp';
 import fs from 'fs';
 
-const FILE_SIZE = 3.68; // 3.68MB
+const FILE_SIZE_LIMIT = 3.68 * 1024 * 1024; // 3.68 MB in bytes
 
 class FileService {
 
@@ -13,7 +12,7 @@ class FileService {
                 cb(null, '/tmp');
             },
             filename: function (req, file, cb) {
-                cb(null, file.originalname + '-' + Date.now());
+                cb(null, file.originalname);
             },
         });
     }
@@ -37,31 +36,31 @@ class FileService {
     uploadUserAvatar() {
         const upload = multer({
             storage: this.disk(),
-            limits: {fileSize: 1024 * 1024 * FILE_SIZE},
+            limits: {fileSize: FILE_SIZE_LIMIT },
         });
 
         return (req: Request, res: Response, next: NextFunction) => {
-            try {
-                upload.single('avatar')(req, res, async (err: any) => {
+            upload.single('avatar')(req, res, async (err: any) => {
 
-                    if (err) {
-
-                        if (req.file) {
-                            await this.deleteFile(req.file.path);
-                        }
-
-                        return res.status(400).json({error: err.message});
+                if (err) {
+                    if (err.code === 'LIMIT_FILE_SIZE') {
+                        return res.status(400).json({ error: 'Размер файла не должен превышать 3.68 MB.' });
                     }
 
                     if (req.file) {
-
-                        next();
-
+                        await this.deleteFile(req.file.path);
                     }
-                });
-            } catch (error) {
-                return res.status(400).json({error: error})
-            }
+
+                    return res.status(400).json({error: err.message});
+                }
+
+                if (req.file) {
+
+                    console.log('File size:', req.file.size);
+                    next();
+
+                }
+            });
         };
     }
 }
