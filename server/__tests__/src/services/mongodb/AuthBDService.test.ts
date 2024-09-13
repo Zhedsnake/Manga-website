@@ -1,7 +1,8 @@
-import { Model, Document } from "mongoose";
-import {AuthBDService} from "../../../../src/services/mongodb/AuthBDService";
+import { Model } from "mongoose";
+import { AuthBDService } from "../../../../src/services/mongodb/AuthBDService";
 import userModel, { userType } from "../../../../src/models/userModel";
 import { guestModel, guestType } from "../../../../src/models/guestModel";
+import {connectDB} from "../../../../src/config/db";
 
 jest.mock("../../../../src/models/userModel");
 jest.mock("../../../../src/models/guestModel");
@@ -10,23 +11,38 @@ const mockUserModel = userModel as jest.Mocked<Model<userType>>;
 const mockGuestModel = guestModel as jest.Mocked<Model<guestType>>;
 
 describe("AuthBDService", () => {
-    beforeEach(() => {
+    let authService: AuthBDService
+
+    beforeAll(async () => {
+        authService = new AuthBDService();
+
+        if (!process.env.DB_TEST_URL) {
+            return
+        }
+
+        const mongo_url = process.env.DB_TEST_URL;
+
+        await connectDB(mongo_url);
+    })
+
+    beforeEach(async () => {
         jest.clearAllMocks();
+
+        await userModel.deleteMany({});
+        await guestModel.deleteMany({});
+    });
+
+    afterAll(async () => {
+        // await disconnectDB();
     });
 
     test("createGuest должен возвращать идентификатор", async () => {
-        const mockSave = jest.fn().mockResolvedValue({});
-        const mockId = "mockGuestId";
-        const mockNewGuest = { save: mockSave, id: mockId } as unknown as guestType;
+        const guest = new guestModel({});
+        await guest.save();
 
-        mockGuestModel.prototype.save = mockSave;
-
-        jest.spyOn(mockGuestModel.prototype, 'save').mockResolvedValue(mockNewGuest);
-
-        const authService = new AuthBDService();
         const result = await authService.createGuest();
 
-        expect(result).toEqual({ id: mockId });
+        expect(result).toEqual({ id: guest.id });
     });
 
     // test("register should return an id", async () => {
