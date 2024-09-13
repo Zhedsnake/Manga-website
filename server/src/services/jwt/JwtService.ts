@@ -1,4 +1,5 @@
-import jwt, {JwtPayload} from 'jsonwebtoken';
+import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
+import 'dotenv/config';
 
 class JwtService {
     private secret: string;
@@ -11,35 +12,23 @@ class JwtService {
         this.secret = jwt_secret;
     }
 
-
     getGuestToken(id: string): string {
-
         const payload = {
-            guest: {
-                id: id,
-            },
+            guest: { id },
         };
-
-        const token: string = jwt.sign(payload, this.secret);
-        return token;
+        return jwt.sign(payload, this.secret);
     }
 
     getUserToken(id: string): string {
-
         const payload = {
-            user: {
-                id: id,
-            },
+            user: { id },
         };
-
-        const token: string = jwt.sign(payload, this.secret, { expiresIn: "30d" });
-        return token;
+        return jwt.sign(payload, this.secret, { expiresIn: '30d' });
     }
 
     decode(token: string): string | null {
         try {
             const decoded = jwt.verify(token, this.secret) as JwtPayload & { guest?: { id: string }, user?: { id: string } };
-
             if (decoded.guest) {
                 return decoded.guest.id;
             } else if (decoded.user) {
@@ -48,7 +37,7 @@ class JwtService {
                 return null;
             }
         } catch (err) {
-            if (err instanceof jwt.TokenExpiredError) {
+            if (err instanceof TokenExpiredError) {
                 return null;
             } else {
                 return null;
@@ -56,5 +45,7 @@ class JwtService {
         }
     }
 }
+
+export { JwtService };
 
 export default new JwtService();
