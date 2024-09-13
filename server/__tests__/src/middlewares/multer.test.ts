@@ -72,7 +72,7 @@ describe('FileService uploadUserAvatar', () => {
     test('следует удалить файл при любой другой ошибке', async () => {
         const uploadSingleMock = jest.fn((req, res, cb) => {
             const error = new Error('Some error');
-            cb(error); // передаем ошибку
+            cb(error);
         });
         (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
