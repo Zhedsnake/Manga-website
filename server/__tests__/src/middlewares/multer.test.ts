@@ -1,5 +1,5 @@
 import FileService from '../../../src/middlewares/multer';
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
 import multer from 'multer';
 import fs from 'fs';
 
@@ -41,7 +41,7 @@ describe('FileService uploadUserAvatar', () => {
 
     test('следует вызвать next, когда файл будет успешно загружен', async () => {
         const uploadSingleMock = jest.fn((req, res, cb) => cb(null));
-        (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({ single: jest.fn(() => uploadSingleMock) });
+        (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
         const middleware = fileService.uploadUserAvatar();
         await middleware(req as Request, res as Response, next);
@@ -59,14 +59,28 @@ describe('FileService uploadUserAvatar', () => {
             (error as any).code = 'LIMIT_FILE_SIZE';
             cb(error);
         });
-        (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({ single: jest.fn(() => uploadSingleMock) });
+        (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
         const middleware = fileService.uploadUserAvatar();
         await middleware(req as Request, res as Response, next);
 
         expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.json).toHaveBeenCalledWith({ error: 'Размер файла не должен превышать 3.68 MB.' });
+        expect(res.json).toHaveBeenCalledWith({error: 'Размер файла не должен превышать 3.68 MB.'});
         expect(next).not.toHaveBeenCalled();
+    });
+
+    test('следует удалить файл при любой другой ошибке', async () => {
+        const uploadSingleMock = jest.fn((req, res, cb) => {
+            const error = new Error('Some error');
+            cb(error); // передаем ошибку
+        });
+        (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
+
+        const middleware = fileService.uploadUserAvatar();
+
+        await middleware(req as Request, res as Response, next);
+
+        expect(fs.promises.unlink).toHaveBeenCalledWith(req.file?.path);
     });
 
 });
