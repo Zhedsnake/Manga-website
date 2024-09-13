@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import ProtectService from "../middlewares/ProtectService";
 import EditUserInfoController from "../controllers/EditUserInfoController";
-import FileService from "../middlewares/multer";
+import FileService from "../middlewares/FileService";
 
 const editUserRouter = Router();
 const fileService = new FileService();
