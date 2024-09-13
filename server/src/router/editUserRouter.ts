@@ -4,6 +4,7 @@ import EditUserInfoController from "../controllers/EditUserInfoController";
 import FileService from "../middlewares/multer";
 
 const editUserRouter = Router();
+const fileService = new FileService();
 
 editUserRouter.put('/edit-user-name-by-token', ProtectService.checkUserToken, EditUserInfoController.EditUserNameByToken);
 editUserRouter.put('/edit-user-email-by-token', ProtectService.checkUserToken, EditUserInfoController.EditUserEmailByToken);
@@ -12,7 +13,7 @@ editUserRouter.put('/edit-user-password-by-token', ProtectService.checkUserToken
 editUserRouter.put(
     '/edit-user-avatar-by-token',
     ProtectService.checkUserToken,
-    FileService.uploadSingleFile,
+    fileService.uploadUserAvatar(),
     EditUserInfoController.EditUserAvatarByToken
 );
 
