@@ -24,6 +24,10 @@ describe('JwtService', () => {
         jwtService = new JwtService();
     });
 
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('должен успешно создать guest токен', () => {
         const id = 'guest123';
         const mockToken = 'mockGuestToken';
@@ -35,6 +39,23 @@ describe('JwtService', () => {
         expect(token).toBe(mockToken);
 
         const mockDecodedPayload = { guest: { id } };
+        (jwt.verify as jest.Mock).mockReturnValue(mockDecodedPayload);
+
+        const decoded = jwtService.decode(token);
+        expect(decoded).toBe(id);
+    });
+
+    test('должен успешно создать user токен', () => {
+        const id = 'user123';
+        const mockToken = 'mockUserToken';
+
+        (jwt.sign as jest.Mock).mockReturnValue(mockToken);
+
+        const token = jwtService.getUserToken(id);
+
+        expect(token).toBe(mockToken);
+
+        const mockDecodedPayload = { user: { id } };
         (jwt.verify as jest.Mock).mockReturnValue(mockDecodedPayload);
 
         const decoded = jwtService.decode(token);
