@@ -47,4 +47,6 @@ class AuthBDService {
     }
 }
 
+export {AuthBDService};
+
 export default new AuthBDService();
