@@ -11,6 +11,7 @@ jest.mock('jsonwebtoken', () => {
         TokenExpiredError: actualJwt.TokenExpiredError
     };
 });
+
 describe('JwtService', () => {
     let jwtService: JwtService;
     let originalEnv: NodeJS.ProcessEnv;

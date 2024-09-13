@@ -41,7 +41,6 @@ class FileService {
 
         return (req: Request, res: Response, next: NextFunction) => {
             upload.single('avatar')(req, res, async (err: any) => {
-
                 if (err) {
                     if (err.code === 'LIMIT_FILE_SIZE') {
                         return res.status(400).json({ error: 'Размер файла не должен превышать 3.68 MB.' });
@@ -51,14 +50,11 @@ class FileService {
                         await this.deleteFile(req.file.path);
                     }
 
-                    return res.status(400).json({error: err.message});
+                    return res.status(400).json({ error: err.message });
                 }
 
                 if (req.file) {
-
-                    console.log('File size:', req.file.size);
                     next();
-
                 }
             });
         };
