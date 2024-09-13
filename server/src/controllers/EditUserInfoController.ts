@@ -65,11 +65,11 @@ class EditUserInfoController {
     async EditUserAvatarByToken(req: Request, res: Response) {
         try {
             const userId: string = req.headers['user-id'] as string;
-            const userAvatar = req.files;
+            const userAvatar = req.file;
 
             const userInfoResponse
                 : void | {error: string} | {message: string}
-                = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File[] });
+                = await EditUserInfoService.EditUserAvatarByToken(userId, { file: userAvatar as Express.Multer.File});
 
             if ( userInfoResponse && "message" in userInfoResponse) {
                 return res.status(200).send(userInfoResponse);
