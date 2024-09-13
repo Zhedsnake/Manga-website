@@ -94,9 +94,9 @@ class EditUserInfoService {
         }
     }
 
-    async EditUserAvatarByToken( userId: string, avatar: { file: UploadedImageByMulter[] }): Promise<void | { error: string } | { message: string }> {
+    async EditUserAvatarByToken( userId: string, avatar: { file: UploadedImageByMulter }): Promise<void | { error: string } | { message: string }> {
 
-        const avatarFile = avatar.file[0];
+        const avatarFile = avatar.file;
         const avatarBuffer: string = avatarFile.path;
 
         const verificationResponse: { error: string } | null = await VerificationService.VerifyEditAvatar(avatar.file);
