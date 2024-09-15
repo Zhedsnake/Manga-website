@@ -1,4 +1,4 @@
-import { connectDB } from "../../config/db";
+import { connectDB, disconnectDB } from "../../config/db";
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
@@ -8,9 +8,10 @@ jest.mock('mongoose', () => ({
             host: 'mockedHost',
         },
     }),
+    disconnect: jest.fn().mockResolvedValue(undefined),
 }));
 
-describe('connectDB', () => {
+describe('MongoDB connection', () => {
 
     test('должен подключаться к MongoDB с правильным URL', async () => {
         if (!process.env.DB_TEST_URL) {
@@ -24,7 +25,7 @@ describe('connectDB', () => {
         expect(mongoose.connect).toHaveBeenCalledWith(mongo_url);
     });
 
-    test('должено выводиться в консоль сообщение об подключении к mongodb', async () => {
+    test('должно выводиться в консоль сообщение о подключении к MongoDB', async () => {
         if (!process.env.DB_TEST_URL) {
             return;
         }
@@ -36,6 +37,22 @@ describe('connectDB', () => {
         await connectDB(mongo_url);
 
         expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('MongoDB Connected: mockedHost'));
+
+        consoleSpy.mockRestore();
+    });
+
+    test('должен отключаться от MongoDB', async () => {
+        await disconnectDB();
+
+        expect(mongoose.disconnect).toHaveBeenCalled();
+    });
+
+    test('должно выводиться в консоль сообщение об отключении от MongoDB', async () => {
+        const consoleSpy = jest.spyOn(console, 'log');
+
+        await disconnectDB();
+
+        expect(consoleSpy).toHaveBeenCalledWith('MongoDB Disconnected');
 
         consoleSpy.mockRestore();
     });

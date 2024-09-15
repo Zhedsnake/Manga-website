@@ -7,3 +7,7 @@ export const connectDB = async (mongo_url: string) => {
 };
 
 
+export const disconnectDB = async () => {
+    await mongoose.disconnect();
+    console.log('MongoDB Disconnected');
+};
