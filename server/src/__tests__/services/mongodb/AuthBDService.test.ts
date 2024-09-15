@@ -1,5 +1,5 @@
 import { AuthBDService } from "../../../services/mongodb/AuthBDService";
-import { connectDB } from "../../../config/db";
+import {connectDB, disconnectDB} from "../../../config/db";
 
 import userModel, { userType } from "../../../models/userModel";
 import { guestModel, guestType } from "../../../models/guestModel";
@@ -29,7 +29,7 @@ describe("AuthBDService", () => {
     });
 
     afterAll(async () => {
-        // await disconnectDB();
+        await disconnectDB();
     });
 
     test("createGuest должен возвращать идентификатор", async () => {
