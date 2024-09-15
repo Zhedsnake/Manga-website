@@ -1,11 +1,11 @@
-import ProtectService from "../../../src/middlewares/ProtectService";
-import JwtService from "../../../src/services/jwt/JwtService";
-import userBDService from "../../../src/services/mongodb/UserBDService";
+import ProtectService from "../../middlewares/ProtectService";
+import JwtService from "../../services/jwt/JwtService";
+import userBDService from "../../services/mongodb/UserBDService";
 import { Request, Response, NextFunction } from "express";
 import sharp from "sharp";
 
-jest.mock("../../../src/services/jwt/JwtService");
-jest.mock("../../../src/services/mongodb/UserBDService");
+jest.mock("../../services/jwt/JwtService");
+jest.mock("../../services/mongodb/UserBDService");
 
 describe("ProtectService - checkUserToken", () => {
     let req: Partial<Request>;

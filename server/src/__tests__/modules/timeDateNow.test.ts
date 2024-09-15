@@ -1,4 +1,4 @@
-import { timeDateNow } from '../../../src/modules/timeDateNow';
+import { timeDateNow } from '../../modules/timeDateNow';
 import MockDate from 'mockdate';
 
 describe('timeDateNow', () => {

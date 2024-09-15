@@ -1,6 +1,6 @@
 import sharp from 'sharp';
-import { UploadedImageByMulter } from '../../../../src/types/uploadedImageByMulter';
-import SharpService from '../../../../src/services/Sharp/SharpService';
+import { UploadedImageByMulter } from '../../../types/uploadedImageByMulter';
+import SharpService from '../../../services/Sharp/SharpService';
 import mockFs from 'mock-fs';
 
 // Мокаем sharp и его методы вручную

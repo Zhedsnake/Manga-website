@@ -1,4 +1,4 @@
-import CloudinaryService from '../../../../src/services/cloudinary/CloudinaryService';
+import CloudinaryService from '../../../services/cloudinary/CloudinaryService';
 import { v2 as cloudinary } from 'cloudinary';
 
 jest.mock('cloudinary', () => ({

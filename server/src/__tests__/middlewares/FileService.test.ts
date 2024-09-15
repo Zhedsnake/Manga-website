@@ -1,4 +1,4 @@
-import FileService from '../../../src/middlewares/FileService';
+import FileService from '../../middlewares/FileService';
 import {Request, Response, NextFunction} from 'express';
 import multer from 'multer';
 import fs from 'fs';

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import {JwtService} from '../../../../src/services/jwt/JwtService';
+import {JwtService} from '../../../services/jwt/JwtService';
 import 'dotenv/config';
 
 jest.mock('jsonwebtoken', () => {
