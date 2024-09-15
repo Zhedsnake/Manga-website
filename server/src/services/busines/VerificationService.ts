@@ -7,22 +7,22 @@ import AuthBDService from "../mongodb/AuthBDService";
 
 
 class VerificationService {
-    private salt: string;
-
-    constructor() {
-        this.salt = '';
-        this.initSalt();
-    }
-
-    private async initSalt() {
-        const salt: string | undefined = process.env.SALT;
-        if (!salt) {
-            throw new Error('JWT_SECRET is not defined');
-        }
-
-        const saltRounds: number = parseInt(salt);
-        this.salt = await bcrypt.genSalt(saltRounds);
-    }
+    // private salt: string;
+    //
+    // constructor() {
+    //     this.salt = '';
+    //     this.initSalt();
+    // }
+    //
+    // private async initSalt() {
+    //     const salt: string | undefined = process.env.SALT;
+    //     if (!salt) {
+    //         throw new Error('JWT_SECRET is not defined');
+    //     }
+    //
+    //     const saltRounds: number = parseInt(salt);
+    //     this.salt = await bcrypt.genSalt(saltRounds);
+    // }
 
 
     async VerifySupWebp(webpTest: string): Promise<{error: string} | null>{
