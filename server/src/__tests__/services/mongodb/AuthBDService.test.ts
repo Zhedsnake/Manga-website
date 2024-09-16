@@ -21,7 +21,7 @@ describe("AuthBDService", () => {
         await connectDB(mongoUrl);
     });
 
-    afterEach(async () => {
+    beforeEach(async () => {
         jest.clearAllMocks();
 
         await userModel.deleteMany({});
