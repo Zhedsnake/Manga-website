@@ -4,26 +4,11 @@ import userBDService from "../mongodb/UserBDService";
 import UserBDService from "../mongodb/UserBDService";
 import bcrypt from "bcrypt";
 import AuthBDService from "../mongodb/AuthBDService";
+import BcryptService from "../bcrypt/BcryptService";
+import SharpService from "../Sharp/SharpService";
 
 
 class VerificationService {
-    // private salt: string;
-    //
-    // constructor() {
-    //     this.salt = '';
-    //     this.initSalt();
-    // }
-    //
-    // private async initSalt() {
-    //     const salt: string | undefined = process.env.SALT;
-    //     if (!salt) {
-    //         throw new Error('JWT_SECRET is not defined');
-    //     }
-    //
-    //     const saltRounds: number = parseInt(salt);
-    //     this.salt = await bcrypt.genSalt(saltRounds);
-    // }
-
 
     async VerifySupWebp(webpTest: string): Promise<{error: string} | null>{
 
@@ -81,7 +66,7 @@ class VerificationService {
         }
 
         if ("password" in user && "id" in user) {
-            const isMatch: boolean = await bcrypt.compare(prop.password, user.password);
+            const isMatch: boolean = await BcryptService.Compare(prop.password, user.password);
 
             if (!isMatch) {
                 return {error: 'Имя или пароль некорректны'};
@@ -97,17 +82,17 @@ class VerificationService {
             return { error: "Не указано имя" };
         }
 
-        const userExists: true | null = await userBDService.findOneUser(prop);
-        if (userExists === true) {
-            return { error: "Пользователь с таким именем уже существует" };
-        }
-
         if (userName.length < 4) {
             return { error: "Имя должно содержать не менее 4 символов" };
         }
 
         if (userName.length > 10) {
             return { error: "Имя должно содержать не более 10 символов" };
+        }
+
+        const userExists: true | null = await userBDService.findOneUser(prop);
+        if (userExists === true) {
+            return { error: "Пользователь с таким именем уже существует" };
         }
 
         return null;
@@ -119,15 +104,15 @@ class VerificationService {
             return {error: "Не указано email"};
         }
 
-        const userExists: true | null = await userBDService.findOneUser(prop);
-        if (userExists === true) {
-            return { error: "Пользователь с таким email уже существует" };
-        }
-
         const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(userEmail)) {
             return { error: "Некорректный формат email" };
+        }
+
+        const userExists: true | null = await userBDService.findOneUser(prop);
+        if (userExists === true) {
+            return { error: "Пользователь с таким email уже существует" };
         }
 
         return null
@@ -180,6 +165,8 @@ class VerificationService {
         if (verificationResponse && "error" in verificationResponse) {
             return verificationResponse;
         }
+
+        return null
     }
 
     async VerifyEditEmail(userEmail: string, prop: { [key: string]: string }): Promise<{ error: string } | null | undefined> {
@@ -188,6 +175,8 @@ class VerificationService {
         if (verificationResponse && "error" in verificationResponse) {
             return verificationResponse;
         }
+
+        return null
     }
 
     async VerifyEditPassword(userId:string, userNewPassword: string, userOldPassword: string){
@@ -208,7 +197,7 @@ class VerificationService {
 
         if (findUser && "password" in findUser) {
 
-            const isMatch: boolean = await bcrypt.compare(userOldPassword, findUser.password);
+            const isMatch: boolean = await BcryptService.Compare(userOldPassword, findUser.password);
 
             if (!isMatch) {
                 return {error: 'Старый пароль некорректен'};
@@ -229,7 +218,7 @@ class VerificationService {
             return { error: 'Изображение должно быть в формате jpg или png' };
         }
 
-        const metadata = await sharp(avatarFile.path).metadata();
+        const metadata = await SharpService.GetWidthAndHeight(avatarFile);
 
         if (metadata.width !== metadata.height) {
             return { error: 'Изображение должно иметь соотношение сторон 1:1.' };
