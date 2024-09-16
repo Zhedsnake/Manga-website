@@ -1,4 +1,5 @@
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import 'dotenv/config';
 
 class CloudinaryService {
     constructor() {

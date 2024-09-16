@@ -1,53 +1,40 @@
 import CloudinaryService from '../../../services/cloudinary/CloudinaryService';
 import { v2 as cloudinary } from 'cloudinary';
-
-jest.mock('cloudinary', () => ({
-    v2: {
-        config: jest.fn(),
-        uploader: {
-            upload: jest.fn(),
-        },
-        api: {
-            delete_resources_by_prefix: jest.fn(),
-        },
-    },
-}));
+import path from 'path';
+import fs from 'fs';
+import 'dotenv/config';
 
 describe('CloudinaryService', () => {
-    const mockUploadResponse = {
-        public_id: 'mock-public-id',
-        secure_url: 'https://mock-url.com/image.png',
-    };
+    const testFolder = 'test-folder';
+    let imagePath: string;
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+    beforeAll(() => {
+        imagePath = path.resolve(__dirname, '../../images/1x1.png');
+
+        if (!fs.existsSync(imagePath)) {
+            throw new Error('Тестовое изображение отсутствует');
+        }
     });
 
-    test('следует правильно загружать изображение', async () => {
-        (cloudinary.uploader.upload as jest.Mock).mockResolvedValue(mockUploadResponse);
-
-        const imagePath = 'path/to/image.png';
-        const originalname = 'image.png';
-        const folder = 'test-folder';
-
-        const result = await CloudinaryService.uploadImage(imagePath, originalname, folder);
-
-        expect(cloudinary.uploader.upload).toHaveBeenCalledWith(imagePath, {
-            public_id: expect.any(String),
-            folder: folder,
-            format: 'png',
-        });
-
-        expect(result).toEqual(mockUploadResponse);
+    afterAll(async () => {
+        await CloudinaryService.ClearImages(testFolder);
     });
 
-    test('следует правильно очищать изображения', async () => {
-        (cloudinary.api.delete_resources_by_prefix as jest.Mock).mockResolvedValue({});
+    test('следует загружать изображение в Cloudinary', async () => {
+        const originalname = 'test-image.png';
 
-        const folder = 'test-folder';
+        const result = await CloudinaryService.uploadImage(imagePath, originalname, testFolder);
 
-        await CloudinaryService.ClearImages(folder);
+        expect(result).toHaveProperty('public_id');
+        expect(result).toHaveProperty('secure_url');
+        expect(result.secure_url).toContain('https://');
+    });
 
-        expect(cloudinary.api.delete_resources_by_prefix).toHaveBeenCalledWith(`${folder}/`);
+    test('следует удалять изображения в Cloudinary', async () => {
+        await CloudinaryService.ClearImages(testFolder);
+
+        const result = await cloudinary.api.resources({ type: 'upload', prefix: `${testFolder}/` });
+
+        expect(result.resources.length).toBe(0);
     });
 });
