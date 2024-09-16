@@ -3,17 +3,17 @@ import {UploadedImageByMulter} from "../../types/uploadedImageByMulter";
 
 class SharpService {
 
-    async CompileImageInThreeFormats(imageBuffer: string, avatarFile: UploadedImageByMulter): Promise<{minimizedFilePath: string, webpFilePath: string, minimizedWebpFilePath: string}> {
+    async CompileImageInThreeFormats(imagePath: string, avatarFile: UploadedImageByMulter): Promise<{minimizedFilePath: string, webpFilePath: string, minimizedWebpFilePath: string}> {
 
         // webp
-        const webpImageBuffer = await sharp(imageBuffer)
+        const webpImageBuffer = await sharp(imagePath)
             .webp()
             .toBuffer();
         const webpFilePath = `/tmp/${avatarFile.filename.split('.')[0]}.webp`;
         await sharp(webpImageBuffer).toFile(webpFilePath);
 
         // 480p (minimized)
-        const resizedImageBuffer = await sharp(imageBuffer)
+        const resizedImageBuffer = await sharp(imagePath)
             .resize(480, 480, { fit: 'cover' })
             .toBuffer();
         const resizedFilePath = `/tmp/${avatarFile.filename.split('.')[0]}-480p.${avatarFile.mimetype.split('/')[1]}`;
