@@ -27,6 +27,12 @@ class SharpService {
 
         return {webpFilePath: webpFilePath, minimizedFilePath: resizedFilePath, minimizedWebpFilePath: webpResizedFilePath};
     }
+
+    async GetWidthAndHeight(file: UploadedImageByMulter){
+        const metadata = await sharp(file.path).metadata()
+
+        return {width: metadata.width, height: metadata.height}
+    }
 }
 
 export default new SharpService();
