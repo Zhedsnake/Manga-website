@@ -1,27 +1,10 @@
 import JwtService from "../jwt/JwtService";
-import UserBDService from "../mongodb/UserBDService";
-import bcrypt from "bcrypt";
-import GuestBDService from "../mongodb/GuestBDService";
 import AuthBDService from "../mongodb/AuthBDService";
 import VerificationService from "./VerificationService";
+import 'dotenv/config'
+import BcryptService from "../bcrypt/BcryptService";
 
 class AuthService {
-    private salt: string;
-
-    constructor() {
-        this.salt = '';
-        this.initSalt();
-    }
-
-    private async initSalt() {
-        const salt: string | undefined = process.env.SALT;
-        if (!salt) {
-            throw new Error('JWT_SECRET is not defined');
-        }
-
-        const saltRounds: number = parseInt(salt);
-        this.salt = await bcrypt.genSalt(saltRounds);
-    }
 
     async getGuestToken (): Promise<{guestToken: string} | undefined> {
         const guestId: { id: string } | null = await AuthBDService.createGuest();
@@ -39,7 +22,7 @@ class AuthService {
             return verificationResponse;
         }
 
-        const hashedPassword: string = await bcrypt.hash(password, this.salt);
+        const hashedPassword: string = await BcryptService.Hash(password)
 
         const prop = {name: name, email: email, password: hashedPassword};
 
