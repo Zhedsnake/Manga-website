@@ -8,25 +8,10 @@ import * as fs from "node:fs";
 import VerificationService from "./VerificationService";
 import {UploadedImageByMulter} from "../../types/uploadedImageByMulter";
 import * as path from "node:path";
+import BcryptService from "../bcrypt/BcryptService";
 
 
 class EditUserInfoService {
-    private salt: string;
-
-    constructor() {
-        this.salt = '';
-        this.initSalt();
-    }
-
-    private async initSalt() {
-        const salt: string | undefined = process.env.SALT;
-        if (!salt) {
-            throw new Error('JWT_SECRET is not defined');
-        }
-
-        const saltRounds: number = parseInt(salt);
-        this.salt = await bcrypt.genSalt(saltRounds);
-    }
 
     private async cleanupTmpDir() {
         try {
@@ -84,7 +69,7 @@ class EditUserInfoService {
             return verificationResponse;
         }
 
-        const hashedPassword: string = await bcrypt.hash(userNewPassword, this.salt);
+        const hashedPassword: string = await BcryptService.Hash(userNewPassword);
 
         const hashedUpdates = {password: hashedPassword};
 
@@ -97,11 +82,11 @@ class EditUserInfoService {
     async EditUserAvatarByToken( userId: string, avatar: { file: UploadedImageByMulter }): Promise<void | { error: string } | { message: string }> {
 
         const avatarFile = avatar.file;
-        const avatarBuffer: string = avatarFile.path;
+        const avatarPath: string = avatarFile.path;
 
         const verificationResponse: { error: string } | null = await VerificationService.VerifyEditAvatar(avatar.file);
         if (verificationResponse && "error" in verificationResponse) {
-            await fs.promises.unlink(avatarBuffer);
+            await fs.promises.unlink(avatarPath);
 
             return verificationResponse;
         }
@@ -110,7 +95,7 @@ class EditUserInfoService {
             minimizedFilePath,
             webpFilePath,
             minimizedWebpFilePath
-        } = await SharpService.CompileImageInThreeFormats(avatarBuffer, avatarFile)
+        } = await SharpService.CompileImageInThreeFormats(avatarPath, avatarFile)
 
         const avatarsArray:({ path: string })[]  = [
             {path: avatarFile.path},
