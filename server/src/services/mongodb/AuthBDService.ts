@@ -23,7 +23,7 @@ class AuthBDService {
         return null
     }
 
-    async register(prop: { name: string, password: string, email: string }): Promise<{ id: string } | null> {
+    async register(prop: Record<string, any>): Promise<{ id: string } | null> {
 
         const newUser = new this.userModel(prop);
 

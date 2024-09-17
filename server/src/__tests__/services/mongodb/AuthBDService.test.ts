@@ -1,8 +1,8 @@
 import { AuthBDService } from "../../../services/mongodb/AuthBDService";
 import {connectDB, disconnectDB} from "../../../config/db";
 
-import userModel, { userType } from "../../../models/userModel";
-import { guestModel, guestType } from "../../../models/guestModel";
+import userModel from "../../../models/userModel";
+import { guestModel } from "../../../models/guestModel";
 import 'dotenv/config'
 
 
@@ -29,6 +29,8 @@ describe("AuthBDService", () => {
     });
 
     afterAll(async () => {
+        await userModel.deleteMany({});
+        await guestModel.deleteMany({});
         await disconnectDB();
     });
 
