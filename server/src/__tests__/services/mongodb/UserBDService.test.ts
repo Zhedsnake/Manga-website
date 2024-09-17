@@ -1,37 +1,28 @@
-import userModel, { userType } from "../../../models/userModel";
+import userModel from "../../../models/userModel";
 import 'dotenv/config';
 import UserBDService from '../../../services/mongodb/UserBDService';
 import { connectDB, disconnectDB } from "../../../config/db";
 import AuthBDService from "../../../services/mongodb/AuthBDService";
 import MockDate from 'mockdate';
-import * as mockDate from "mockdate";
 
 
 describe('UserBDService', () => {
 
     beforeAll(async () => {
-        // const mockDate = new Date('2024-09-17T07:09:57.367Z');
-        // MockDate.set(mockDate);
-
-        const mongoUrl = process.env.DB_TEST_URL;
-
-        if (!mongoUrl) {
-            throw new Error("DB_TEST_URL environment variable is not set");
-        }
-
-        await connectDB(mongoUrl);
+        // const mongoUrl = process.env.DB_TEST_URL;
+        // if (!mongoUrl) {
+        //     throw new Error("DB_TEST_URL environment variable is not set");
+        // }
+        // await connectDB(mongoUrl);
     });
 
     afterAll(async () => {
-        await userModel.deleteMany({});
-        await disconnectDB();
-
-        // MockDate.reset();
+        // await disconnectDB();
     });
 
-    afterEach(async () => {
+    beforeEach(async () => {
         await userModel.deleteMany({});
-    })
+    });
 
     test('должен возвращать информацию о пользователе name + minPic', async () => {
         const name = "Zhed";
@@ -169,7 +160,7 @@ describe('UserBDService', () => {
         const userInfo = await UserBDService.GetUserInfoByTokenWebp(registeredUser!.id);
 
         expect(userInfo).toEqual({
-            picWebp: userRegistrationData.picWebp,  // используем зарегистрированное значение
+            picWebp: userRegistrationData.picWebp,  
             name: userRegistrationData.name,
             email: userRegistrationData.email,
             registeredAt: mockDateValue.toISOString(),
@@ -201,7 +192,10 @@ describe('UserBDService', () => {
 
         expect(foundUser).not.toBeNull();
 
-        expect(foundUser!.name).toBe('Zhed');
+        if (foundUser && "name" in foundUser) {
+            expect(foundUser.name).toBe('Zhed');
+        }
+
     });
 
     test('должен возвращать значение null, если пользователь не существует', async () => {
