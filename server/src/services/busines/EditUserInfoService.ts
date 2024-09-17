@@ -1,5 +1,3 @@
-import UserBDService from "../mongodb/UserBDService";
-import bcrypt from "bcrypt";
 import EditUserInfoBDService from "../mongodb/EditUserInfoBDService";
 import {UploadApiResponse} from "cloudinary";
 import CloudinaryService from "../cloudinary/CloudinaryService";
