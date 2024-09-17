@@ -1,6 +1,6 @@
 import {Model} from "mongoose";
 import userModel, {userType} from "../../models/userModel";
-
+import 'dotenv/config';
 
 class EditUserInfoBDService {
     private model: Model<userType>;
