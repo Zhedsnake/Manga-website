@@ -7,14 +7,15 @@ class UserBDService {
     constructor() {
         this.model = userModel;
     }
-
+    
     async GetSmallUserInfoByTokenNoWebp(userId: string): Promise<{ name: string, minPic?: string, pic?: string } | null> {
         const userData = await this.model.findById(userId).select('pic minPic name -_id');
 
-        if (userData && "name" in userData && "pic" in userData) {
-            if ("minPic" in userData) {
+        if (userData && "name" in userData) {
+
+            if ("minPic" in userData && userData.minPic) {
                 return { name: userData.name, minPic: userData.minPic };
-            } else if (!("minPic" in userData)) {
+            } else if ("pic" in userData && userData.pic) {
                 return { name: userData.name, pic: userData.pic };
             }
         }
@@ -25,10 +26,10 @@ class UserBDService {
     async GetSmallUserInfoByTokenWebp(userId: string): Promise<{ name: string, minPicWebp?: string, pic?: string } | null> {
         const userData = await this.model.findById(userId).select('minPicWebp pic name -_id');
 
-        if (userData && "name" in userData && "pic" in userData) {
-            if ("minPicWebp" in userData) {
+        if (userData && "name" in userData) {
+            if ("minPicWebp" in userData && userData.minPicWebp) {
                 return { name: userData.name, minPicWebp: userData.minPicWebp };
-            } else if (!("minPicWebp" in userData)) {
+            } else if ("pic" in userData && userData.pic) {
                 return { name: userData.name, pic: userData.pic };
             }
         }
