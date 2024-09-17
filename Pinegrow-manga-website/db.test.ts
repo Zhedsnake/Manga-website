@@ -2,14 +2,7 @@ import { connectDB, disconnectDB } from "../../config/db";
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
-jest.mock('mongoose', () => ({
-    connect: jest.fn().mockResolvedValue({
-        connection: {
-            host: 'mockedHost',
-        },
-    }),
-    disconnect: jest.fn().mockResolvedValue(undefined),
-}));
+jest.mock('mongoose');
 
 describe('MongoDB connection', () => {
 
