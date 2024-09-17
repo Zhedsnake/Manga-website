@@ -12,13 +12,13 @@ describe("AuthBDService", () => {
     beforeAll(async () => {
         authService = new AuthBDService();
 
-        const mongoUrl = process.env.DB_TEST_URL;
-
-        if (!mongoUrl) {
-            throw new Error("DB_TEST_URL environment variable is not set");
-        }
-
-        await connectDB(mongoUrl);
+        // const mongoUrl = process.env.DB_TEST_URL;
+        //
+        // if (!mongoUrl) {
+        //     throw new Error("DB_TEST_URL environment variable is not set");
+        // }
+        //
+        // await connectDB(mongoUrl);
     });
 
     beforeEach(async () => {
@@ -31,7 +31,8 @@ describe("AuthBDService", () => {
     afterAll(async () => {
         await userModel.deleteMany({});
         await guestModel.deleteMany({});
-        await disconnectDB();
+
+        // await disconnectDB();
     });
 
     test("createGuest должен возвращать идентификатор", async () => {
