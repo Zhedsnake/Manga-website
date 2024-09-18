@@ -16,12 +16,6 @@ jest.mock('../../../services/cloudinary/CloudinaryService');
 jest.mock('../../../services/Sharp/SharpService');
 jest.mock('../../../services/busines/VerificationService');
 jest.mock('../../../services/bcrypt/BcryptService');
-// jest.mock('fs', () => ({
-//     promises: {
-//         readdir: jest.fn(),
-//         unlink: jest.fn(),
-//     },
-// }));
 
 describe('EditUserInfoService', () => {
     beforeEach(() => {
@@ -96,76 +90,79 @@ describe('EditUserInfoService', () => {
         });
     });
 
-    // describe('EditUserInfoService - EditUserAvatarByToken', () => {
-    //     const userId = 'user-id';
-    //     const avatarFile: UploadedImageByMulter = {
-    //         fieldname: 'avatar',
-    //         originalname: 'avatar.png',
-    //         encoding: '7bit',
-    //         mimetype: 'image/png',
-    //         buffer: Buffer.from(''),
-    //         size: 1024,
-    //         filename: 'avatar.png',
-    //         path: 'C:/temp/avatar.png',
-    //         destination: 'C:/temp'
-    //     };
-    //
-    //     beforeEach(() => {
-    //         jest.clearAllMocks();
-    //         mockFs({
-    //             'C:/temp': {
-    //                 'avatar.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
-    //             },
-    //             '/tmp': {
-    //                 'avatar-480p.png': '', // создаем файл, который ожидается
-    //                 'avatar.webp': '',
-    //                 'avatar-480p.webp': '',
-    //             }
-    //         });
-    //     });
-    //
-    //     afterEach(() => {
-    //         mockFs.restore();
-    //     });
-    //
-    //     test('должен вернуть ошибку при неверной верификации аватара', async () => {
-    //         (VerificationService.VerifyEditAvatar as jest.Mock).mockResolvedValue({ error: 'Invalid avatar' });
-    //
-    //         const result = await EditUserInfoService.EditUserAvatarByToken(userId, { file: avatarFile });
-    //
-    //         expect(VerificationService.VerifyEditAvatar).toHaveBeenCalledWith(avatarFile);
-    //
-    //         expect(fs.existsSync(avatarFile.path)).toBe(false);
-    //
-    //         expect(result).toEqual({ error: 'Invalid avatar' });
-    //     });
-    //
-    //     test('должен обновить аватар пользователя и вернуть сообщение', async () => {
-    //         (VerificationService.VerifyEditAvatar as jest.Mock).mockResolvedValue(null);
-    //
-    //         (SharpService.CompileImageInThreeFormats as jest.Mock).mockResolvedValue({
-    //             minimizedFilePath: '/tmp/avatar-480p.png',
-    //             webpFilePath: '/tmp/avatar.webp',
-    //             minimizedWebpFilePath: '/tmp/avatar-480p.webp',
-    //         });
-    //
-    //         (CloudinaryService.ClearImages as jest.Mock).mockResolvedValue(undefined);
-    //
-    //         (CloudinaryService.uploadImage as jest.Mock).mockResolvedValue({ secure_url: 'https://secure-url' });
-    //
-    //         (EditUserInfoBDService.EditUserAvatarByToken as jest.Mock).mockResolvedValue({ message: 'Avatar updated' });
-    //
-    //         const result = await EditUserInfoService.EditUserAvatarByToken(userId, { file: avatarFile });
-    //
-    //         expect(CloudinaryService.ClearImages).toHaveBeenCalledWith(`Users/Avatars/${userId}`);
-    //         expect(CloudinaryService.uploadImage).toHaveBeenCalledTimes(4);
-    //         expect(EditUserInfoBDService.EditUserAvatarByToken).toHaveBeenCalledWith(userId, {
-    //             pic: 'https://secure-url',
-    //             minPic: 'https://secure-url',
-    //             picWebp: 'https://secure-url',
-    //             minPicWebp: 'https://secure-url',
-    //         });
-    //         expect(result).toEqual({ message: 'Avatar updated' });
-    //     });
-    // });
+    describe('EditUserAvatarByToken', () => {
+
+        const userId = 'user-id';
+        const avatarFile: UploadedImageByMulter = {
+            fieldname: 'avatar',
+            originalname: 'avatar.png',
+            encoding: '7bit',
+            mimetype: 'image/png',
+            buffer: Buffer.from(''),
+            size: 1024,
+            filename: 'avatar.png',
+            path: 'C:/temp/avatar.png',
+            destination: 'C:/temp'
+        };
+
+        beforeEach(() => {
+            jest.clearAllMocks();
+            mockFs({
+                'C:/temp': {
+                    'avatar.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
+                    'avatar-480p.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
+                    'avatar.webp': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
+                    'avatar-480p.webp': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
+                },
+                '/tmp': {
+                },
+            });
+        });
+
+        afterEach(() => {
+            mockFs.restore();
+        });
+
+        test('должен вернуть ошибку при неверной верификации аватара', async () => {
+            (VerificationService.VerifyEditAvatar as jest.Mock).mockResolvedValue({ error: 'Invalid avatar' });
+
+            const result = await EditUserInfoService.EditUserAvatarByToken(userId, { file: avatarFile });
+
+            expect(VerificationService.VerifyEditAvatar).toHaveBeenCalledWith(avatarFile);
+
+            expect(fs.existsSync(avatarFile.path)).toBe(false);
+
+            expect(result).toEqual({ error: 'Invalid avatar' });
+        });
+
+        test('должен обновить аватар пользователя и вернуть сообщение', async () => {
+            (VerificationService.VerifyEditAvatar as jest.Mock).mockResolvedValue(null);
+
+            (SharpService.CompileImageInThreeFormats as jest.Mock).mockResolvedValue({
+                minimizedFilePath: 'C:/temp/avatar-480p.png',
+                webpFilePath: 'C:/temp/avatar.webp',
+                minimizedWebpFilePath: 'C:/temp/avatar-480p.webp',
+            });
+
+            (CloudinaryService.ClearImages as jest.Mock).mockResolvedValue(undefined);
+
+            (CloudinaryService.uploadImage as jest.Mock).mockResolvedValue({ secure_url: 'https://secure-url' });
+
+            (EditUserInfoBDService.EditUserAvatarByToken as jest.Mock).mockResolvedValue({ message: 'Avatar updated' });
+
+            const result = await EditUserInfoService.EditUserAvatarByToken(userId, { file: avatarFile });
+
+            expect(CloudinaryService.ClearImages).toHaveBeenCalledWith(`Users/Avatars/${userId}`);
+
+            expect(CloudinaryService.uploadImage).toHaveBeenCalledTimes(4);
+
+            expect(EditUserInfoBDService.EditUserAvatarByToken).toHaveBeenCalledWith(userId, {
+                pic: 'https://secure-url',
+                minPic: 'https://secure-url',
+                picWebp: 'https://secure-url',
+                minPicWebp: 'https://secure-url',
+            });
+            expect(result).toEqual({ message: 'Avatar updated' });
+        });
+    });
 });
