@@ -12,7 +12,7 @@ class UserService {
 
     > {
 
-        const verificationResponse = VerificationService.VerifySupWebp(webpTest)
+        const verificationResponse: Promise<{ error: string } | null> = VerificationService.VerifySupWebp(webpTest)
         if (verificationResponse && "error" in verificationResponse) {
             return verificationResponse;
         }
@@ -26,6 +26,7 @@ class UserService {
 
     async UpdateUserToken(userId: string): Promise<{ userToken: string }> {
         const userToken = JwtService.getUserToken(userId);
+
         return {userToken: userToken};
     }
 
