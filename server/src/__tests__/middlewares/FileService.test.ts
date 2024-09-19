@@ -11,14 +11,11 @@ jest.mock('fs', () => ({
 }));
 
 describe('FileService uploadUserAvatar', () => {
-    let fileService: FileService;
-
     let req: Partial<Request>;
     let res: Partial<Response>;
     let next: NextFunction;
 
     beforeEach(() => {
-        fileService = new FileService();
 
         req = {
             file: {
@@ -43,7 +40,7 @@ describe('FileService uploadUserAvatar', () => {
         const uploadSingleMock = jest.fn((req, res, cb) => cb(null));
         (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
-        const middleware = fileService.uploadUserAvatar();
+        const middleware = FileService.uploadUserAvatar();
         await middleware(req as Request, res as Response, next);
 
         expect(uploadSingleMock).toHaveBeenCalledWith(req, res, expect.any(Function));
@@ -61,7 +58,7 @@ describe('FileService uploadUserAvatar', () => {
         });
         (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
-        const middleware = fileService.uploadUserAvatar();
+        const middleware = FileService.uploadUserAvatar();
         await middleware(req as Request, res as Response, next);
 
         expect(res.status).toHaveBeenCalledWith(400);
@@ -76,7 +73,7 @@ describe('FileService uploadUserAvatar', () => {
         });
         (multer as unknown as jest.MockInstance<any, any>).mockReturnValue({single: jest.fn(() => uploadSingleMock)});
 
-        const middleware = fileService.uploadUserAvatar();
+        const middleware = FileService.uploadUserAvatar();
 
         await middleware(req as Request, res as Response, next);
 
