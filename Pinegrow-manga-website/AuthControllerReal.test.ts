@@ -1,10 +1,10 @@
 import request from 'supertest';
 import express, { Application } from 'express';
-import AuthControllers from '../../controllers/AuthController';
-import userModel from "../../models/userModel";
-import {guestModel} from "../../models/guestModel";
+import AuthControllers from '../server/src/controllers/AuthController';
+import userModel from "../server/src/models/userModel";
+import {guestModel} from "../server/src/models/guestModel";
 
-jest.mock('../../services/busines/AuthService');
+jest.mock('../server/src/services/busines/AuthService');
 
 const app: Application = express();
 app.use(express.json());
@@ -16,6 +16,7 @@ app.post('/loginUser', AuthControllers.loginUser);
 describe('AuthControllers (с реальной логикой)', () => {
 
     beforeAll(async () => {
+        jest.setTimeout(10000);
         await userModel.deleteMany({});
         await guestModel.deleteMany({});
     });
@@ -35,7 +36,6 @@ describe('AuthControllers (с реальной логикой)', () => {
             const response = await request(app).post('/registerGuest');
 
             expect(response.status).toBe(201);
-
             expect(response.text).toBeDefined();
         });
 
