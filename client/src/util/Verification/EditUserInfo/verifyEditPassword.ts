@@ -1,4 +1,4 @@
-import verifyPassword from "../verifyPassword.ts";
+import verifyPassword from "../verifyPassword";
 
 export default function verifyEditPassword(oldPassword: string, newPassword: string): {passwordError: string} | null {
 
