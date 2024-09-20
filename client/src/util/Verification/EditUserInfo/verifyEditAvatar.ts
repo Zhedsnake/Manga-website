@@ -1,4 +1,4 @@
-import verifyAvatar from "../verifyAvatar.ts";
+import verifyAvatar from "../verifyAvatar";
 
 export default async function verifyEditAvatar(avatar: File | null): Promise<{avatarError: string} | null> {
 
