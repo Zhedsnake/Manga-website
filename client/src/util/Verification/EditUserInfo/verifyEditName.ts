@@ -1,5 +1,5 @@
 
-import verifyName from "../verifyName.ts";
+import verifyName from "../verifyName";
 
 export default function verifyEditName(name: string): {nameError: string} | null {
 
