@@ -7,9 +7,11 @@
     "build": "tsc",
     "start": "node build/index.js",
     "dev": "IS_DEV='true' nodemon --legacy-watch",
+
     "test-local": "jest --testPathIgnorePatterns=\"(AuthBDService|EditUserInfoBDService|UserBDService|SharpService).test.ts\"",
     "test-local-bd": "jest --testPathPattern=\"(AuthBDService|EditUserInfoBDService|UserBDService).test.ts\"",
     "test-bd": "IS_TEST='true' jest --testPathPattern=\"(AuthBDService|EditUserInfoBDService|UserBDService).test.ts\"",
+
     "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"(AuthBDService|EditUserInfoBDService|UserBDService).test.ts\"",
     "test-controllers": "IS_TEST='true' jest --testPathPattern=\"(AuthControllerReal).test.ts\""
   },
