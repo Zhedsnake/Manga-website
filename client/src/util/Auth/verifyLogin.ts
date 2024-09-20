@@ -1,5 +1,5 @@
-import verifyName from "../Verification/verifyName.ts";
-import verifyPassword from "../Verification/verifyPassword.ts";
+import verifyName from "../Verification/verifyName";
+import verifyPassword from "../Verification/verifyPassword";
 
 export default function verifyLogin(name: string, password: string): {loginError: string} | { nameError: string } | { passwordError: string } | null {
 

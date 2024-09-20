@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {useTypedSelector} from "../useTypedSelector.ts";
 import {useActions} from "../useActions.ts";
 import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
-import verifyLogin from "../../util/Auth/verifyLogin.tsx";
+import verifyLogin from "../../util/Auth/verifyLogin.ts";
 import {setToken} from "../../util/setTocken.ts";
 import {Tokens} from "../../util/Tokens.ts";
 
