@@ -1,8 +1,8 @@
 import verifyAvatar from "../verifyAvatar.ts";
 
-export default function verifyEditAvatar(avatar: File | null): {avatarError: string} | null {
+export default async function verifyEditAvatar(avatar: File | null): Promise<{avatarError: string} | null> {
 
-    const verificationResponse = verifyAvatar(avatar)
+    const verificationResponse = await verifyAvatar(avatar)
     if (verificationResponse) {
         return verificationResponse
     }
