@@ -1,6 +1,6 @@
-import verifyEmail from "../verifyEmail.ts";
+import verifyEmail from "../verifyEmail";
 
-export default function verifyEditEmail(email: string): {error: string} | null {
+export default function verifyEditEmail(email: string): {emailError: string} | null {
 
     const verificationResponse = verifyEmail(email)
     if (verificationResponse) {
