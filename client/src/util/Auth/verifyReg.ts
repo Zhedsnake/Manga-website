@@ -1,6 +1,6 @@
-import verifyName from "../Verification/verifyName.ts";
-import verifyPassword from "../Verification/verifyPassword.ts";
-import verifyEmail from "../Verification/verifyEmail.ts";
+import verifyName from "../Verification/verifyName";
+import verifyPassword from "../Verification/verifyPassword";
+import verifyEmail from "../Verification/verifyEmail";
 
 export default function verifyReg(name: string, email: string, password: string): {regError: string} | { nameError: string } | { emailError: string } | { passwordError: string } | null {
 
