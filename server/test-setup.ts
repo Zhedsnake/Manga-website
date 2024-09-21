@@ -12,9 +12,9 @@ beforeAll(async () => {
     await connectDB(mongo_url);
 });
 
-afterAll(async () => {
-    await disconnectDB();
-
-    // await userModel.deleteMany({});
-    // await guestModel.deleteMany({});
-});
+// afterAll(async () => {
+//     await disconnectDB();
+//
+//     // await userModel.deleteMany({});
+//     // await guestModel.deleteMany({});
+// });
