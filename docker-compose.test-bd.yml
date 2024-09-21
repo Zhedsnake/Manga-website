@@ -1,17 +1,6 @@
 version: "1"
 services:
 
-  client:
-    build: client
-    ports:
-      - "5000:3000"
-    volumes:
-      - ./client/src:/app/client/src
-    container_name: test-bd-manga_website-client
-    command: ["npm", "run", "test-bd"]
-    depends_on:
-      - server
-
   server:
     build: server
     ports:
