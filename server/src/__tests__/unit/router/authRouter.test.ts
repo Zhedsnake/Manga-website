@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express, { Application } from 'express';
-import authRouter from '../../router/authRouter';
-import AuthController from '../../controllers/AuthController';
+import authRouter from '../../../router/authRouter';
+import AuthController from '../../../controllers/AuthController';
 
-jest.mock('../../controllers/AuthController');
+jest.mock('../../../controllers/AuthController');
 
 const app: Application = express();
 app.use(express.json());

@@ -1,13 +1,13 @@
 import request from 'supertest';
 import express, { Application, Request, Response, NextFunction } from 'express';
-import editUserRouter from '../../router/editUserRouter';
-import ProtectService from '../../middlewares/ProtectService';
-import EditUserInfoController from '../../controllers/EditUserInfoController';
-import FileService from "../../middlewares/FileService";
+import editUserRouter from '../../../router/editUserRouter';
+import ProtectService from '../../../middlewares/ProtectService';
+import EditUserInfoController from '../../../controllers/EditUserInfoController';
+import FileService from "../../../middlewares/FileService";
 
-jest.mock('../../middlewares/ProtectService');
-jest.mock('../../controllers/EditUserInfoController');
-jest.mock('../../middlewares/FileService');
+jest.mock('../../../middlewares/ProtectService');
+jest.mock('../../../controllers/EditUserInfoController');
+jest.mock('../../../middlewares/FileService');
 
 
 const app: Application = express();

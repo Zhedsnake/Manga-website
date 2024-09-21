@@ -1,5 +1,5 @@
-import { UploadedImageByMulter } from '../../../types/uploadedImageByMulter';
-import SharpService from '../../../services/Sharp/SharpService';
+import { UploadedImageByMulter } from '../../../../types/uploadedImageByMulter';
+import SharpService from '../../../../services/Sharp/SharpService';
 import mockFs from 'mock-fs';
 import fs from "fs";
 import * as path from 'path';
@@ -12,8 +12,8 @@ describe('SharpService', () => {
         mockFs({
             '/tmp': {},
             'src/__tests__/images': {
-                '1x1.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
-                'noSymImg.png': fs.readFileSync(path.resolve(__dirname, '../../images/noSymImg.png'))
+                '1x1.png': fs.readFileSync(path.resolve(__dirname, '../../../images/1x1.png')),
+                'noSymImg.png': fs.readFileSync(path.resolve(__dirname, '../../../images/noSymImg.png'))
             }
         });
     });
@@ -26,7 +26,7 @@ describe('SharpService', () => {
     describe('CompileImageInThreeFormats', () => {
 
         test('должен скомпилировать изображения в три формата и сохранить их', async () => {
-            const imagePath = path.resolve(__dirname, '../../images/1x1.png');
+            const imagePath = path.resolve(__dirname, '../../../images/1x1.png');
 
             const avatarFile: UploadedImageByMulter = {
                 fieldname: 'avatar',
@@ -53,7 +53,7 @@ describe('SharpService', () => {
     describe('GetWidthAndHeight', () => {
 
         test('должен вернуть ширину 500 и высоту 500 изображения', async () => {
-            const imageSymPath = path.resolve(__dirname, '../../images/1x1.png');
+            const imageSymPath = path.resolve(__dirname, '../../../images/1x1.png');
 
             expect(fs.existsSync(imageSymPath)).toBe(true);
 
@@ -81,7 +81,7 @@ describe('SharpService', () => {
 
 
         test('должен вернуть ширину и высоту изображения', async () => {
-            const imageNoSymPath = path.resolve(__dirname, '../../images/noSymImg.png');
+            const imageNoSymPath = path.resolve(__dirname, '../../../images/noSymImg.png');
 
             expect(fs.existsSync(imageNoSymPath)).toBe(true);
 

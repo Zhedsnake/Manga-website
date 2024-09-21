@@ -1,8 +1,8 @@
-import userModel from "../../../models/userModel";
+import userModel from "../../../../models/userModel";
 import 'dotenv/config';
-import UserBDService from '../../../services/mongodb/UserBDService';
-import { connectDB, disconnectDB } from "../../../config/db";
-import AuthBDService from "../../../services/mongodb/AuthBDService";
+import UserBDService from '../../../../services/mongodb/UserBDService';
+import { connectDB, disconnectDB } from "../../../../config/db";
+import AuthBDService from "../../../../services/mongodb/AuthBDService";
 import MockDate from 'mockdate';
 
 

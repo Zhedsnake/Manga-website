@@ -1,11 +1,11 @@
-import UserService from "../../../services/busines/UserService";
-import JwtService from "../../../services/jwt/JwtService";
-import UserBDService from "../../../services/mongodb/UserBDService";
-import VerificationService from "../../../services/busines/VerificationService";
+import UserService from "../../../../services/busines/UserService";
+import JwtService from "../../../../services/jwt/JwtService";
+import UserBDService from "../../../../services/mongodb/UserBDService";
+import VerificationService from "../../../../services/busines/VerificationService";
 
-jest.mock('../../../services/jwt/JwtService');
-jest.mock('../../../services/mongodb/UserBDService');
-jest.mock('../../../services/busines/VerificationService');
+jest.mock('../../../../services/jwt/JwtService');
+jest.mock('../../../../services/mongodb/UserBDService');
+jest.mock('../../../../services/busines/VerificationService');
 
 
 describe('UserService', () => {

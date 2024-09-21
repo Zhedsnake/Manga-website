@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import EditUserInfoBDService from '../../../services/mongodb/EditUserInfoBDService';
-import userModel from '../../../models/userModel';
-import AuthBDService from '../../../services/mongodb/AuthBDService';
+import EditUserInfoBDService from '../../../../services/mongodb/EditUserInfoBDService';
+import userModel from '../../../../models/userModel';
+import AuthBDService from '../../../../services/mongodb/AuthBDService';
 import 'dotenv/config';
-import {connectDB, disconnectDB} from "../../../config/db";
+import {connectDB, disconnectDB} from "../../../../config/db";
 
 describe('EditUserInfoBDService', () => {
     let userId: string;

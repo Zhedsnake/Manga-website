@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import UserModel, { userType } from '../../models/userModel';
+import UserModel, { userType } from '../../../models/userModel';
 import 'dotenv/config'
 
 describe('UserModel', () => {

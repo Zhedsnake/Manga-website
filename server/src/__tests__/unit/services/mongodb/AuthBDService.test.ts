@@ -1,8 +1,8 @@
-import { AuthBDService } from "../../../services/mongodb/AuthBDService";
-import {connectDB, disconnectDB} from "../../../config/db";
+import { AuthBDService } from "../../../../services/mongodb/AuthBDService";
+import {connectDB, disconnectDB} from "../../../../config/db";
 
-import userModel from "../../../models/userModel";
-import { guestModel } from "../../../models/guestModel";
+import userModel from "../../../../models/userModel";
+import { guestModel } from "../../../../models/guestModel";
 import 'dotenv/config'
 
 

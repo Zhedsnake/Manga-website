@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { guestModel, guestType } from '../../models/guestModel';
+import { guestModel, guestType } from '../../../models/guestModel';
 
 describe('guestModel', () => {
 

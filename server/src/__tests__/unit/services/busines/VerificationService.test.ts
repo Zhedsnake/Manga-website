@@ -1,16 +1,16 @@
-import VerificationService from '../../../services/busines/VerificationService';
-import userBDService from '../../../services/mongodb/UserBDService';
-import {connectDB, disconnectDB} from "../../../config/db";
+import VerificationService from '../../../../services/busines/VerificationService';
+import userBDService from '../../../../services/mongodb/UserBDService';
+import {connectDB, disconnectDB} from "../../../../config/db";
 import 'dotenv/config'
-import BcryptService from "../../../services/bcrypt/BcryptService";
-import AuthBDService from "../../../services/mongodb/AuthBDService";
-import SharpService from "../../../services/Sharp/SharpService";
-import {UploadedImageByMulter} from "../../../types/uploadedImageByMulter";
+import BcryptService from "../../../../services/bcrypt/BcryptService";
+import AuthBDService from "../../../../services/mongodb/AuthBDService";
+import SharpService from "../../../../services/Sharp/SharpService";
+import {UploadedImageByMulter} from "../../../../types/uploadedImageByMulter";
 
-jest.mock('../../../services/mongodb/UserBDService');
-jest.mock('../../../services/bcrypt/BcryptService.ts');
-jest.mock('../../../services/mongodb/AuthBDService');
-jest.mock('../../../services/Sharp/SharpService');
+jest.mock('../../../../services/mongodb/UserBDService');
+jest.mock('../../../../services/bcrypt/BcryptService.ts');
+jest.mock('../../../../services/mongodb/AuthBDService');
+jest.mock('../../../../services/Sharp/SharpService');
 
 describe('VerificationService', () => {
 

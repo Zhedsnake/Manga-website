@@ -1,13 +1,13 @@
-import AuthService from '../../../services/busines/AuthService';
-import JwtService from '../../../services/jwt/JwtService';
-import AuthBDService from '../../../services/mongodb/AuthBDService';
-import VerificationService from '../../../services/busines/VerificationService';
-import BcryptService from '../../../services/bcrypt/BcryptService';
+import AuthService from '../../../../services/busines/AuthService';
+import JwtService from '../../../../services/jwt/JwtService';
+import AuthBDService from '../../../../services/mongodb/AuthBDService';
+import VerificationService from '../../../../services/busines/VerificationService';
+import BcryptService from '../../../../services/bcrypt/BcryptService';
 
-jest.mock('../../../services/jwt/JwtService');
-jest.mock('../../../services/mongodb/AuthBDService');
-jest.mock('../../../services/busines/VerificationService');
-jest.mock('../../../services/bcrypt/BcryptService');
+jest.mock('../../../../services/jwt/JwtService');
+jest.mock('../../../../services/mongodb/AuthBDService');
+jest.mock('../../../../services/busines/VerificationService');
+jest.mock('../../../../services/bcrypt/BcryptService');
 
 describe('AuthService', () => {
 

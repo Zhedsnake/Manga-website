@@ -1,21 +1,21 @@
-import EditUserInfoService from '../../../services/busines/EditUserInfoService';
-import UserBDService from '../../../services/mongodb/UserBDService';
-import EditUserInfoBDService from '../../../services/mongodb/EditUserInfoBDService';
-import CloudinaryService from '../../../services/cloudinary/CloudinaryService';
-import SharpService from '../../../services/Sharp/SharpService';
-import VerificationService from '../../../services/busines/VerificationService';
-import BcryptService from '../../../services/bcrypt/BcryptService';
+import EditUserInfoService from '../../../../services/busines/EditUserInfoService';
+import UserBDService from '../../../../services/mongodb/UserBDService';
+import EditUserInfoBDService from '../../../../services/mongodb/EditUserInfoBDService';
+import CloudinaryService from '../../../../services/cloudinary/CloudinaryService';
+import SharpService from '../../../../services/Sharp/SharpService';
+import VerificationService from '../../../../services/busines/VerificationService';
+import BcryptService from '../../../../services/bcrypt/BcryptService';
 import fs from 'fs';
 import mockFs from 'mock-fs';
 import path from 'path';
-import {UploadedImageByMulter} from "../../../types/uploadedImageByMulter";
+import {UploadedImageByMulter} from "../../../../types/uploadedImageByMulter";
 
-jest.mock('../../../services/mongodb/UserBDService');
-jest.mock('../../../services/mongodb/EditUserInfoBDService');
-jest.mock('../../../services/cloudinary/CloudinaryService');
-jest.mock('../../../services/Sharp/SharpService');
-jest.mock('../../../services/busines/VerificationService');
-jest.mock('../../../services/bcrypt/BcryptService');
+jest.mock('../../../../services/mongodb/UserBDService');
+jest.mock('../../../../services/mongodb/EditUserInfoBDService');
+jest.mock('../../../../services/cloudinary/CloudinaryService');
+jest.mock('../../../../services/Sharp/SharpService');
+jest.mock('../../../../services/busines/VerificationService');
+jest.mock('../../../../services/bcrypt/BcryptService');
 
 describe('EditUserInfoService', () => {
     beforeEach(() => {
@@ -109,10 +109,10 @@ describe('EditUserInfoService', () => {
             jest.clearAllMocks();
             mockFs({
                 'C:/temp': {
-                    'avatar.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
-                    'avatar-480p.png': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
-                    'avatar.webp': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
-                    'avatar-480p.webp': fs.readFileSync(path.resolve(__dirname, '../../images/1x1.png')),
+                    'avatar.png': fs.readFileSync(path.resolve(__dirname, '../../../images/1x1.png')),
+                    'avatar-480p.png': fs.readFileSync(path.resolve(__dirname, '../../../images/1x1.png')),
+                    'avatar.webp': fs.readFileSync(path.resolve(__dirname, '../../../images/1x1.png')),
+                    'avatar-480p.webp': fs.readFileSync(path.resolve(__dirname, '../../../images/1x1.png')),
                 },
                 '/tmp': {
                 },

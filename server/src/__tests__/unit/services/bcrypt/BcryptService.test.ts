@@ -1,4 +1,4 @@
-import {BcryptService} from '../../../services/bcrypt/BcryptService';
+import {BcryptService} from '../../../../services/bcrypt/BcryptService';
 
 describe('BcryptService', () => {
     let bcryptService: BcryptService;

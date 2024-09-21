@@ -1,4 +1,4 @@
-import CloudinaryService from '../../../services/cloudinary/CloudinaryService';
+import CloudinaryService from '../../../../services/cloudinary/CloudinaryService';
 import { v2 as cloudinary } from 'cloudinary';
 import path from 'path';
 import fs from 'fs';
@@ -9,7 +9,7 @@ describe('CloudinaryService', () => {
     let imagePath: string;
 
     beforeAll(() => {
-        imagePath = path.resolve(__dirname, '../../images/1x1.png');
+        imagePath = path.resolve(__dirname, '../../../images/1x1.png');
 
         if (!fs.existsSync(imagePath)) {
             throw new Error('Тестовое изображение отсутствует');

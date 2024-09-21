@@ -1,11 +1,11 @@
 import request from 'supertest';
 import express, { Application } from 'express';
-import userRouter from '../../router/userRouter';
-import ProtectService from '../../middlewares/ProtectService';
-import UserControllers from '../../controllers/UserControllers';
+import userRouter from '../../../router/userRouter';
+import ProtectService from '../../../middlewares/ProtectService';
+import UserControllers from '../../../controllers/UserControllers';
 
-jest.mock('../../middlewares/ProtectService');
-jest.mock('../../controllers/UserControllers');
+jest.mock('../../../middlewares/ProtectService');
+jest.mock('../../../controllers/UserControllers');
 
 const app: Application = express();
 app.use(express.json());
