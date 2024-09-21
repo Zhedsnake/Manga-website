@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 import {privateRoutes, publicRoutes} from "../router";
 import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
@@ -16,7 +16,6 @@ const AppRouter: React.FC = () => {
     return (
         isUser
             ?
-            <BrowserRouter>
                 <Routes>
                     {privateRoutes.map(route =>
                         <Route
@@ -27,9 +26,7 @@ const AppRouter: React.FC = () => {
                     )}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
-            </BrowserRouter>
             :
-            <BrowserRouter>
                 <Routes>
                     {publicRoutes.map(route =>
                         <Route
@@ -40,7 +37,6 @@ const AppRouter: React.FC = () => {
                     )}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
-            </BrowserRouter>
     );
 };
 
