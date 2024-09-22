@@ -9,3 +9,14 @@ services:
       - ./client/src:/app/client/src
     container_name: test-manga_website-client
     command: ["npm", "run", "test-client-requests"]
+    depends_on:
+      - server
+
+  server:
+    build: server
+    ports:
+      - "7000:5000"
+    volumes:
+      - ./server/src:/app/server/src
+    container_name: dev-manga_website-server
+    command: ["npm", "run", "dev"]
