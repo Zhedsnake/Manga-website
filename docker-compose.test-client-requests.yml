@@ -1,0 +1,11 @@
+version: "1"
+services:
+
+  client:
+    build: client
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./client/src:/app/client/src
+    container_name: test-manga_website-client
+    command: ["npm", "run", "test-client-requests"]
