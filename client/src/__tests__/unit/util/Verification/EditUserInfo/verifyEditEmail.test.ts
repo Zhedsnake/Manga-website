@@ -1,7 +1,7 @@
-import verifyEditEmail from '../../../../util/Verification/EditUserInfo/verifyEditEmail';
-import verifyEmail from '../../../../util/Verification/verifyEmail';
+import verifyEditEmail from '../../../../../util/Verification/EditUserInfo/verifyEditEmail';
+import verifyEmail from '../../../../../util/Verification/verifyEmail';
 
-jest.mock('../../../../util/Verification/verifyEmail');
+jest.mock('../../../../../util/Verification/verifyEmail');
 
 describe('verifyEditEmail', () => {
 

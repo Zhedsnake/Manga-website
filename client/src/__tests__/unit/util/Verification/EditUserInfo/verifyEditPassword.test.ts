@@ -1,7 +1,7 @@
-import verifyEditPassword from '../../../../util/Verification/EditUserInfo/verifyEditPassword';
-import verifyPassword from '../../../../util/Verification/verifyPassword';
+import verifyEditPassword from '../../../../../util/Verification/EditUserInfo/verifyEditPassword';
+import verifyPassword from '../../../../../util/Verification/verifyPassword';
 
-jest.mock('../../../../util/Verification/verifyPassword');
+jest.mock('../../../../../util/Verification/verifyPassword');
 
 describe('verifyEditPassword', () => {
 

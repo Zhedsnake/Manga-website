@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { JSDOM } from 'jsdom';
-import verifyAvatar from '../../../util/Verification/verifyAvatar';
+import verifyAvatar from '../../../../util/Verification/verifyAvatar';
 
 
 describe('verifyAvatar', () => {
@@ -23,7 +23,7 @@ describe('verifyAvatar', () => {
     });
 
     test('должен вернуть ошибку, если размер файла превышает 3.68 MB', async () => {
-        const largeFilePath = path.join(__dirname, 'images', '../../../images/noSymImg.png');
+        const largeFilePath = path.join(__dirname, 'images', '../../../../images/noSymImg.png');
         const largeFile = fs.readFileSync(largeFilePath);
 
         const largeMockFile = new File([largeFile], 'noSymImg.png', { type: 'image/png' });
@@ -32,7 +32,7 @@ describe('verifyAvatar', () => {
     });
 
     test('должен вернуть ошибку, если формат файла не jpeg, jpg или png', async () => {
-        const wrongFormatFilePath = path.join(__dirname, 'images', '../../../images/among-us-sus.mp4');
+        const wrongFormatFilePath = path.join(__dirname, 'images', '../../../../images/among-us-sus.mp4');
         const wrongFormatFile = fs.readFileSync(wrongFormatFilePath);
 
         const mockFile = new File([wrongFormatFile], 'among-us-sus.mp4', { type: 'video/mp4' });

@@ -1,4 +1,4 @@
-import verifyName from '../../../util/Verification/verifyName';
+import verifyName from '../../../../util/Verification/verifyName';
 
 describe('verifyName', () => {
 

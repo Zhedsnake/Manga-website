@@ -1,7 +1,7 @@
-import verifyEditName from '../../../../util/Verification/EditUserInfo/verifyEditName';
-import verifyName from '../../../../util/Verification/verifyName';
+import verifyEditName from '../../../../../util/Verification/EditUserInfo/verifyEditName';
+import verifyName from '../../../../../util/Verification/verifyName';
 
-jest.mock('../../../../util/Verification/verifyName');
+jest.mock('../../../../../util/Verification/verifyName');
 
 describe('verifyEditName', () => {
 

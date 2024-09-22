@@ -1,9 +1,9 @@
-import verifyLogin from '../../../util/Auth/verifyLogin';
-import verifyName from '../../../util/Verification/verifyName';
-import verifyPassword from '../../../util/Verification/verifyPassword';
+import verifyLogin from '../../../../util/Auth/verifyLogin';
+import verifyName from '../../../../util/Verification/verifyName';
+import verifyPassword from '../../../../util/Verification/verifyPassword';
 
-jest.mock('../../../util/Verification/verifyName');
-jest.mock('../../../util/Verification/verifyPassword');
+jest.mock('../../../../util/Verification/verifyName');
+jest.mock('../../../../util/Verification/verifyPassword');
 
 describe('verifyLogin', () => {
 

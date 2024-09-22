@@ -1,4 +1,4 @@
-import verifyEmail from '../../../util/Verification/verifyEmail';
+import verifyEmail from '../../../../util/Verification/verifyEmail';
 
 describe('verifyEmail', () => {
     test('должен вернуть ошибку, если email не указан', () => {

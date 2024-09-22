@@ -1,4 +1,4 @@
-import verifyPassword from '../../../util/Verification/verifyPassword';
+import verifyPassword from '../../../../util/Verification/verifyPassword';
 
 describe('verifyPassword', () => {
 

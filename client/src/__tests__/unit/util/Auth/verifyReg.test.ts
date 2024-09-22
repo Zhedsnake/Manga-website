@@ -1,11 +1,11 @@
-import verifyReg from '../../../util/Auth/verifyReg';
-import verifyName from '../../../util/Verification/verifyName';
-import verifyEmail from '../../../util/Verification/verifyEmail';
-import verifyPassword from '../../../util/Verification/verifyPassword';
+import verifyReg from '../../../../util/Auth/verifyReg';
+import verifyName from '../../../../util/Verification/verifyName';
+import verifyEmail from '../../../../util/Verification/verifyEmail';
+import verifyPassword from '../../../../util/Verification/verifyPassword';
 
-jest.mock('../../../util/Verification/verifyName');
-jest.mock('../../../util/Verification/verifyEmail');
-jest.mock('../../../util/Verification/verifyPassword');
+jest.mock('../../../../util/Verification/verifyName');
+jest.mock('../../../../util/Verification/verifyEmail');
+jest.mock('../../../../util/Verification/verifyPassword');
 
 describe('verifyReg', () => {
 
