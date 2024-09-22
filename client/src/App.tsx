@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import React from "react";
-import AppRouter from "./components/AppRouter";
+import AppRouter from "./components/router/AppRouter.tsx";
 import AuthUserGuestChecker from "./components/AuthUserGuestChecker.tsx";
 import UpdateUserToken from "./components/UpdateUserToken.tsx";
 import BrowserWebpCheck from "./components/BrowserWebpCheck.tsx";

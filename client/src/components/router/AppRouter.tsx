@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 
-import {privateRoutes, publicRoutes} from "../router";
-import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import Loader from "./UI/Loader/Loader.tsx";
+import {privateRoutes, publicRoutes} from "../../router/authRouter.tsx";
+import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
+import Loader from "../UI/Loader/Loader.tsx";
 
 
 const AppRouter: React.FC = () => {
@@ -24,6 +24,10 @@ const AppRouter: React.FC = () => {
                             key={route.path}
                         />
                     )}
+
+                    // Сюда импортировать роуты переводчиков
+                    // Сюда импортировать роуты модераторов
+
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             :

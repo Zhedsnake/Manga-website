@@ -1,6 +1,5 @@
 import React from "react";
 import Home from "../pages/Home.tsx";
-import UploadNewManga from "../pages/UploadNewManga.tsx";
 import Auth from "../pages/Auth.tsx";
 import UserProfile from "../pages/UserProfile.tsx";
 import EditUserProfile from "../pages/EditUserProfile.tsx";
