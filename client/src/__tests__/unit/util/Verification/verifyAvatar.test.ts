@@ -1,5 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
+
+if (typeof global.TextEncoder === 'undefined') {
+    const { TextEncoder, TextDecoder } = require('util');
+    global.TextEncoder = TextEncoder;
+    global.TextDecoder = TextDecoder;
+}
+
 import { JSDOM } from 'jsdom';
 import verifyAvatar from '../../../../util/Verification/verifyAvatar';
 
