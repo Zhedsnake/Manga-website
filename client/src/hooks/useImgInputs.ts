@@ -5,7 +5,7 @@ export default function useImgInputs(initialValue: File | null) {
     const [valuePreview, setValuePreview] = useState<string | null>("");
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file: File = e.target.files?.[0];
+        const file = e.target.files?.[0];
 
         if (file) {
             setValue(file);
