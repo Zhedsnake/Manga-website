@@ -20,6 +20,7 @@ const TestComponent = ({ initialValue }: { initialValue: string }) => {
 };
 
 describe('useInput hook', () => {
+
     test('должен изменять значение при вводе', () => {
         const { getByTestId } = render(<TestComponent initialValue="Initial" />);
         const input = getByTestId('input') as HTMLInputElement;
