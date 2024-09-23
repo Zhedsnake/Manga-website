@@ -1,12 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useTypedSelector} from "../useTypedSelector.ts";
 import {useActions} from "../useActions.ts";
-import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
-import verifyPassword from "../../util/Verification/verifyPassword.ts";
 import verifyEditPassword from "../../util/Verification/EditUserInfo/verifyEditPassword.ts";
 import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext.ts";
 
-export default function useHandleEditPassword(oldPassword, newPassword, oldClear, newClear) {
+export default function useHandleEditPassword(oldPassword: string, newPassword: string, oldClear: () => void, newClear: () => void) {
     const {
         setMessage
     } = useContext<EditUserInfoContextType>(EditUserInfoContext);
@@ -20,7 +18,7 @@ export default function useHandleEditPassword(oldPassword, newPassword, oldClear
         e.preventDefault();
         setMessage("")
 
-        const verificationResponse:{passwordError: string} | null | undefined = verifyEditPassword(oldPassword, newPassword)
+        const verificationResponse:{passwordError: string} | null = verifyEditPassword(oldPassword, newPassword)
         if (verificationResponse) {
 
             setError(verificationResponse.passwordError);
@@ -38,7 +36,7 @@ export default function useHandleEditPassword(oldPassword, newPassword, oldClear
     }
 
     useEffect(() => {
-        setError(passwordError)
+        setError(passwordError ?? "")
     }, [passwordError]);
 
     return {
