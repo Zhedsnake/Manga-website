@@ -1,6 +1,7 @@
 import {RegistrationAction, RegistrationActionTypes} from "../../../types/logInRegistration/registration";
 import {Dispatch} from "react";
 import AuthService from "../../../api/AuthService";
+import {AxiosError} from "axios";
 
 
 export const registrationAction = (name: string, email: string, password: string) => {
@@ -10,11 +11,16 @@ export const registrationAction = (name: string, email: string, password: string
             const response = await AuthService.registerRequest(name, email, password);
             dispatch({type: RegistrationActionTypes.REGISTRATION_SUCCESS, payload: response.data.userToken})
         } catch (e) {
-            if (e instanceof Error) {
+            if (e instanceof AxiosError) {
                 dispatch({
                     type: RegistrationActionTypes.REGISTRATION_ERROR,
-                    payload: e.response.data.error
-                })
+                    payload: e.response?.data?.error
+                });
+            } else if (e instanceof Error) {
+                dispatch({
+                    type: RegistrationActionTypes.REGISTRATION_ERROR,
+                    payload: e.message
+                });
             }
         }
     }
