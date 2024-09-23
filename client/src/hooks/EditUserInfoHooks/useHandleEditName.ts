@@ -1,45 +1,38 @@
-import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../useTypedSelector.ts";
-import {useActions} from "../useActions.ts";
-import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
-import verifyName from "../../util/Verification/verifyName.ts";
-import verifyEditName from "../../util/Verification/EditUserInfo/verifyEditName.ts";
-import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext.ts";
+import React, { useContext, useEffect, useState } from "react";
+import { useTypedSelector } from "../useTypedSelector";
+import { useActions } from "../useActions";
+import verifyEditName from "../../util/Verification/EditUserInfo/verifyEditName";
+import { EditUserInfoContext, EditUserInfoContextType } from "../../contexts/EditUserInfoContext";
 
-export default function useHandleEditName(name, clear) {
-    const {
-        setMessage
-    } = useContext<EditUserInfoContextType>(EditUserInfoContext);
+export default function useHandleEditName(name: string, clear: () => void) {
+    const { setMessage } = useContext<EditUserInfoContextType>(EditUserInfoContext);
 
-    const [error, setError] = useState<string>("")
+    const [error, setError] = useState<string>("");
 
-    const {loading: nameLoading, error: nameError} = useTypedSelector(state => state.nameForm);
-    const {editName} = useActions();
+    const { loading: nameLoading, error: nameError } = useTypedSelector(state => state.nameForm);
+    const { editName } = useActions();
 
     const handleEditName = async (e: React.FormEvent) => {
         e.preventDefault();
-        setMessage("")
+        setMessage("");
 
-        const verifyResponse= verifyEditName(name);
+        const verifyResponse = verifyEditName(name);
         if (verifyResponse) {
-            setError(verifyResponse.nameError)
+            setError(verifyResponse.nameError);
 
-            clear()
+            clear();
         }
-
 
         if (name && !verifyResponse) {
             await editName(name);
 
-            clear()
+            clear();
         }
-
-    }
+    };
 
     useEffect(() => {
-        setError(nameError)
+        setError(nameError ?? "");
     }, [nameError]);
-
 
     return {
         nameLoading,
