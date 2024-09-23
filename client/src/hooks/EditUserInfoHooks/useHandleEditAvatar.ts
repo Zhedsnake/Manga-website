@@ -2,49 +2,44 @@ import React, {useContext, useEffect, useState} from "react";
 import {useTypedSelector} from "../useTypedSelector.ts";
 import {useActions} from "../useActions.ts";
 import verifyEditAvatar from "../../util/Verification/EditUserInfo/verifyEditAvatar.ts";
-import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext.ts";
+import {EditUserInfoContext} from "../../contexts/EditUserInfoContext.ts";
 
 export default function useHandleEditAvatar(avatar: File | null, clear: () => void) {
-    const {
-        setMessage
-    } = useContext<EditUserInfoContextType>(EditUserInfoContext);
+    const { setMessage } = useContext(EditUserInfoContext);
 
-    const [error, setError] = useState<string>("")
-
-    const {loading: avatarLoading, error: avatarError} = useTypedSelector(state => state.avatarForm);
-    const {editAvatar} = useActions();
-
+    const [error, setError] = useState<string>("");
+    const { loading: avatarLoading, error: avatarError } = useTypedSelector(state => state.avatarForm);
+    const { editAvatar } = useActions();
 
     const handleEditAvatar = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setMessage("")
+        e.preventDefault();
+        setMessage("");
 
-        const verifyResponse: { avatarError: string } | null = await verifyEditAvatar(avatar);
+        const verifyResponse = await verifyEditAvatar(avatar);
         if (verifyResponse) {
-            setError(verifyResponse.avatarError)
-
-            clear()
+            setError(verifyResponse.avatarError);
+            clear();
+            return;
         }
 
-
-        if (avatar && !verifyResponse) {
+        if (avatar) {
             const imageFormData = new FormData();
-            imageFormData.append('avatar', avatar);
+            imageFormData.append("avatar", avatar);
 
-            await editAvatar(imageFormData)
-
-            clear()
+            await editAvatar(imageFormData);
+            clear();
         }
-
     };
 
     useEffect(() => {
-        setError(avatarError)
+        if (avatarError) {
+            setError(avatarError);
+        }
     }, [avatarError]);
 
     return {
         handleEditAvatar,
         avatarLoading,
-        error
+        error,
     };
 }
