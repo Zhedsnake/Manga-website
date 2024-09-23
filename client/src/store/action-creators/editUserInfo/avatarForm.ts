@@ -2,7 +2,7 @@ import {Dispatch} from "redux";
 import EditUserInfoService from "../../../api/EditUserInfoService.ts";
 import {AvatarAction, AvatarActionTypes} from "../../../types/editUserInfo/avatarForm.ts";
 
-export const editAvatar = (avatar) => {
+export const editAvatar = (avatar: FormData) => {
     return async (dispatch: Dispatch<AvatarAction>) => {
         dispatch({type: AvatarActionTypes.EDIT_AVATAR})
         const response = await EditUserInfoService.editAvatarRequest(avatar)
