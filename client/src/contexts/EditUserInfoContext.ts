@@ -5,5 +5,7 @@ export interface EditUserInfoContextType {
     setMessage: Dispatch<SetStateAction<string>>;
 }
 
-
-export const EditUserInfoContext = createContext<EditUserInfoContextType>();
+export const EditUserInfoContext = createContext<EditUserInfoContextType>({
+    message: "",
+    setMessage: () => {}
+});
