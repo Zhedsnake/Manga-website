@@ -1,6 +1,7 @@
 import {Dispatch} from "react";
 import {LogInAction, LogInActionTypes} from "../../../types/logInRegistration/logIn";
 import AuthService from "../../../api/AuthService";
+import {AxiosError} from "axios";
 
 
 export const logInAction = (name: string, password: string) => {
@@ -10,10 +11,15 @@ export const logInAction = (name: string, password: string) => {
             const response= await AuthService.logInRequest(name, password);
             dispatch({type: LogInActionTypes.LOG_IN_SUCCESS, payload: response.data.userToken})
         } catch (e) {
-            if (e instanceof Error) {
+            if (e instanceof AxiosError) {
                 dispatch({
                     type: LogInActionTypes.LOG_IN_ERROR,
-                    payload: e.response.data.error
+                    payload: e.response?.data?.error
+                });
+            } else if (e instanceof Error) {
+                dispatch({
+                    type: LogInActionTypes.LOG_IN_ERROR,
+                    payload: e.message
                 })
             }
         }
