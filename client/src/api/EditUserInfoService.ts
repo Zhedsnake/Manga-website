@@ -1,17 +1,18 @@
-import axios from 'axios';
-import {API_URL} from './config';
-import {Tokens} from "../util/Tokens.ts";
-
+import axios, { AxiosError } from 'axios';
+import { API_URL } from './config';
+import { Tokens } from "../util/Tokens.ts";
 
 export default class EditUserInfoService {
+
     static async editNameRequest(name: string) {
         try {
             const token = localStorage.getItem(Tokens.userToken);
             axios.defaults.headers.common['user-token'] = token;
-            const response = await axios.put(`${API_URL}/edit-user-name-by-token`, {name});
+            const response = await axios.put(`${API_URL}/edit-user-name-by-token`, { name });
             return response;
         } catch (e) {
-            return {error: e.response.data.error};
+            const error = e as AxiosError<{ error: string }>;
+            return { error: error.response?.data?.error || "Неизвестная ошибка" };
         }
     }
 
@@ -19,10 +20,11 @@ export default class EditUserInfoService {
         try {
             const token = localStorage.getItem(Tokens.userToken);
             axios.defaults.headers.common['user-token'] = token;
-            const response = await axios.put(`${API_URL}/edit-user-email-by-token`, {email});
+            const response = await axios.put(`${API_URL}/edit-user-email-by-token`, { email });
             return response;
         } catch (e) {
-            return {error: e.response.data.error};
+            const error = e as AxiosError<{ error: string }>;
+            return { error: error.response?.data?.error || "Неизвестная ошибка" };
         }
     }
 
@@ -30,14 +32,15 @@ export default class EditUserInfoService {
         try {
             const token = localStorage.getItem(Tokens.userToken);
             axios.defaults.headers.common['user-token'] = token;
-            const response = await axios.put(`${API_URL}/edit-user-password-by-token`, {oldPassword, newPassword});
+            const response = await axios.put(`${API_URL}/edit-user-password-by-token`, { oldPassword, newPassword });
             return response;
         } catch (e) {
-            return {error: e.response.data.error};
+            const error = e as AxiosError<{ error: string }>;
+            return { error: error.response?.data?.error || "Неизвестная ошибка" };
         }
     }
 
-    static async editAvatarRequest(imageFormData) {
+    static async editAvatarRequest(imageFormData: FormData) {
         try {
             const token = localStorage.getItem(Tokens.userToken);
             axios.defaults.headers.common['user-token'] = token;
@@ -48,7 +51,8 @@ export default class EditUserInfoService {
             });
             return response;
         } catch (e) {
-            return {error: e.response.data.error};
+            const error = e as AxiosError<{ error: string }>;
+            return { error: error.response?.data?.error || "Неизвестная ошибка" };
         }
     }
 }
