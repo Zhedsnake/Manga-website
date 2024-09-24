@@ -27,7 +27,7 @@ export interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
     isAuth: false,
-    setIsAuth: () => {}, // пустые функции-заглушки
+    setIsAuth: () => {},
     tokenOutdated: false,
     setTokenOutdated: () => {},
     isUser: false,
