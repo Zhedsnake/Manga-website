@@ -5,7 +5,7 @@ import {useActions} from "../../../../hooks/useActions";
 import {AuthContext} from "../../../../contexts/AuthContext";
 import verifyReg from "../../../../util/Auth/verifyReg.ts";
 import {setToken} from "../../../../util/setTocken";
-// import {Tokens} from "../../../../util/Tokens";
+import {Tokens} from "../../../../util/Tokens";
 
 jest.mock("../../../../hooks/useTypedSelector");
 jest.mock("../../../../hooks/useActions");
@@ -36,18 +36,21 @@ describe("useHandleReg", () => {
             setDefErrorInputs,
         });
 
-        (useTypedSelector as jest.Mock).mockReturnValue({
-            name: "John",
-            email: "john@example.com",
-            password: "password123",
-            regToken: null,
-            regError: null,
-            regLoading: false,
-        });
+        // (useTypedSelector as jest.Mock).mockReturnValue({
+        //     name: "John",
+        //     email: "john@example.com",
+        //     password: "password123",
+        //     regToken: null,
+        //     regError: null,
+        //     regLoading: false,
+        // });
 
         (setToken as jest.Mock).mockReturnValue(true);
-        (verifyReg as jest.Mock).mockReturnValue(null);
     });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    })
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
         <AuthContext.Provider
@@ -78,6 +81,17 @@ describe("useHandleReg", () => {
     );
 
     test("должен обеспечить успешную регистрацию", async () => {
+        (useTypedSelector as jest.Mock).mockReturnValue({
+            name: "John",
+            email: "john@example.com",
+            password: "password123",
+            regToken: null,
+            regError: null,
+            regLoading: false,
+        });
+
+        (verifyReg as jest.Mock).mockReturnValue(null);
+
         const {result} = renderHook(() => useHandleReg(), {wrapper});
 
         await act(async () => {
@@ -90,6 +104,15 @@ describe("useHandleReg", () => {
     });
 
     test("должен обработать ошибку регистрации", async () => {
+        (useTypedSelector as jest.Mock).mockReturnValue({
+            name: "John",
+            email: "john@example.com",
+            password: "password123",
+            regToken: null,
+            regError: null,
+            regLoading: false,
+        });
+
         (verifyReg as jest.Mock).mockReturnValue({regError: "Registration error"});
 
         const {result} = renderHook(() => useHandleReg(), {wrapper});
@@ -103,12 +126,21 @@ describe("useHandleReg", () => {
     });
 
     test("должен обрабатывать ошибки проверки", async () => {
-        (verifyReg as jest.Mock).mockReturnValue({nameError: "Invalid name"});
+        (useTypedSelector as jest.Mock).mockReturnValue({
+            name: "",  // Пустое имя для теста
+            email: "john@example.com",
+            password: "password123",
+            regToken: null,
+            regError: null,
+            regLoading: false,
+        });
 
-        const {result} = renderHook(() => useHandleReg(), {wrapper});
+        (verifyReg as jest.Mock).mockReturnValue({ nameError: "Invalid name" });
+
+        const { result } = renderHook(() => useHandleReg(), { wrapper });
 
         await act(async () => {
-            await result.current.handleRegister({preventDefault: jest.fn()} as any);
+            await result.current.handleRegister({ preventDefault: jest.fn() } as any);
         });
 
         expect(setNameErrorAction).toHaveBeenCalledWith("Invalid name");
@@ -116,28 +148,29 @@ describe("useHandleReg", () => {
         expect(registrationAction).not.toHaveBeenCalled();
     });
 
-    // test("следует установить токен и аутентифицировать пользователя", async () => {
-    //     const {result, rerender} = renderHook(() => useHandleReg(), {wrapper});
-    //
-    //     await act(async () => {
-    //         await result.current.handleRegister({preventDefault: jest.fn()} as any);
-    //     });
-    //
-    //     // Теперь изменим состояние regToken, чтобы вызвать useEffect
-    //     (useTypedSelector as jest.Mock).mockReturnValueOnce({
-    //         name: "John",
-    //         email: "john@example.com",
-    //         password: "password123",
-    //         regToken: "sampleToken", // Обновляем токен
-    //         regError: null,
-    //         regLoading: false,
-    //     });
-    //
-    //     rerender(); // Обновляем рендер после изменения состояния
-    //
-    //     expect(setToken).toHaveBeenCalledWith(Tokens.userToken, "sampleToken");
-    //     expect(setIsAuth).toHaveBeenCalledWith(true);
-    // });
+    test("следует установить токен и аутентифицировать пользователя", async () => {
+        (useTypedSelector as jest.Mock).mockReturnValue({
+            name: "John",
+            email: "john@example.com",
+            password: "password123",
+            regToken: "sampleToken",
+            regError: null,
+            regLoading: false,
+        });
+
+        (verifyReg as jest.Mock).mockReturnValue(null);
+
+        const { result } = renderHook(() => useHandleReg(), { wrapper });
+
+        await act(async () => {
+            await result.current.handleRegister({ preventDefault: jest.fn() } as any);
+        });
+
+        expect(setToken).toHaveBeenCalledWith(Tokens.userToken, "sampleToken");
+        expect(setIsAuth).toHaveBeenCalledWith(true);
+    });
+
+
 
     // test("следует обновлять состояние ошибки при изменении regError", async () => {
     //     (useTypedSelector as jest.Mock).mockReturnValueOnce({
@@ -148,6 +181,8 @@ describe("useHandleReg", () => {
     //         regError: "Some registration error",
     //         regLoading: false,
     //     });
+    //
+    //     (verifyReg as jest.Mock).mockReturnValue(null);
     //
     //     const {result} = renderHook(() => useHandleReg(), {wrapper});
     //
