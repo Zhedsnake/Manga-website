@@ -25,5 +25,24 @@ export interface AuthContextType {
     }
 }
 
-
-export const AuthContext = createContext<AuthContextType>();
+export const AuthContext = createContext<AuthContextType>({
+    isAuth: false,
+    setIsAuth: () => {}, // пустые функции-заглушки
+    tokenOutdated: false,
+    setTokenOutdated: () => {},
+    isUser: false,
+    setIsUser: () => {},
+    isGuest: false,
+    setIsGuest: () => {},
+    isAuthLoading: false,
+    setAuthLoading: () => {},
+    toggleShowFormPasswords: {
+        toggleShowPassword: false,
+        toggleShowConfirmPassword: false
+    },
+    setToggleShowFormPasswords: () => {},
+    defToggleShowFormPasswords: {
+        toggleShowPassword: false,
+        toggleShowConfirmPassword: false
+    }
+});
