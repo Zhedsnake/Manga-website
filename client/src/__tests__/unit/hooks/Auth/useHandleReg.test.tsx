@@ -36,14 +36,14 @@ describe("useHandleReg", () => {
             setDefErrorInputs,
         });
 
-        // (useTypedSelector as jest.Mock).mockReturnValue({
-        //     name: "John",
-        //     email: "john@example.com",
-        //     password: "password123",
-        //     regToken: null,
-        //     regError: null,
-        //     regLoading: false,
-        // });
+        (useTypedSelector as jest.Mock).mockReturnValueOnce({
+            name: "John",
+            email: "john@example.com",
+            password: "password123",
+            regToken: null,
+            regError: null,
+            regLoading: false,
+        });
 
         (setToken as jest.Mock).mockReturnValue(true);
     });
@@ -127,7 +127,7 @@ describe("useHandleReg", () => {
 
     test("должен обрабатывать ошибки проверки", async () => {
         (useTypedSelector as jest.Mock).mockReturnValue({
-            name: "",  // Пустое имя для теста
+            name: "",
             email: "john@example.com",
             password: "password123",
             regToken: null,
@@ -170,26 +170,21 @@ describe("useHandleReg", () => {
         expect(setIsAuth).toHaveBeenCalledWith(true);
     });
 
+    test("следует обновлять состояние ошибки при изменении regError", async () => {
+        (useTypedSelector as jest.Mock)
+            .mockReturnValueOnce({
+                name: "John",
+                email: "john@example.com",
+                password: "password123",
+                regToken: null,
+                regError: "Some registration error",
+                regLoading: false,
+            });
 
+        const { result, rerender } = renderHook(() => useHandleReg(), { wrapper });
 
-    // test("следует обновлять состояние ошибки при изменении regError", async () => {
-    //     (useTypedSelector as jest.Mock).mockReturnValueOnce({
-    //         name: "John",
-    //         email: "john@example.com",
-    //         password: "password123",
-    //         regToken: null,
-    //         regError: "Some registration error",
-    //         regLoading: false,
-    //     });
-    //
-    //     (verifyReg as jest.Mock).mockReturnValue(null);
-    //
-    //     const {result} = renderHook(() => useHandleReg(), {wrapper});
-    //
-    //     await act(async () => {
-    //         await result.current.handleRegister({preventDefault: jest.fn()} as any);
-    //     });
-    //
-    //     expect(result.current.regErrorState).toBe("Some registration error");
-    // });
+        rerender();
+
+        expect(result.current.regErrorState).toBe("Some registration error");
+    });
 });

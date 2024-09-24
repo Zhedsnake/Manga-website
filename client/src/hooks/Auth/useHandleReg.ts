@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../useTypedSelector.ts";
-import {useActions} from "../useActions.ts";
-import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
-import {setToken} from "../../util/setTocken.ts";
-import {Tokens} from "../../util/Tokens.ts";
-import verifyReg from "../../util/Auth/verifyReg.ts";
+import {useTypedSelector} from "../useTypedSelector";
+import {useActions} from "../useActions";
+import {AuthContext, AuthContextType} from "../../contexts/AuthContext";
+import {setToken} from "../../util/setTocken";
+import {Tokens} from "../../util/Tokens";
+import verifyReg from "../../util/Auth/verifyReg";
 
 export default function useHandleReg() {
     const {
@@ -45,22 +45,21 @@ export default function useHandleReg() {
     };
 
     useEffect(() => {
-        console.log("эффекто отработал")
-        setRegError(regError || "");
+        if (regError){
+            console.log("Ошибка от сервера", regError)
+            console.log("Токен от сервера", regToken)
+            setRegError(regError);
+        }
     }, [regError]);
 
     useEffect(() => {
-        console.log("эффекто отработал")
-        console.log("regToken изменился:", regToken);
         if (regToken) {
             const tokenIsSet: boolean = setToken(Tokens.userToken, regToken);
-            console.log("Токен установлен:", tokenIsSet);
             if (tokenIsSet) {
                 setIsAuth(tokenIsSet);
             }
         }
     }, [regToken]);
-
 
 
     return {
