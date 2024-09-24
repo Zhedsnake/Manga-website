@@ -1,67 +1,66 @@
-import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../useTypedSelector.ts";
-import {useActions} from "../useActions.ts";
-import {AuthContext, AuthContextType} from "../../contexts/AuthContext.ts";
-import verifyLogin from "../../util/Auth/verifyLogin.ts";
-import {setToken} from "../../util/setTocken.ts";
-import {Tokens} from "../../util/Tokens.ts";
+import React, { useContext, useEffect, useState } from "react";
+import { useTypedSelector } from "../useTypedSelector";
+import { useActions } from "../useActions";
+import { AuthContext, AuthContextType } from "../../contexts/AuthContext";
+import verifyLogin from "../../util/Auth/verifyLogin";
+import { setToken } from "../../util/setTocken";
+import { Tokens } from "../../util/Tokens";
 
 export default function useHandleLogIn() {
-    const {
-        setIsAuth,
-    } = useContext<AuthContextType>(AuthContext);
+    const { setIsAuth } = useContext<AuthContextType>(AuthContext);
 
-    const [loginError, setLoginError] = useState("")
+    const [loginError, setLoginError] = useState("");
 
-    const {name, email, password} = useTypedSelector(state => state.authForm);
-    const {logInToken, logInError, logInLoading} = useTypedSelector(state => state.logIn);
-    const {logInAction, setDefInputs, setNameErrorAction, setPasswordErrorAction, setDefErrorInputs} = useActions();
+    const { name, email, password } = useTypedSelector((state) => state.authForm);
+    const { logInToken, logInError, logInLoading } = useTypedSelector((state) => state.logIn);
+    const { logInAction, setDefInputs, setNameErrorAction, setPasswordErrorAction, setDefErrorInputs } = useActions();
 
     const handleLogIn = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const verificationResponse:
+            | { loginError: string }
+            | { nameError: string }
+            | { passwordError: string }
+            | null = verifyLogin(name, password);
 
-        const verificationResponse: { loginError: string } | { nameError: string } | { passwordError: string } | null = verifyLogin(name, password)
         if (verificationResponse) {
             if ("loginError" in verificationResponse) {
-                setLoginError(verificationResponse.loginError)
+                setLoginError(verificationResponse.loginError);
             } else if ("nameError" in verificationResponse) {
-                setNameErrorAction(verificationResponse.nameError)
+                setNameErrorAction(verificationResponse.nameError);
             } else if ("passwordError" in verificationResponse) {
-                setPasswordErrorAction(verificationResponse.passwordError)
+                setPasswordErrorAction(verificationResponse.passwordError);
             }
 
-            setDefInputs()
+            setDefInputs();
         }
 
         if (name && email && password && !verificationResponse) {
-
-            setDefErrorInputs()
-
+            setDefErrorInputs();
             await logInAction(name, password);
-
-            setDefInputs()
+            setDefInputs();
         }
     };
 
     useEffect(() => {
-        setLoginError(logInError)
+        if (logInError) {
+            setLoginError(logInError);
+        }
     }, [logInError]);
 
     useEffect(() => {
         if (logInToken) {
             const tokenIsSet: boolean = setToken(Tokens.userToken, logInToken);
-
             if (tokenIsSet) {
                 setIsAuth(tokenIsSet);
             }
         }
     }, [logInToken]);
 
-
     return {
         logInLoading,
         loginError,
-        handleLogIn
+        handleLogIn,
     };
 }
