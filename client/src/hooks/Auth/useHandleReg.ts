@@ -45,18 +45,22 @@ export default function useHandleReg() {
     };
 
     useEffect(() => {
-        setRegError(regError)
+        console.log("эффекто отработал")
+        setRegError(regError || "");
     }, [regError]);
 
     useEffect(() => {
+        console.log("эффекто отработал")
+        console.log("regToken изменился:", regToken);
         if (regToken) {
             const tokenIsSet: boolean = setToken(Tokens.userToken, regToken);
-
+            console.log("Токен установлен:", tokenIsSet);
             if (tokenIsSet) {
                 setIsAuth(tokenIsSet);
             }
         }
     }, [regToken]);
+
 
 
     return {
