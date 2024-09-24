@@ -2,7 +2,7 @@
 export interface RegistrationState {
     regToken: string,
     regLoading: boolean,
-    regError: string | null,
+    regError: string,
 }
 export enum RegistrationActionTypes {
     REGISTRATION = 'REGISTRATION',
