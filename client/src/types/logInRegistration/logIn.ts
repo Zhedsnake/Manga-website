@@ -2,7 +2,7 @@
 export interface LogInState {
     logInToken: string,
     logInLoading: boolean,
-    logInError: string | null,
+    logInError: string,
 }
 export enum LogInActionTypes {
     LOG_IN = 'LOG_IN',
