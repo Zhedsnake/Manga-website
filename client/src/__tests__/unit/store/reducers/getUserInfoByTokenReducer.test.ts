@@ -31,32 +31,31 @@ describe("getUserInfoByTokenReducer", () => {
         expect(newState).toEqual(expectedState);
     });
 
-    // test("должен обрабатывать USER_INFO_SUCCESS", () => {
-    //     const action: GetUserInfoAction = {
-    //         type: GetUserInfoActionTypes.USER_INFO_SUCCESS,
-    //         payload: {
-    //             name: "John Doe",
-    //             email: "john.doe@example.com",
-    //             pic: "profile.jpg",
-    //             picWebp: "profile.webp",
-    //             registeredAt: "2023-09-23",
-    //             birthday: "1990-01-01"
-    //         }
-    //     };
-    //     const expectedState = {
-    //         name: "John Doe",
-    //         email: "john.doe@example.com",
-    //         pic: "profile.jpg",
-    //         picWebp: "profile.webp",
-    //         registeredAt: "2023-09-23",
-    //         birthday: "1990-01-01",
-    //         loading: false,
-    //         error: null
-    //     };
-    //
-    //     const newState = getUserInfoByTokenReducer(initialState, action);
-    //     expect(newState).toEqual(expectedState);
-    // });
+    test("должен обрабатывать USER_INFO_SUCCESS", () => {
+        const action: GetUserInfoAction = {
+            type: GetUserInfoActionTypes.USER_INFO_SUCCESS,
+            payload: {
+                name: "John Doe",
+                email: "john.doe@example.com",
+                pic: "profile.jpg",
+                registeredAt: "2023-09-23",
+                birthday: "1990-01-01"
+            }
+        };
+        const expectedState = {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            pic: "profile.jpg",
+            picWebp: "",
+            registeredAt: "2023-09-23",
+            birthday: "1990-01-01",
+            loading: false,
+            error: null
+        };
+
+        const newState = getUserInfoByTokenReducer(initialState, action);
+        expect(newState).toEqual(expectedState);
+    });
 
     test("должен обрабатывать USER_INFO_ERROR", () => {
         const action: GetUserInfoAction = {
