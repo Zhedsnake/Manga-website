@@ -1,0 +1,72 @@
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import EditUserInfoService from '../../../../../api/EditUserInfoService';
+import { editEmail, defEditEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
+import emailFormReducer from '../../../../../store/reducers/editUserInfo/emailFormSlice';
+import { EmailActionTypes, EditEmailState } from '../../../../../types/editUserInfo/emailForm';
+import { AnyAction } from 'redux';
+import { AxiosResponse } from 'axios';
+
+describe('editEmail async thunk tests', () => {
+    let store: EnhancedStore<{ emailForm: EditEmailState }, AnyAction>;
+
+    beforeEach(() => {
+        store = configureStore({
+            reducer: {
+                emailForm: emailFormReducer
+            },
+            middleware: (getDefaultMiddleware) =>
+                getDefaultMiddleware({
+                    serializableCheck: false
+                }),
+        });
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    test('должно диспатчить на успешное действие', async () => {
+        const mockMessage = 'Email updated successfully';
+
+        (EditUserInfoService.editEmailRequest as jest.Mock).mockResolvedValue({
+            data: { message: mockMessage },
+            status: 200,
+            statusText: 'OK',
+            headers: {},
+            config: {}
+        } as AxiosResponse<{ message: string }>);
+
+        await store.dispatch(editEmail('new-email@example.com') as any);
+
+        const state = store.getState().emailForm;
+        expect(state).toEqual({
+            message: mockMessage,
+            loading: false,
+            error: null
+        });
+    });
+
+    // test('dispatches the correct actions on failure', async () => {
+    //     (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue(new Error('Some error'));
+    //
+    //     await store.dispatch(editEmail('invalid-email@example.com') as any);
+    //
+    //     const state = store.getState().emailForm;
+    //     expect(state).toEqual({
+    //         message: "",
+    //         loading: false,
+    //         error: 'Произошла ошибка при изменении email'
+    //     });
+    // });
+});
+
+describe('defEditEmail action test', () => {
+    test('dispatches DEF_EDIT_EMAIL action', () => {
+        const mockDispatch = jest.fn();
+        defEditEmail()(mockDispatch);
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: EmailActionTypes.DEF_EDIT_EMAIL
+        });
+    });
+});
