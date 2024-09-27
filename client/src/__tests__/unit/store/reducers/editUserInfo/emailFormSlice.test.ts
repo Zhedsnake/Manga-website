@@ -6,7 +6,7 @@ import { EditEmailState } from '../../../../../types/editUserInfo/emailForm';
 import { AnyAction } from 'redux';
 import { AxiosResponse } from 'axios';
 
-// Изменение для github
+
 
 describe('emailFormSlice reducer tests', () => {
 
