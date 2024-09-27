@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useActions} from "../hooks/useActions.ts";
-import {useTypedSelector} from "../hooks/useTypedSelector.ts";
+import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import {Link} from "react-router-dom";
 import {defUserInfoByToken} from "../store/action-creators/getUserInfoByToken.ts";

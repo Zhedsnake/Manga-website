@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
-import {useTypedSelector} from "../hooks/useTypedSelector.ts";
+import {useTypedSelector} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
 import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import {useActions} from "../hooks/useActions.ts";
+import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
 import {Tokens} from "../util/Tokens.ts";
 
 interface childrenProp {

@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from 'react';
-import {useTypedSelector} from "../hooks/useTypedSelector.ts";
+import {useTypedSelector} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
 import EditName from "../components/EditUserInfo/EditName.tsx";
 import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
-import {useActions} from "../hooks/useActions.ts";
+import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
 import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
 import EditAvatar from "../components/EditUserInfo/EditAvatar.tsx";
 import {Link} from "react-router-dom";

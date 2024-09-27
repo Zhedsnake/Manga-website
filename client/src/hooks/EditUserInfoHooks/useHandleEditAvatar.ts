@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../useTypedSelector.ts";
-import {useActions} from "../useActions.ts";
+import {useTypedSelector} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
 import verifyEditAvatar from "../../util/Verification/EditUserInfo/verifyEditAvatar.ts";
 import {EditUserInfoContext} from "../../contexts/EditUserInfoContext.ts";
 
