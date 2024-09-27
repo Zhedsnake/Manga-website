@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { editEmail } from "../../action-creators/editUserInfo/emailForm";
 import { EditEmailState } from "../../../types/editUserInfo/emailForm";
 
+// Изменение дял github
+
 const initialState: EditEmailState = {
     message: "",
     loading: false,
