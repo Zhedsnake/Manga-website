@@ -12,7 +12,7 @@ export default class EditUserInfoService {
             return response;
         } catch (e) {
             const error = e as AxiosError<{ error: string }>;
-            return { error: error.response?.data?.error || "Неизвестная ошибка" };
+            throw new Error(error.response?.data?.error || "Неизвестная ошибка");
         }
     }
 
@@ -24,7 +24,7 @@ export default class EditUserInfoService {
             return response;
         } catch (e) {
             const error = e as AxiosError<{ error: string }>;
-            return { error: error.response?.data?.error || "Неизвестная ошибка" };
+            throw new Error(error.response?.data?.error || "Неизвестная ошибка");
         }
     }
 
@@ -36,7 +36,7 @@ export default class EditUserInfoService {
             return response;
         } catch (e) {
             const error = e as AxiosError<{ error: string }>;
-            return { error: error.response?.data?.error || "Неизвестная ошибка" };
+            throw new Error(error.response?.data?.error || "Неизвестная ошибка");
         }
     }
 
@@ -52,7 +52,7 @@ export default class EditUserInfoService {
             return response;
         } catch (e) {
             const error = e as AxiosError<{ error: string }>;
-            return { error: error.response?.data?.error || "Неизвестная ошибка" };
+            throw new Error(error.response?.data?.error || "Неизвестная ошибка");
         }
     }
 }
