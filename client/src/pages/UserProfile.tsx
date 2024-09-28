@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
-import {useTypedSelector} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import {Link} from "react-router-dom";
 import {defUserInfoByToken} from "../store/action-creators/getUserInfoByToken.ts";
@@ -20,6 +20,8 @@ const UserProfile: React.FC = () => {
     } = useTypedSelector(state => state.getUserInfoByToken);
     const {getUserInfoByToken, defUserInfoByToken} = useActions();
 
+    //! Патом переделать под redux toolkit
+    
     useEffect(() => {
         getUserInfoByToken()
     }, []);

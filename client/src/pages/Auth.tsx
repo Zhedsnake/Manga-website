@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import LogInForm from "../components/Authentification/LogInForm.tsx";
 import FormButton from "../components/UI/formButton/FormButton.tsx";
@@ -22,6 +22,8 @@ const Auth: React.FC = () => {
     const handleLogIn = useHandleLogIn()
     const handleReg = useHandleReg()
 
+    //! Патом переделать под redux toolkit
+    
     const {defLogIn, defReg, setDefInputs} = useActions();
 
     const handleToggleForm = (prop: boolean) => {
