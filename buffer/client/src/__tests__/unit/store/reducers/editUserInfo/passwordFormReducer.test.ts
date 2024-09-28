@@ -1,4 +1,4 @@
-import { passwordFormReducer } from "../../../../../../../../client/src/store/reducers/editUserInfo/passwordFormReducer";
+import { passwordFormSlice } from "../../../../../../../../client/src/store/reducers/editUserInfo/passwordFormSlice";
 import { PasswordActionTypes, PasswordAction, EditPasswordState } from "../../../../../../../../client/src/types/editUserInfo/passwordForm";
 
 describe('passwordFormReducer', () => {
@@ -9,7 +9,7 @@ describe('passwordFormReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = passwordFormReducer(undefined, {} as PasswordAction);
+        const newState = passwordFormSlice(undefined, {} as PasswordAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('passwordFormReducer', () => {
             error: null
         };
 
-        const newState = passwordFormReducer(initialState, action);
+        const newState = passwordFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -40,7 +40,7 @@ describe('passwordFormReducer', () => {
             error: null
         };
 
-        const newState = passwordFormReducer(initialState, action);
+        const newState = passwordFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -56,7 +56,7 @@ describe('passwordFormReducer', () => {
             error: "Error updating password"
         };
 
-        const newState = passwordFormReducer(initialState, action);
+        const newState = passwordFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -71,7 +71,7 @@ describe('passwordFormReducer', () => {
             error: "Some error"
         };
 
-        const newState = passwordFormReducer(currentState, action);
+        const newState = passwordFormSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });
