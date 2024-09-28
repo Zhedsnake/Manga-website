@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import verifyEditAvatar from "../../util/Verification/EditUserInfo/verifyEditAvatar.ts";
 import {EditUserInfoContext} from "../../contexts/EditUserInfoContext.ts";
 
@@ -8,6 +8,9 @@ export default function useHandleEditAvatar(avatar: File | null, clear: () => vo
     const { setMessage } = useContext(EditUserInfoContext);
 
     const [error, setError] = useState<string>("");
+    
+    //! Патом переделать под redux toolkit
+    
     const { loading: avatarLoading, error: avatarError } = useTypedSelector(state => state.avatarForm);
     const { editAvatar } = useActions();
 

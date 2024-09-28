@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import verifyEditPassword from "../../util/Verification/EditUserInfo/verifyEditPassword.ts";
 import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext.ts";
 
@@ -10,6 +10,8 @@ export default function useHandleEditPassword(oldPassword: string, newPassword: 
     } = useContext<EditUserInfoContextType>(EditUserInfoContext);
 
     const [error, setError] = useState<string>("")
+    
+    //! Патом переделать под redux toolkit
 
     const {loading: passwordLoading, error: passwordError} = useTypedSelector(state => state.passwordForm);
     const {editPassword} = useActions();
