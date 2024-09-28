@@ -1,4 +1,4 @@
-import { avatarFormReducer } from "../../../../../../../../client/src/store/reducers/editUserInfo/avatarFormReducer";
+import { avatarFormSlice } from "../../../../../../../../client/src/store/reducers/editUserInfo/avatarFormSlice";
 import { AvatarActionTypes, AvatarAction, EditAvatarState } from "../../../../../../../../client/src/types/editUserInfo/avatarForm";
 
 describe('avatarFormReducer', () => {
@@ -9,7 +9,7 @@ describe('avatarFormReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = avatarFormReducer(undefined, {} as AvatarAction);
+        const newState = avatarFormSlice(undefined, {} as AvatarAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('avatarFormReducer', () => {
             error: null
         };
 
-        const newState = avatarFormReducer(initialState, action);
+        const newState = avatarFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -40,7 +40,7 @@ describe('avatarFormReducer', () => {
             error: null
         };
 
-        const newState = avatarFormReducer(initialState, action);
+        const newState = avatarFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -56,7 +56,7 @@ describe('avatarFormReducer', () => {
             error: "Error updating avatar"
         };
 
-        const newState = avatarFormReducer(initialState, action);
+        const newState = avatarFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -71,7 +71,7 @@ describe('avatarFormReducer', () => {
             error: "Some error"
         };
 
-        const newState = avatarFormReducer(currentState, action);
+        const newState = avatarFormSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });
