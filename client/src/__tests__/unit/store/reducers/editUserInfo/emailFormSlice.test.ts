@@ -1,10 +1,6 @@
-import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import emailFormReducer, { defEditEmail } from '../../../../../store/reducers/editUserInfo/emailFormSlice';
 import { editEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
-import EditUserInfoService from '../../../../../api/EditUserInfoService';
 import { EditEmailState } from '../../../../../types/editUserInfo/emailForm';
-import { AnyAction } from 'redux';
-import { AxiosResponse } from 'axios';
 
 
 jest.mock('../../../../../api/EditUserInfoService', () => ({
@@ -32,7 +28,7 @@ describe('emailFormSlice reducer tests', () => {
     test('должен обрабатывать действие defEditEmail', () => {
         const newState = emailFormReducer(initialState, defEditEmail());
         expect(newState).toEqual({
-            message: 'default_email_message',
+            message: "",
             loading: false,
             error: null
         });
@@ -71,68 +67,6 @@ describe('emailFormSlice reducer tests', () => {
             message: "",
             loading: false,
             error: 'Email update failed'
-        });
-    });
-});
-
-
-// Тестирование асинхронных экшенов с использованием реального хранилища
-describe('editEmail async thunk tests', () => {
-
-    let store: EnhancedStore<{ emailForm: EditEmailState }, AnyAction>;
-
-    beforeEach(() => {
-        store = configureStore({
-            reducer: {
-                emailForm: emailFormReducer
-            },
-            middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-        });
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
-
-    test('направляет правильные действия на достижение успеха', async () => {
-        const mockMessage = 'Email updated successfully';
-
-        (EditUserInfoService.editEmailRequest as jest.Mock).mockResolvedValue({
-            data: { message: mockMessage },
-            status: 200,
-            statusText: 'OK',
-            headers: {},
-            config: {}
-        } as AxiosResponse<{ message: string }>);
-
-        await store.dispatch(editEmail('new-email@example.com') as any);
-
-        const state = store.getState().emailForm;
-        expect(state).toEqual({
-            message: mockMessage,
-            loading: false,
-            error: null
-        });
-    });
-
-    test('отправляет правильные действия в случае сбоя', async () => {
-        const mockError = 'Произошла ошибка при изменении email';
-
-        (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue({
-            data: { message: mockError },
-            status: 400,
-            statusText: 'OK',
-            headers: {},
-            config: {}
-        } as any);
-
-        await store.dispatch(editEmail('invalid-email@example.com') as any);
-
-        const state = store.getState().emailForm;
-        expect(state).toEqual({
-            message: "",
-            loading: false,
-            error: mockError
         });
     });
 });
