@@ -2,7 +2,7 @@ import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import EditUserInfoService from '../../../../../api/EditUserInfoService';
 import { editEmail, defEditEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
 import emailFormReducer from '../../../../../store/reducers/editUserInfo/emailFormSlice';
-import { EmailActionTypes, EditEmailState } from '../../../../../types/editUserInfo/emailForm';
+import { EditEmailState } from '../../../../../types/editUserInfo/emailForm';
 import { AnyAction } from 'redux';
 import { AxiosResponse } from 'axios';
 
@@ -64,7 +64,7 @@ describe('editEmail async thunk tests', () => {
         });
     });
 
-    test('dispatches the correct actions on failure', async () => {
+    test('должно диспатчить на не успешное действие', async () => {
         const mockError = 'Произошла ошибка при изменении email';
 
         (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue(new Error(mockError));
@@ -81,12 +81,13 @@ describe('editEmail async thunk tests', () => {
 });
 
 describe('defEditEmail action test', () => {
-    test('dispatches DEF_EDIT_EMAIL action', () => {
+
+    test('должно диспатчить на дефолтное значение', () => {
         const mockDispatch = jest.fn();
         defEditEmail()(mockDispatch);
 
         expect(mockDispatch).toHaveBeenCalledWith({
-            type: EmailActionTypes.DEF_EDIT_EMAIL
+            type: 'emailForm/defEditEmail'
         });
     });
 });
