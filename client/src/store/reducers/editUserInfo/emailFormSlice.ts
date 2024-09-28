@@ -15,7 +15,7 @@ export const emailFormSlice = createSlice({
     initialState,
     reducers: {
         defEditEmail: (state) => {
-            state.message = 'default_email_message';
+            state.message = "";
             state.error = null;
         }
     },
