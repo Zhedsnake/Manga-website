@@ -7,6 +7,15 @@ import { AnyAction } from 'redux';
 import { AxiosResponse } from 'axios';
 
 
+jest.mock('../../../../../api/EditUserInfoService', () => ({
+    __esModule: true,
+    default: {
+        editEmailRequest: jest.fn(),
+        editNameRequest: jest.fn(),
+        editPasswordRequest: jest.fn(),
+        editAvatarRequest: jest.fn(),
+    },
+}));
 
 describe('emailFormSlice reducer tests', () => {
 
@@ -87,7 +96,8 @@ describe('editEmail async thunk tests', () => {
 
     test('направляет правильные действия на достижение успеха', async () => {
         const mockMessage = 'Email updated successfully';
-        jest.spyOn(EditUserInfoService, 'editEmailRequest').mockResolvedValue({
+
+        (EditUserInfoService.editEmailRequest as jest.Mock).mockResolvedValue({
             data: { message: mockMessage },
             status: 200,
             statusText: 'OK',
@@ -106,9 +116,14 @@ describe('editEmail async thunk tests', () => {
     });
 
     test('отправляет правильные действия в случае сбоя', async () => {
-        const mockError = 'Произошла ошибка при изменении email'; // Изменяем на реальную ошибку
-        jest.spyOn(EditUserInfoService, 'editEmailRequest').mockRejectedValue({
-            error: mockError
+        const mockError = 'Произошла ошибка при изменении email';
+
+        (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue({
+            data: { message: mockError },
+            status: 400,
+            statusText: 'OK',
+            headers: {},
+            config: {}
         } as any);
 
         await store.dispatch(editEmail('invalid-email@example.com') as any);
