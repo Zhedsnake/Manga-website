@@ -1,4 +1,4 @@
-import { nameFormReducer } from "../../../../../../../../client/src/store/reducers/editUserInfo/nameFormReducer";
+import { nameFormSlice } from "../../../../../../../../client/src/store/reducers/editUserInfo/nameFormSlice";
 import { NameActionTypes, NameAction, EditNameState } from "../../../../../../../../client/src/types/editUserInfo/nameForm";
 
 describe('nameFormReducer', () => {
@@ -9,7 +9,7 @@ describe('nameFormReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = nameFormReducer(undefined, {} as NameAction);
+        const newState = nameFormSlice(undefined, {} as NameAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('nameFormReducer', () => {
             error: null
         };
 
-        const newState = nameFormReducer(initialState, action);
+        const newState = nameFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -40,7 +40,7 @@ describe('nameFormReducer', () => {
             error: null
         };
 
-        const newState = nameFormReducer(initialState, action);
+        const newState = nameFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -56,7 +56,7 @@ describe('nameFormReducer', () => {
             error: "Error updating name"
         };
 
-        const newState = nameFormReducer(initialState, action);
+        const newState = nameFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -71,7 +71,7 @@ describe('nameFormReducer', () => {
             error: "Some error"
         };
 
-        const newState = nameFormReducer(currentState, action);
+        const newState = nameFormSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });
