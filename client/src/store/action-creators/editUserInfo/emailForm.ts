@@ -1,6 +1,4 @@
-import {Dispatch} from "redux";
 import EditUserInfoService from "../../../api/EditUserInfoService.ts";
-import {EmailAction, EmailActionTypes} from "../../../types/editUserInfo/emailForm.ts";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
 export const editEmail = createAsyncThunk<string, string, { rejectValue: string }>(
@@ -20,7 +18,7 @@ export const editEmail = createAsyncThunk<string, string, { rejectValue: string 
 );
 
 export const defEditEmail = () => {
-    return (dispatch: Dispatch<EmailAction>) => {
-        dispatch({ type: EmailActionTypes.DEF_EDIT_EMAIL });
+    return (dispatch: any) => {
+        dispatch({ type: 'emailForm/defEditEmail' });
     };
 };
