@@ -1,13 +1,13 @@
 import {renderHook, act} from "@testing-library/react";
 import useHandleEditEmail from "../../../../../../../client/src/hooks/EditUserInfoHooks/useHandleEditEmail";
-import {useActions} from "../reduxHooks/useActions.ts";
-import {useTypedSelector} from "../reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../../hooks/reduxHooks/useTypedSelector.ts";
 import verifyEmail from "../../../../../../../client/src/util/Verification/verifyEmail";
 import {EditUserInfoContext} from "../../../../../../../client/src/contexts/EditUserInfoContext";
 import React from "react";
 
-jest.mock("../reduxHooks/useActions.ts");
-jest.mock("../reduxHooks/useTypedSelector.ts");
+jest.mock("../../../../hooks/reduxHooks/useActions.ts");
+jest.mock("../../../../hooks/reduxHooks/useTypedSelector.ts");
 jest.mock("../../../../../../../client/src/util/Verification/verifyEmail");
 
 describe("useHandleEditEmail", () => {

@@ -1,13 +1,13 @@
 import { renderHook, act } from "@testing-library/react";
 import useHandleEditName from "../../../../../../../client/src/hooks/EditUserInfoHooks/useHandleEditName";
-import { useActions } from "../reduxHooks/useActions.ts";
-import { useTypedSelector } from "../reduxHooks/useTypedSelector.ts";
+import { useActions } from "../../../../hooks/reduxHooks/useActions.ts";
+import { useTypedSelector } from "../../../../hooks/reduxHooks/useTypedSelector.ts";
 import verifyEditName from "../../../../../../../client/src/util/Verification/EditUserInfo/verifyEditName";
 import { EditUserInfoContext } from "../../../../../../../client/src/contexts/EditUserInfoContext";
 import React from "react";
 
-jest.mock("../reduxHooks/useActions.ts");
-jest.mock("../reduxHooks/useTypedSelector.ts");
+jest.mock("../../../../hooks/reduxHooks/useActions.ts");
+jest.mock("../../../../hooks/reduxHooks/useTypedSelector.ts");
 jest.mock("../../../../../../../client/src/util/Verification/EditUserInfo/verifyEditName");
 
 describe("useHandleEditName", () => {

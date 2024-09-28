@@ -1,14 +1,14 @@
 import {renderHook, act} from "@testing-library/react";
 import useHandleReg from "../../../../../../../client/src/hooks/Auth/useHandleReg";
-import {useTypedSelector} from "../reduxHooks/useTypedSelector.ts";
-import {useActions} from "../reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../../hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../hooks/reduxHooks/useActions.ts";
 import {AuthContext} from "../../../../../../../client/src/contexts/AuthContext";
 import verifyReg from "../../../../../../../client/src/util/Auth/verifyReg.ts";
 import {setToken} from "../../../../../../../client/src/util/setTocken";
 import {Tokens} from "../../../../../../../client/src/util/Tokens";
 
-jest.mock("../reduxHooks/useTypedSelector.ts");
-jest.mock("../reduxHooks/useActions.ts");
+jest.mock("../../../../hooks/reduxHooks/useTypedSelector.ts");
+jest.mock("../../../../hooks/reduxHooks/useActions.ts");
 jest.mock("../../../../../../../client/src/util/Auth/verifyReg");
 jest.mock("../../../../../../../client/src/util/setTocken");
 
