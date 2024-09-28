@@ -1,4 +1,4 @@
-import { registrationReducer } from "../../../../../../../../client/src/store/reducers/logIn-Registration/registrationReducer";
+import { registrationSlice } from "../../../../../../../../client/src/store/reducers/logIn-Registration/registrationSlice";
 import { RegistrationActionTypes, RegistrationAction, RegistrationState } from "../../../../../../../../client/src/types/logInRegistration/registration";
 
 describe('registrationReducer', () => {
@@ -9,7 +9,7 @@ describe('registrationReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = registrationReducer(undefined, {} as RegistrationAction);
+        const newState = registrationSlice(undefined, {} as RegistrationAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('registrationReducer', () => {
             regError: ''
         };
 
-        const newState = registrationReducer(initialState, action);
+        const newState = registrationSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -40,7 +40,7 @@ describe('registrationReducer', () => {
             regError: ''
         };
 
-        const newState = registrationReducer(initialState, action);
+        const newState = registrationSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -56,7 +56,7 @@ describe('registrationReducer', () => {
             regError: "Registration failed"
         };
 
-        const newState = registrationReducer(initialState, action);
+        const newState = registrationSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -71,7 +71,7 @@ describe('registrationReducer', () => {
             regError: "Some error"
         };
 
-        const newState = registrationReducer(currentState, action);
+        const newState = registrationSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });

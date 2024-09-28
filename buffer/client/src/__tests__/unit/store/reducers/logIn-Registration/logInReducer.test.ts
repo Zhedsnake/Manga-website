@@ -1,4 +1,4 @@
-import { logInReducer } from "../../../../../../../../client/src/store/reducers/logIn-Registration/logInReducer";
+import { logInSlice } from "../../../../../../../../client/src/store/reducers/logIn-Registration/logInSlice";
 import { LogInActionTypes, LogInAction, LogInState } from "../../../../../../../../client/src/types/logInRegistration/logIn";
 
 describe('logInReducer', () => {
@@ -9,7 +9,7 @@ describe('logInReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = logInReducer(undefined, {} as LogInAction);
+        const newState = logInSlice(undefined, {} as LogInAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('logInReducer', () => {
             logInError: ''
         };
 
-        const newState = logInReducer(initialState, action);
+        const newState = logInSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -40,7 +40,7 @@ describe('logInReducer', () => {
             logInError: ''
         };
 
-        const newState = logInReducer(initialState, action);
+        const newState = logInSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -56,7 +56,7 @@ describe('logInReducer', () => {
             logInError: "Invalid credentials"
         };
 
-        const newState = logInReducer(initialState, action);
+        const newState = logInSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -71,7 +71,7 @@ describe('logInReducer', () => {
             logInError: "Some error"
         };
 
-        const newState = logInReducer(currentState, action);
+        const newState = logInSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });
