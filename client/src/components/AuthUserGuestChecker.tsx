@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import {useTypedSelector} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import {setToken} from "../util/setTocken.ts";
 import {Tokens} from "../util/Tokens.ts";
 

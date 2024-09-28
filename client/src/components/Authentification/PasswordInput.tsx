@@ -10,8 +10,8 @@ import ErrorForm from "../UI/errorForm/ErrorForm";
 import PasswordToggleButton from "../UI/passwordToggleButton/PasswordToggleButton";
 import PasswordContainer from "../UI/passwordContainer/PasswordContainer";
 import {AuthContext} from "../../contexts/AuthContext.ts";
-import {useTypedSelector} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import useInput from "../../hooks/useInput.ts";
 
 const PasswordInput: React.FC = () => {

@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../contexts/AuthContext.ts";
 import Loader from "../UI/Loader/Loader.tsx";
-import {useTypedSelector} from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
+import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
 import {Tokens} from "../../util/Tokens.ts";
 
 const LeftPanel: React.FC = () => {
