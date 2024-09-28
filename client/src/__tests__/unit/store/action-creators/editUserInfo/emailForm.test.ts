@@ -6,10 +6,28 @@ import { EmailActionTypes, EditEmailState } from '../../../../../types/editUserI
 import { AnyAction } from 'redux';
 import { AxiosResponse } from 'axios';
 
+
+
+jest.mock('../../../../../api/EditUserInfoService', () => ({
+    __esModule: true,
+    default: {
+        editEmailRequest: jest.fn(),
+        editNameRequest: jest.fn(),
+        editPasswordRequest: jest.fn(),
+        editAvatarRequest: jest.fn(),
+    },
+}));
+
+
 describe('editEmail async thunk tests', () => {
     let store: EnhancedStore<{ emailForm: EditEmailState }, AnyAction>;
 
     beforeEach(() => {
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key: string) => {
+            if (key === 'user-token') return 'mocked-token';
+            return null;
+        });
+
         store = configureStore({
             reducer: {
                 emailForm: emailFormReducer
@@ -46,18 +64,20 @@ describe('editEmail async thunk tests', () => {
         });
     });
 
-    // test('dispatches the correct actions on failure', async () => {
-    //     (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue(new Error('Some error'));
-    //
-    //     await store.dispatch(editEmail('invalid-email@example.com') as any);
-    //
-    //     const state = store.getState().emailForm;
-    //     expect(state).toEqual({
-    //         message: "",
-    //         loading: false,
-    //         error: 'Произошла ошибка при изменении email'
-    //     });
-    // });
+    test('dispatches the correct actions on failure', async () => {
+        const mockError = 'Произошла ошибка при изменении email';
+
+        (EditUserInfoService.editEmailRequest as jest.Mock).mockRejectedValue(new Error(mockError));
+
+        await store.dispatch(editEmail('invalid-email@example.com') as any);
+
+        const state = store.getState().emailForm;
+        expect(state).toEqual({
+            message: "",
+            loading: false,
+            error: mockError
+        });
+    });
 });
 
 describe('defEditEmail action test', () => {
