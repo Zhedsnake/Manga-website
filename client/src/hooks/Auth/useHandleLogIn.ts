@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTypedSelector } from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useTypedSelector.ts";
-import { useActions } from "../../../../buffer/client/src/__tests__/unit/hooks/reduxHooks/useActions.ts";
+import { useTypedSelector } from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import { useActions } from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
 import { AuthContext, AuthContextType } from "../../contexts/AuthContext";
 import verifyLogin from "../../util/Auth/verifyLogin";
 import { setToken } from "../../util/setTocken";
@@ -11,6 +11,8 @@ export default function useHandleLogIn() {
 
     const [loginError, setLoginError] = useState("");
 
+    //! Патом переделать под redux toolkit
+    
     const { name, email, password } = useTypedSelector((state) => state.authForm);
     const { logInToken, logInError, logInLoading } = useTypedSelector((state) => state.logIn);
     const { logInAction, setDefInputs, setNameErrorAction, setPasswordErrorAction, setDefErrorInputs } = useActions();
