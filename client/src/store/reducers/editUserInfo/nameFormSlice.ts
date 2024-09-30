@@ -32,7 +32,7 @@ const nameFormSlice = createSlice({
             .addCase(editName.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
                 state.message = '';
-                state.error = action.payload || 'Ошибка обновления имени';
+                state.error = action.payload || '';
             });
     },
 });
