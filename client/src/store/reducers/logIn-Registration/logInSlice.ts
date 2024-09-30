@@ -29,7 +29,7 @@ const logInSlice = createSlice({
             .addCase(logIn.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.logInLoading = false;
                 state.logInToken = '';
-                state.logInError = action.payload || 'Ошибка входа'; // Обратите внимание на это место
+                state.logInError = action.payload || '';
             });
     },
 });
