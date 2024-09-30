@@ -2,19 +2,22 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import EditUserInfoService from "../../../api/EditUserInfoService.ts";
 
 export const editName = createAsyncThunk<string, string, { rejectValue: string }>(
-    'editUserInfo/editName',
+    'nameForm/editName',
     async (name: string, thunkAPI) => {
         try {
             const response = await EditUserInfoService.editNameRequest(name);
 
-            if ("data" in response && "message" in response.data) {
+            if (response && "data" in response && "message" in response.data) {
                 return response.data.message;
             } else {
                 return thunkAPI.rejectWithValue('Неверная структура ответа');
             }
 
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.message || 'Произошла ошибка при изменении имени');
+            if (error.response && error.response.data && error.response.data.error) {
+                return thunkAPI.rejectWithValue(error.response.data.error);
+            }
+            return thunkAPI.rejectWithValue('Произошла ошибка при изменении имени');
         }
     }
 );
