@@ -5,19 +5,16 @@ import { EditNameState } from '../../../../../types/editUserInfo/nameForm';
 jest.mock('../../../../../api/EditUserInfoService', () => ({
     __esModule: true,
     default: {
-        editEmailRequest: jest.fn(),
         editNameRequest: jest.fn(),
-        editPasswordRequest: jest.fn(),
-        editAvatarRequest: jest.fn(),
     },
 }));
 
 describe('nameFormSlice reducer tests', () => {
 
     const initialState: EditNameState = {
-        message: "",
+        message: '',
         loading: false,
-        error: null
+        error: '',
     };
 
     test('должно быть возвращено исходное состояние', () => {
@@ -27,9 +24,9 @@ describe('nameFormSlice reducer tests', () => {
     test('должен обрабатывать действие defEditName', () => {
         const newState = nameFormReducer(initialState, defEditName());
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
@@ -37,35 +34,35 @@ describe('nameFormSlice reducer tests', () => {
         const action = { type: editName.pending.type };
         const newState = nameFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: true,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editName.fulfilled', () => {
         const action = {
             type: editName.fulfilled.type,
-            payload: 'Name updated successfully'
+            payload: 'Имя успешно обновлено'
         };
         const newState = nameFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: 'Name updated successfully',
+            message: 'Имя успешно обновлено',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editName.rejected', () => {
         const action = {
             type: editName.rejected.type,
-            payload: 'Name update failed'
+            payload: 'Ошибка обновления имени'
         };
         const newState = nameFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: 'Name update failed'
+            error: 'Ошибка обновления имени'
         });
     });
 });

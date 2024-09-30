@@ -1,37 +1,37 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { editName } from "../../action-creators/editUserInfo/nameForm";
-import { EditNameState } from "../../../types/editUserInfo/nameForm.ts";
+import { EditNameState } from "../../../types/editUserInfo/nameForm";
 
 const initialState: EditNameState = {
-    message: "",
+    message: '',
     loading: false,
-    error: null
+    error: '',
 };
 
-export const nameFormSlice = createSlice({
-    name: "nameForm",
+const nameFormSlice = createSlice({
+    name: 'nameForm',
     initialState,
     reducers: {
-        defEditName: (state) => {
-            state.message = "";
-            state.loading = false;
-            state.error = null;
-        }
+        defEditName(state) {
+            state.message = '';
+            state.error = '';
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(editName.pending, (state) => {
                 state.loading = true;
-                state.error = null;
-                state.message = "";
+                state.error = '';
+                state.message = '';
             })
             .addCase(editName.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loading = false;
                 state.message = action.payload;
-                state.error = null;
+                state.error = '';
             })
-            .addCase(editName.rejected, (state, action) => {
+            .addCase(editName.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
+                state.message = '';
                 state.error = action.payload || 'Ошибка обновления имени';
             });
     },
