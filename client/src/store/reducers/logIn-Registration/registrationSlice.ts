@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RegistrationState } from "../../../types/logInRegistration/registration";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { registration } from '../../action-creators/logIn-Registration/registraion';
+import { RegistrationState } from '../../../types/logInRegistration/registration';
 
 const initialState: RegistrationState = {
     regToken: '',
@@ -7,32 +8,34 @@ const initialState: RegistrationState = {
     regError: '',
 };
 
-export const registrationSlice = createSlice({
-    name: "registration",
+const registrationSlice = createSlice({
+    name: 'registration',
     initialState,
     reducers: {
-        defRegistration: (state) => {
+        defRegistration(state) {
             state.regToken = '';
-            state.regLoading = false;
             state.regError = '';
         },
-        registration: (state) => {
-            state.regLoading = true;
-            state.regError = '';
-            state.regToken = '';
-        },
-        registrationSuccess: (state, action: PayloadAction<string>) => {
-            state.regLoading = false;
-            state.regError = '';
-            state.regToken = action.payload;
-        },
-        registrationError: (state, action: PayloadAction<string>) => {
-            state.regLoading = false;
-            state.regError = action.payload;
-            state.regToken = '';
-        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(registration.pending, (state) => {
+                state.regLoading = true;
+                state.regError = '';
+                state.regToken = '';
+            })
+            .addCase(registration.fulfilled, (state, action: PayloadAction<string>) => {
+                state.regLoading = false;
+                state.regToken = action.payload;
+                state.regError = '';
+            })
+            .addCase(registration.rejected, (state, action: PayloadAction<string | undefined>) => {
+                state.regLoading = false;
+                state.regToken = '';
+                state.regError = action.payload || '';
+            });
     },
 });
 
-export const { defRegistration, registration, registrationSuccess, registrationError } = registrationSlice.actions;
+export const { defRegistration } = registrationSlice.actions;
 export default registrationSlice.reducer;

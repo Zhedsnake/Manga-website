@@ -1,5 +1,13 @@
-import registrationReducer, { defRegistration, registration, registrationSuccess, registrationError } from '../../../../../store/reducers/logIn-Registration/registrationSlice';
+import registrationReducer, { defRegistration } from '../../../../../store/reducers/logIn-Registration/registrationSlice';
+import { registration } from '../../../../../store/action-creators/logIn-Registration/registraion';
 import { RegistrationState } from '../../../../../types/logInRegistration/registration';
+
+jest.mock('../../../../../api/AuthService', () => ({
+    __esModule: true,
+    default: {
+        registerRequest: jest.fn(),
+    },
+}));
 
 describe('registrationSlice reducer tests', () => {
 
@@ -18,43 +26,43 @@ describe('registrationSlice reducer tests', () => {
         expect(newState).toEqual({
             regToken: '',
             regLoading: false,
-            regError: '',
+            regError: ''
         });
     });
 
-    test('должен обрабатывать действие registration', () => {
-        const action = { type: registration.type };
+    test('должен обрабатывать действие registration.pending', () => {
+        const action = { type: registration.pending.type };
         const newState = registrationReducer(initialState, action);
         expect(newState).toEqual({
             regToken: '',
             regLoading: true,
-            regError: '',
+            regError: ''
         });
     });
 
-    test('должен обрабатывать действие registrationSuccess', () => {
+    test('должен обрабатывать действие registration.fulfilled', () => {
         const action = {
-            type: registrationSuccess.type,
-            payload: 'registrationToken123'
+            type: registration.fulfilled.type,
+            payload: 'userToken123'
         };
         const newState = registrationReducer(initialState, action);
         expect(newState).toEqual({
-            regToken: 'registrationToken123',
+            regToken: 'userToken123',
             regLoading: false,
-            regError: '',
+            regError: ''
         });
     });
 
-    test('должен обрабатывать действие registrationError', () => {
+    test('должен обрабатывать действие registration.rejected', () => {
         const action = {
-            type: registrationError.type,
-            payload: 'Registration failed'
+            type: registration.rejected.type,
+            payload: 'Ошибка регистрации'
         };
         const newState = registrationReducer(initialState, action);
         expect(newState).toEqual({
             regToken: '',
             regLoading: false,
-            regError: 'Registration failed',
+            regError: 'Ошибка регистрации'
         });
     });
 });
