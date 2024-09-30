@@ -22,6 +22,12 @@ describe('avatarFormSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defEditAvatar', () => {
+        const initialState: EditAvatarState = {
+            message: 'aaaa',
+            loading: false,
+            error: 'assas',
+        };
+
         const newState = avatarFormReducer(initialState, defEditAvatar());
         expect(newState).toEqual({
             message: '',

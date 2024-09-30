@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import AuthService from '../../../../../api/AuthService';
-import { registration, defReg } from '../../../../../store/action-creators/logIn-Registration/registraion';
+import { registration } from '../../../../../store/action-creators/logIn-Registration/registraion';
 import { AnyAction } from 'redux';
 import { AxiosError, AxiosResponse } from 'axios';
 import { RegistrationState } from '../../../../../types/logInRegistration/registration';
@@ -86,16 +86,4 @@ describe('registration async thunk tests', () => {
         });
     });
 
-});
-
-describe('defReg action test', () => {
-
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defReg()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'registration/defReg',
-        });
-    });
-});
+})

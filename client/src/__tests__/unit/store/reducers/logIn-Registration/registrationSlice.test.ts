@@ -22,6 +22,12 @@ describe('registrationSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defRegistration', () => {
+        const initialState: RegistrationState = {
+            regToken: 'dsds',
+            regLoading: false,
+            regError: 'sdd',
+        };
+
         const newState = registrationReducer(initialState, defRegistration());
         expect(newState).toEqual({
             regToken: '',

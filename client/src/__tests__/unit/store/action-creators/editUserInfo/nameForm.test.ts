@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import EditUserInfoService from '../../../../../api/EditUserInfoService';
-import { editName, defEditName } from '../../../../../store/action-creators/editUserInfo/nameForm';
+import { editName } from '../../../../../store/action-creators/editUserInfo/nameForm';
 import { AnyAction } from 'redux';
 import { AxiosError, AxiosResponse } from 'axios';
 import { EditNameState } from '../../../../../types/editUserInfo/nameForm';
@@ -82,17 +82,6 @@ describe('editName async thunk tests', () => {
             message: "",
             loading: false,
             error: mockError,
-        });
-    });
-});
-
-describe('defEditName action test', () => {
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defEditName()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'nameForm/defEditName',
         });
     });
 });

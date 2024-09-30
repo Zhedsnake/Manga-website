@@ -22,6 +22,12 @@ describe('nameFormSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defEditName', () => {
+        const initialState: EditNameState = {
+            message: 'sxsx',
+            loading: false,
+            error: 'sxsxs',
+        };
+
         const newState = nameFormReducer(initialState, defEditName());
         expect(newState).toEqual({
             message: '',

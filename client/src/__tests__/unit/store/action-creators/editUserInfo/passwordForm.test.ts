@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import EditUserInfoService from '../../../../../api/EditUserInfoService';
-import { editPassword, defEditPassword } from '../../../../../store/action-creators/editUserInfo/passwordForm';
+import { editPassword } from '../../../../../store/action-creators/editUserInfo/passwordForm';
 import { AnyAction } from 'redux';
 import { AxiosError, AxiosResponse } from 'axios';
 import { EditPasswordState } from '../../../../../types/editUserInfo/passwordForm';
@@ -82,17 +82,6 @@ describe('editPassword async thunk tests', () => {
             message: "",
             loading: false,
             error: mockError,
-        });
-    });
-});
-
-describe('defEditPassword action test', () => {
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defEditPassword()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'passwordForm/defEditPassword',
         });
     });
 });

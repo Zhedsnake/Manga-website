@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import EditUserInfoService from '../../../../../api/EditUserInfoService';
-import { editEmail, defEditEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
+import { editEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
 import { AnyAction } from 'redux';
 import { AxiosError, AxiosResponse } from 'axios';
 import { EditEmailState } from '../../../../../types/editUserInfo/emailForm';
@@ -86,13 +86,3 @@ describe('editEmail async thunk tests', () => {
     });
 });
 
-describe('defEditEmail action test', () => {
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defEditEmail()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'emailForm/defEditEmail',
-        });
-    });
-});

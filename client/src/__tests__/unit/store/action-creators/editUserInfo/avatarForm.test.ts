@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import EditUserInfoService from '../../../../../api/EditUserInfoService';
-import { editAvatar, defEditAvatar } from '../../../../../store/action-creators/editUserInfo/avatarForm';
+import { editAvatar } from '../../../../../store/action-creators/editUserInfo/avatarForm';
 import { AnyAction } from 'redux';
 import { AxiosError, AxiosResponse } from 'axios';
 import { EditAvatarState } from '../../../../../types/editUserInfo/avatarForm';
@@ -82,17 +82,6 @@ describe('editAvatar async thunk tests', () => {
             message: "",
             loading: false,
             error: mockError,
-        });
-    });
-});
-
-describe('defEditAvatar action test', () => {
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defEditAvatar()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'avatarForm/defEditAvatar',
         });
     });
 });

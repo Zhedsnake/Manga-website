@@ -21,6 +21,12 @@ describe('logInSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defLogIn', () => {
+        const initialState = {
+            logInToken: 'sdsd',
+            logInLoading: false,
+            logInError: 'sdsds',
+        };
+
         const newState = logInReducer(initialState, defLogIn());
         expect(newState).toEqual({
             logInToken: '',
@@ -64,5 +70,4 @@ describe('logInSlice reducer tests', () => {
             logInError: 'Ошибка входа'
         });
     });
-
 });

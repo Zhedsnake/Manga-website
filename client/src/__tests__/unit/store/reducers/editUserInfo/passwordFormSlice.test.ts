@@ -22,6 +22,12 @@ describe('passwordFormSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defEditPassword', () => {
+        const initialState: EditPasswordState = {
+            message: 'sxsx',
+            loading: false,
+            error: 'sxsx',
+        };
+
         const newState = passwordFormReducer(initialState, defEditPassword());
         expect(newState).toEqual({
             message: '',

@@ -40,7 +40,12 @@ describe('authFormSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defAuthForm', () => {
-        const newState = authFormReducer(initialState, defAuthForm());
+        const modifiedState: AuthFormState = {
+            name: 'scscsc',
+            email: 'cscscsc',
+            password: 'cccccc',
+        };
+        const newState = authFormReducer(modifiedState, defAuthForm());
         expect(newState).toEqual(initialState);
     });
 });

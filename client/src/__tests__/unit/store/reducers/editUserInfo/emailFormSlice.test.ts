@@ -15,6 +15,12 @@ describe('emailFormSlice reducer tests', () => {
     });
 
     test('должен обрабатывать действие defEditEmail', () => {
+        const initialState: EditEmailState = {
+            message: 'sxsxs',
+            loading: false,
+            error: 'xxxx',
+        };
+
         const newState = emailFormReducer(initialState, defEditEmail());
         expect(newState).toEqual({
             message: '',

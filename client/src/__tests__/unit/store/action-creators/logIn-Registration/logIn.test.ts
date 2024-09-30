@@ -1,6 +1,6 @@
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 import AuthService from '../../../../../api/AuthService';
-import { logIn, defLogIn } from '../../../../../store/action-creators/logIn-Registration/logIn';
+import { logIn } from '../../../../../store/action-creators/logIn-Registration/logIn';
 import { AnyAction } from 'redux';
 import {AxiosError, AxiosResponse} from 'axios';
 import {LogInState} from "../../../../../types/logInRegistration/logIn";
@@ -83,19 +83,6 @@ describe('logIn async thunk tests', () => {
             logInToken: "",
             logInLoading: false,
             logInError: mockError,
-        });
-    });
-
-});
-
-describe('defLogIn action test', () => {
-
-    test('должно диспатчить на дефолтное значение', () => {
-        const mockDispatch = jest.fn();
-        defLogIn()(mockDispatch);
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'logIn/defLogIn',
         });
     });
 });
