@@ -32,7 +32,7 @@ const passwordFormSlice = createSlice({
             .addCase(editPassword.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
                 state.message = '';
-                state.error = action.payload || 'Ошибка обновления пароля';
+                state.error = action.payload || '';
             });
     },
 });
