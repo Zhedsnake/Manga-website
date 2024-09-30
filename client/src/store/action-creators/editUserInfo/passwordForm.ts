@@ -21,9 +21,3 @@ export const editPassword = createAsyncThunk<string, { oldPassword: string; newP
         }
     }
 );
-
-export const defEditPassword = () => {
-    return (dispatch: any) => {
-        dispatch({ type: 'passwordForm/defEditPassword' });
-    };
-};

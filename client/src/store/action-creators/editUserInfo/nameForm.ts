@@ -21,9 +21,3 @@ export const editName = createAsyncThunk<string, string, { rejectValue: string }
         }
     }
 );
-
-export const defEditName = () => {
-    return (dispatch: any) => {
-        dispatch({ type: 'nameForm/defEditName' });
-    };
-};

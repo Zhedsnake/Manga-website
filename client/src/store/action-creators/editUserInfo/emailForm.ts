@@ -21,9 +21,3 @@ export const editEmail = createAsyncThunk<string, string, { rejectValue: string 
         }
     }
 );
-
-export const defEditEmail = () => {
-    return (dispatch: any) => {
-        dispatch({ type: 'emailForm/defEditEmail' });
-    };
-};

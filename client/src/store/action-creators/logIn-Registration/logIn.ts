@@ -21,10 +21,3 @@ export const logIn = createAsyncThunk<string, { name: string; password: string }
         }
     }
 );
-
-
-export const defLogIn = () => {
-    return (dispatch: any) => {
-        dispatch({type: 'logIn/defLogIn'});
-    };
-};

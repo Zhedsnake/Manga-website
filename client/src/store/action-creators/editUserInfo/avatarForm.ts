@@ -20,9 +20,3 @@ export const editAvatar = createAsyncThunk<string, FormData, { rejectValue: stri
         }
     }
 );
-
-export const defEditAvatar = () => {
-    return (dispatch: any) => {
-        dispatch({ type: 'avatarForm/defEditAvatar' });
-    };
-};

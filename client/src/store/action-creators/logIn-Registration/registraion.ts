@@ -21,9 +21,3 @@ export const registration = createAsyncThunk<string, { name: string; email: stri
         }
     }
 );
-
-export const defReg = () => {
-    return (dispatch: any) => {
-        dispatch({type: 'registration/defReg'});
-    };
-};
