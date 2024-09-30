@@ -1,23 +1,20 @@
 import passwordFormReducer, { defEditPassword } from '../../../../../store/reducers/editUserInfo/passwordFormSlice';
 import { editPassword } from '../../../../../store/action-creators/editUserInfo/passwordForm';
-import { EditPasswordState } from '../../../../../types/editUserInfo/passwordForm.ts';
+import { EditPasswordState } from '../../../../../types/editUserInfo/passwordForm';
 
 jest.mock('../../../../../api/EditUserInfoService', () => ({
     __esModule: true,
     default: {
-        editEmailRequest: jest.fn(),
-        editNameRequest: jest.fn(),
         editPasswordRequest: jest.fn(),
-        editAvatarRequest: jest.fn(),
     },
 }));
 
 describe('passwordFormSlice reducer tests', () => {
 
     const initialState: EditPasswordState = {
-        message: "",
+        message: '',
         loading: false,
-        error: null
+        error: '',
     };
 
     test('должно быть возвращено исходное состояние', () => {
@@ -27,9 +24,9 @@ describe('passwordFormSlice reducer tests', () => {
     test('должен обрабатывать действие defEditPassword', () => {
         const newState = passwordFormReducer(initialState, defEditPassword());
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
@@ -37,35 +34,35 @@ describe('passwordFormSlice reducer tests', () => {
         const action = { type: editPassword.pending.type };
         const newState = passwordFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: true,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editPassword.fulfilled', () => {
         const action = {
             type: editPassword.fulfilled.type,
-            payload: 'Password updated successfully'
+            payload: 'Пароль успешно обновлен'
         };
         const newState = passwordFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: 'Password updated successfully',
+            message: 'Пароль успешно обновлен',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editPassword.rejected', () => {
         const action = {
             type: editPassword.rejected.type,
-            payload: 'Password update failed'
+            payload: 'Ошибка обновления пароля'
         };
         const newState = passwordFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: 'Password update failed'
+            error: 'Ошибка обновления пароля'
         });
     });
 });

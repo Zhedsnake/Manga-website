@@ -1,37 +1,37 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { editPassword } from "../../action-creators/editUserInfo/passwordForm"; // Импортируйте ваш асинхронный action creator
-import { EditPasswordState } from "../../../types/editUserInfo/passwordForm.ts";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { editPassword } from '../../action-creators/editUserInfo/passwordForm';
+import { EditPasswordState } from '../../../types/editUserInfo/passwordForm';
 
 const initialState: EditPasswordState = {
-    message: "",
+    message: '',
     loading: false,
-    error: null
+    error: '',
 };
 
-export const passwordFormSlice = createSlice({
-    name: "passwordForm",
+const passwordFormSlice = createSlice({
+    name: 'passwordForm',
     initialState,
     reducers: {
-        defEditPassword: (state) => {
-            state.message = "";
-            state.loading = false;
-            state.error = null;
-        }
+        defEditPassword(state) {
+            state.message = '';
+            state.error = '';
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(editPassword.pending, (state) => {
                 state.loading = true;
-                state.error = null;
-                state.message = "";
+                state.error = '';
+                state.message = '';
             })
             .addCase(editPassword.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loading = false;
                 state.message = action.payload;
-                state.error = null;
+                state.error = '';
             })
-            .addCase(editPassword.rejected, (state, action) => {
+            .addCase(editPassword.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
+                state.message = '';
                 state.error = action.payload || 'Ошибка обновления пароля';
             });
     },
