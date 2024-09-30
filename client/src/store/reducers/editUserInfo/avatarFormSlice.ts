@@ -1,38 +1,39 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { editAvatar } from "../../action-creators/editUserInfo/avatarForm"; // Импортируйте ваш асинхронный action creator
-import { EditAvatarState } from "../../../types/editUserInfo/avatarForm.ts";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { editAvatar } from '../../action-creators/editUserInfo/avatarForm'; // Импортируйте ваш асинхронный action creator
+import { EditAvatarState } from '../../../types/editUserInfo/avatarForm.ts';
 
 const initialState: EditAvatarState = {
-    message: "",
+    message: '',
     loading: false,
-    error: null
+    error: '',
 };
 
-export const avatarFormSlice = createSlice({
-    name: "avatarForm",
+const avatarFormSlice = createSlice({
+    name: 'avatarForm',
     initialState,
     reducers: {
-        defEditAvatar: (state) => {
-            state.message = "";
+        defEditAvatar(state) {
+            state.message = '';
             state.loading = false;
-            state.error = null;
-        }
+            state.error = '';
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(editAvatar.pending, (state) => {
                 state.loading = true;
-                state.error = null;
-                state.message = "";
+                state.error = '';
+                state.message = '';
             })
             .addCase(editAvatar.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loading = false;
                 state.message = action.payload;
-                state.error = null;
+                state.error = '';
             })
-            .addCase(editAvatar.rejected, (state, action) => {
+            .addCase(editAvatar.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
-                state.error = action.payload || 'Ошибка обновления аватара';
+                state.message = '';
+                state.error = action.payload || '';
             });
     },
 });

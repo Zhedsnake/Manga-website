@@ -1,13 +1,10 @@
 import avatarFormReducer, { defEditAvatar } from '../../../../../store/reducers/editUserInfo/avatarFormSlice';
 import { editAvatar } from '../../../../../store/action-creators/editUserInfo/avatarForm';
-import { EditAvatarState } from '../../../../../types/editUserInfo/avatarForm.ts';
+import { EditAvatarState } from '../../../../../types/editUserInfo/avatarForm';
 
 jest.mock('../../../../../api/EditUserInfoService', () => ({
     __esModule: true,
     default: {
-        editEmailRequest: jest.fn(),
-        editNameRequest: jest.fn(),
-        editPasswordRequest: jest.fn(),
         editAvatarRequest: jest.fn(),
     },
 }));
@@ -15,9 +12,9 @@ jest.mock('../../../../../api/EditUserInfoService', () => ({
 describe('avatarFormSlice reducer tests', () => {
 
     const initialState: EditAvatarState = {
-        message: "",
+        message: '',
         loading: false,
-        error: null
+        error: '',
     };
 
     test('должно быть возвращено исходное состояние', () => {
@@ -27,9 +24,9 @@ describe('avatarFormSlice reducer tests', () => {
     test('должен обрабатывать действие defEditAvatar', () => {
         const newState = avatarFormReducer(initialState, defEditAvatar());
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
@@ -37,35 +34,35 @@ describe('avatarFormSlice reducer tests', () => {
         const action = { type: editAvatar.pending.type };
         const newState = avatarFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: true,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editAvatar.fulfilled', () => {
         const action = {
             type: editAvatar.fulfilled.type,
-            payload: 'Avatar updated successfully'
+            payload: 'Аватар успешно обновлен'
         };
         const newState = avatarFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: 'Avatar updated successfully',
+            message: 'Аватар успешно обновлен',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editAvatar.rejected', () => {
         const action = {
             type: editAvatar.rejected.type,
-            payload: 'Avatar update failed'
+            payload: 'Ошибка обновления аватара'
         };
         const newState = avatarFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: 'Avatar update failed'
+            error: 'Ошибка обновления аватара'
         });
     });
 });
