@@ -2,23 +2,12 @@ import emailFormReducer, { defEditEmail } from '../../../../../store/reducers/ed
 import { editEmail } from '../../../../../store/action-creators/editUserInfo/emailForm';
 import { EditEmailState } from '../../../../../types/editUserInfo/emailForm';
 
-
-jest.mock('../../../../../api/EditUserInfoService', () => ({
-    __esModule: true,
-    default: {
-        editEmailRequest: jest.fn(),
-        editNameRequest: jest.fn(),
-        editPasswordRequest: jest.fn(),
-        editAvatarRequest: jest.fn(),
-    },
-}));
-
 describe('emailFormSlice reducer tests', () => {
 
     const initialState: EditEmailState = {
-        message: "",
+        message: '',
         loading: false,
-        error: null
+        error: '',
     };
 
     test('должно быть возвращено исходное состояние', () => {
@@ -28,9 +17,9 @@ describe('emailFormSlice reducer tests', () => {
     test('должен обрабатывать действие defEditEmail', () => {
         const newState = emailFormReducer(initialState, defEditEmail());
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
@@ -38,35 +27,35 @@ describe('emailFormSlice reducer tests', () => {
         const action = { type: editEmail.pending.type };
         const newState = emailFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: true,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editEmail.fulfilled', () => {
         const action = {
             type: editEmail.fulfilled.type,
-            payload: 'Email updated successfully'
+            payload: 'Email успешно обновлен'
         };
         const newState = emailFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: 'Email updated successfully',
+            message: 'Email успешно обновлен',
             loading: false,
-            error: null
+            error: ''
         });
     });
 
     test('должен обрабатывать действие editEmail.rejected', () => {
         const action = {
             type: editEmail.rejected.type,
-            payload: 'Email update failed'
+            payload: 'Ошибка обновления email'
         };
         const newState = emailFormReducer(initialState, action);
         expect(newState).toEqual({
-            message: "",
+            message: '',
             loading: false,
-            error: 'Email update failed'
+            error: 'Ошибка обновления email'
         });
     });
 });

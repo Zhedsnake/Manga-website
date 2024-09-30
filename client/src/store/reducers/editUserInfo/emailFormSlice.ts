@@ -1,38 +1,38 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { editEmail } from "../../action-creators/editUserInfo/emailForm";
-import { EditEmailState } from "../../../types/editUserInfo/emailForm";
-
-
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { editEmail } from '../../action-creators/editUserInfo/emailForm';
+import { EditEmailState } from '../../../types/editUserInfo/emailForm';
 
 const initialState: EditEmailState = {
-    message: "",
+    message: '',
     loading: false,
-    error: null
+    error: '',
 };
 
-export const emailFormSlice = createSlice({
-    name: "emailForm",
+const emailFormSlice = createSlice({
+    name: 'emailForm',
     initialState,
     reducers: {
-        defEditEmail: (state) => {
-            state.message = "";
-            state.error = null;
-        }
+        defEditEmail(state) {
+            state.message = '';
+            state.error = '';
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(editEmail.pending, (state) => {
                 state.loading = true;
-                state.error = null;
+                state.error = '';
+                state.message = '';
             })
             .addCase(editEmail.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loading = false;
                 state.message = action.payload;
-                state.error = null;
+                state.error = '';
             })
-            .addCase(editEmail.rejected, (state, action) => {
+            .addCase(editEmail.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
-                state.error = action.payload || 'Ошибка обновления email';
+                state.message = '';
+                state.error = action.payload || '';
             });
     },
 });
