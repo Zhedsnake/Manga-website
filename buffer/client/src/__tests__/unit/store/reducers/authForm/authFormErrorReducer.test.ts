@@ -1,4 +1,4 @@
-import { authFormErrorReducer } from "../../../../../../../../client/src/store/reducers/authForm/authFormErrorReducer";
+import { authFormErrorSlice } from "../../../../../../../../client/src/store/reducers/authForm/authFormErrorSlice";
 import { AuthFormErrorActionTypes, AuthFormErrorAction, AuthFormErrorState } from "../../../../../../../../client/src/types/authForm/authFormError";
 
 describe('authFormErrorReducer', () => {
@@ -9,7 +9,7 @@ describe('authFormErrorReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = authFormErrorReducer(undefined, {} as AuthFormErrorAction);
+        const newState = authFormErrorSlice(undefined, {} as AuthFormErrorAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('authFormErrorReducer', () => {
             nameError: 'Invalid name',
         };
 
-        const newState = authFormErrorReducer(initialState, action);
+        const newState = authFormErrorSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -39,7 +39,7 @@ describe('authFormErrorReducer', () => {
             emailError: 'Invalid email',
         };
 
-        const newState = authFormErrorReducer(initialState, action);
+        const newState = authFormErrorSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -54,7 +54,7 @@ describe('authFormErrorReducer', () => {
             passwordError: 'Invalid password',
         };
 
-        const newState = authFormErrorReducer(initialState, action);
+        const newState = authFormErrorSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -69,7 +69,7 @@ describe('authFormErrorReducer', () => {
             passwordError: 'Some password error',
         };
 
-        const newState = authFormErrorReducer(currentState, action);
+        const newState = authFormErrorSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });

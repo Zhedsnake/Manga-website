@@ -1,4 +1,4 @@
-import { authFormReducer } from "../../../../../../../../client/src/store/reducers/authForm/authFormReducer";
+import { authFormSlice } from "../../../../../../../../client/src/store/reducers/authForm/authFormSlice";
 import { AuthFormActionTypes, AuthFormAction, AuthFormState } from "../../../../../../../../client/src/types/authForm/authForm";
 
 describe('authFormReducer', () => {
@@ -9,7 +9,7 @@ describe('authFormReducer', () => {
     };
 
     test('должен возвращать начальное состояние по умолчанию', () => {
-        const newState = authFormReducer(undefined, {} as AuthFormAction);
+        const newState = authFormSlice(undefined, {} as AuthFormAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -24,7 +24,7 @@ describe('authFormReducer', () => {
             name: 'John Doe',
         };
 
-        const newState = authFormReducer(initialState, action);
+        const newState = authFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -39,7 +39,7 @@ describe('authFormReducer', () => {
             email: 'john.doe@example.com',
         };
 
-        const newState = authFormReducer(initialState, action);
+        const newState = authFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -54,7 +54,7 @@ describe('authFormReducer', () => {
             password: 'strongPassword123',
         };
 
-        const newState = authFormReducer(initialState, action);
+        const newState = authFormSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -69,7 +69,7 @@ describe('authFormReducer', () => {
             password: 'strongPassword123',
         };
 
-        const newState = authFormReducer(currentState, action);
+        const newState = authFormSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });
