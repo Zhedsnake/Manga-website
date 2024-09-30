@@ -1,9 +1,16 @@
-import logInReducer, { defLogIn, logIn, logInSuccess, logInError } from '../../../../../store/reducers/logIn-Registration/logInSlice';
-import { LogInState } from '../../../../../types/logInRegistration/logIn';
+import logInReducer, { defLogIn } from '../../../../../store/reducers/logIn-Registration/logInSlice';
+import { logIn } from '../../../../../store/action-creators/logIn-Registration/logIn';
+
+jest.mock('../../../../../api/AuthService', () => ({
+    __esModule: true,
+    default: {
+        logInRequest: jest.fn(),
+    },
+}));
 
 describe('logInSlice reducer tests', () => {
 
-    const initialState: LogInState = {
+    const initialState = {
         logInToken: '',
         logInLoading: false,
         logInError: '',
@@ -18,43 +25,44 @@ describe('logInSlice reducer tests', () => {
         expect(newState).toEqual({
             logInToken: '',
             logInLoading: false,
-            logInError: '',
+            logInError: ''
         });
     });
 
-    test('должен обрабатывать действие logIn', () => {
-        const action = { type: logIn.type };
+    test('должен обрабатывать действие logIn.pending', () => {
+        const action = { type: logIn.pending.type };
         const newState = logInReducer(initialState, action);
         expect(newState).toEqual({
             logInToken: '',
             logInLoading: true,
-            logInError: '',
+            logInError: ''
         });
     });
 
-    test('должен обрабатывать действие logInSuccess', () => {
+    test('должен обрабатывать действие logIn.fulfilled', () => {
         const action = {
-            type: logInSuccess.type,
-            payload: 'logInToken123'
+            type: logIn.fulfilled.type,
+            payload: 'userToken123'
         };
         const newState = logInReducer(initialState, action);
         expect(newState).toEqual({
-            logInToken: 'logInToken123',
+            logInToken: 'userToken123',
             logInLoading: false,
-            logInError: '',
+            logInError: ''
         });
     });
 
-    test('должен обрабатывать действие logInError', () => {
+    test('должен обрабатывать действие logIn.rejected', () => {
         const action = {
-            type: logInError.type,
-            payload: 'Log in failed'
+            type: logIn.rejected.type,
+            payload: 'Ошибка входа'
         };
         const newState = logInReducer(initialState, action);
         expect(newState).toEqual({
             logInToken: '',
             logInLoading: false,
-            logInError: 'Log in failed',
+            logInError: 'Ошибка входа'
         });
     });
+
 });

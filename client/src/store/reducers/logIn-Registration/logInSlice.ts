@@ -1,38 +1,38 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LogInState } from "../../../types/logInRegistration/logIn";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { logIn } from '../../action-creators/logIn-Registration/logIn';
 
-const initialState: LogInState = {
+const initialState = {
     logInToken: '',
     logInLoading: false,
     logInError: '',
 };
 
-export const logInSlice = createSlice({
-    name: "logIn",
+const logInSlice = createSlice({
+    name: 'logIn',
     initialState,
     reducers: {
-        defLogIn: (state) => {
+        defLogIn(state) {
             state.logInToken = '';
-            state.logInLoading = false;
             state.logInError = '';
         },
-        logIn: (state) => {
-            state.logInLoading = true;
-            state.logInError = '';
-            state.logInToken = '';
-        },
-        logInSuccess: (state, action: PayloadAction<string>) => {
-            state.logInLoading = false;
-            state.logInError = '';
-            state.logInToken = action.payload;
-        },
-        logInError: (state, action: PayloadAction<string>) => {
-            state.logInLoading = false;
-            state.logInError = action.payload;
-            state.logInToken = '';
-        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(logIn.pending, (state) => {
+                state.logInLoading = true;
+            })
+            .addCase(logIn.fulfilled, (state, action: PayloadAction<string>) => {
+                state.logInLoading = false;
+                state.logInToken = action.payload;
+                state.logInError = '';
+            })
+            .addCase(logIn.rejected, (state, action: PayloadAction<string | undefined>) => {
+                state.logInLoading = false;
+                state.logInToken = '';
+                state.logInError = action.payload || 'Ошибка входа'; // Обратите внимание на это место
+            });
     },
 });
 
-export const { defLogIn, logIn, logInSuccess, logInError } = logInSlice.actions;
+export const { defLogIn } = logInSlice.actions;
 export default logInSlice.reducer;
