@@ -12,6 +12,7 @@
     "test-local-bd": "jest --testPathPattern=\"(AuthBDService|EditUserInfoBDService|UserBDService).test.ts\"",
 
     "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"server/src/__tests__/unit/services/mongodb/\"",
+    "test-all": "IS_TEST='true' jest",
     "test-bd": "IS_TEST='true' jest --testPathPattern=\"server/src/__tests__/unit/services/mongodb/\"",
     "test-controllers": "IS_TEST='true' jest --testPathPattern=\"(AuthControllerReal).test.ts\""
   },
