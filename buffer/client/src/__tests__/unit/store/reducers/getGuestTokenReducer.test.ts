@@ -1,4 +1,4 @@
-import { getGuestTokenReducer } from "../../../../../../../client/src/store/reducers/getGuestTokenReducer";
+import { getGuestTokenSlice } from "../../../../../../../client/src/store/reducers/getGuestTokenSlice";
 import { GuestTokenActionTypes, GuestTokenAction } from "../../../../../../../client/src/types/getGuestToken";
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
 describe("getGuestTokenReducer", () => {
 
     test("должен возвращать начальное состояние по умолчанию", () => {
-        const newState = getGuestTokenReducer(undefined, {} as GuestTokenAction);
+        const newState = getGuestTokenSlice(undefined, {} as GuestTokenAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -22,7 +22,7 @@ describe("getGuestTokenReducer", () => {
             error: null
         };
 
-        const newState = getGuestTokenReducer(initialState, action);
+        const newState = getGuestTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -37,7 +37,7 @@ describe("getGuestTokenReducer", () => {
             error: null
         };
 
-        const newState = getGuestTokenReducer(initialState, action);
+        const newState = getGuestTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -52,7 +52,7 @@ describe("getGuestTokenReducer", () => {
             error: "Error message"
         };
 
-        const newState = getGuestTokenReducer(initialState, action);
+        const newState = getGuestTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -60,7 +60,7 @@ describe("getGuestTokenReducer", () => {
         const action: GuestTokenAction = { type: GuestTokenActionTypes.DEF_GUEST_TOKEN };
         const currentState = { guestToken: "token", loading: true, error: "error" };
 
-        const newState = getGuestTokenReducer(currentState, action);
+        const newState = getGuestTokenSlice(currentState, action);
         expect(newState).toEqual(initialState);
     });
 });

@@ -1,6 +1,6 @@
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
-import { getGuestToken, defGuestToken } from "../client/src/store/action-creators/guest";
+import { getGuestToken, defGuestToken } from "../client/src/store/action-creators/getGuestToken";
 import { GuestTokenActionTypes, GuestTokenAction, GuestTokenState } from "../client/src/types/getGuestToken";
 import guestService from "../client/src/api/GuestService";
 import { AnyAction } from 'redux';
