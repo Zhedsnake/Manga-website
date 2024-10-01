@@ -1,4 +1,4 @@
-import { getSmallUserInfoByTokenReducer } from "../../../../../../../client/src/store/reducers/getSmallUserInfoByTokenReducer";
+import { getSmallUserInfoByTokenReducer } from "../../../../../../../client/src/store/reducers/getSmallUserInfoByTokenSlice";
 import { GetSmallUserInfoActionTypes, GetSmallUserInfoAction } from "../../../../../../../client/src/types/getSmallUserInfo";
 
 const initialState = {
