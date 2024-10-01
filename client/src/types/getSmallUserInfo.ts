@@ -1,15 +1,13 @@
 export interface GetSmallUserInfoState {
-    data:  {
-        name: string,
-        pic: string
-    } |
-        {
-            name: string,
-            minPicWebp: string
-        };
+    data: {
+        name: string;
+        pic: string;
+        minPicWebp: string;
+    };
     loading: boolean;
-    error: null | string;
+    error: string;
 }
+
 
 export enum GetSmallUserInfoActionTypes {
     SMALL_USER_INFO = 'SMALL_USER_INFO',
