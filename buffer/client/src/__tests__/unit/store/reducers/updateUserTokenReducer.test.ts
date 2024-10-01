@@ -1,4 +1,4 @@
-import { updateUserTokenReducer } from "../../../../../../../client/src/store/reducers/updateUserTokenReducer";
+import { updateUserTokenSlice } from "../../../../../../../client/src/store/reducers/updateUserTokenSlice";
 import { UpdateUserTokenActionTypes, UpdateUserTokenAction } from "../../../../../../../client/src/types/updateUserToken";
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
 describe("updateUserTokenReducer", () => {
 
     test("должен возвращать начальное состояние по умолчанию", () => {
-        const newState = updateUserTokenReducer(undefined, {} as UpdateUserTokenAction);
+        const newState = updateUserTokenSlice(undefined, {} as UpdateUserTokenAction);
         expect(newState).toEqual(initialState);
     });
 
@@ -22,7 +22,7 @@ describe("updateUserTokenReducer", () => {
             error: null
         };
 
-        const newState = updateUserTokenReducer(initialState, action);
+        const newState = updateUserTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -37,7 +37,7 @@ describe("updateUserTokenReducer", () => {
             error: null
         };
 
-        const newState = updateUserTokenReducer(initialState, action);
+        const newState = updateUserTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
@@ -52,13 +52,13 @@ describe("updateUserTokenReducer", () => {
             error: "Error message"
         };
 
-        const newState = updateUserTokenReducer(initialState, action);
+        const newState = updateUserTokenSlice(initialState, action);
         expect(newState).toEqual(expectedState);
     });
 
     test("должен обрабатывать DEF_UPDATE_USER_TOKEN", () => {
         const action: UpdateUserTokenAction = { type: UpdateUserTokenActionTypes.DEF_UPDATE_USER_TOKEN };
-        const newState = updateUserTokenReducer({ userToken: "token", loading: true, error: "error" }, action);
+        const newState = updateUserTokenSlice({ userToken: "token", loading: true, error: "error" }, action);
 
         expect(newState).toEqual(initialState);
     });
