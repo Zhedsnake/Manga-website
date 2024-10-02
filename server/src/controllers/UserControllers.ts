@@ -1,10 +1,5 @@
 import {Request, Response} from "express";
 import UserService from "../services/busines/UserService";
-import registerRequestTypes from "../types/registerRequestTypes";
-import loginRequestTypes from "../types/loginRequestTypes";
-import ImagesService from "../services/busines/ImagesService";
-import userService from "../services/busines/UserService";
-
 
 class UserControllers {
     async GetSmallUserInfoByToken(req: Request, res: Response) {
