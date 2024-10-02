@@ -8,7 +8,6 @@
     "docker:test-client-requests": "docker-compose -f docker-compose.test-client-requests.yml up -d",
 
     "docker:test-bd": "docker-compose -f docker-compose.test-bd.yml up -d",
-    "docker:test-controllers": "docker-compose -f docker-compose.test-controllers.yml up -d",
 
     "docker:test-all": "docker-compose -f docker-compose.test-all.yml up -d"
   }

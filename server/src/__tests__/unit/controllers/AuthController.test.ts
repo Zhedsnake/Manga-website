@@ -11,7 +11,7 @@ app.post('/registerGuest', AuthControllers.registerGuest);
 app.post('/registerUser', AuthControllers.registerUser);
 app.post('/loginUser', AuthControllers.loginUser);
 
-describe('AuthControllers (Изолированно)', () => {
+describe('AuthControllers', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
