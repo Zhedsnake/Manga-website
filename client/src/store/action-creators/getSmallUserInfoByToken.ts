@@ -1,29 +1,24 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import UserService from "../../api/UserService";
-import { AxiosResponse } from "axios";
+import UserService from '../../api/UserService';
 
 export const getSmallUserInfoByToken = createAsyncThunk<
-    { name: string; pic: string } | { name: string; minPicWebp: string },
+    { name: string; pic?: string; minPicWebp?: string },
     void,
     { rejectValue: string }
->(
-    'user/getSmallUserInfo',
-    async (_, thunkAPI) => {
-        try {
-            const response: AxiosResponse<{ name: string; pic: string } | { name: string; minPicWebp: string }> =
-                await UserService.getSmallUserInfoByToken();
+>('getSmallUserInfo/getSmallUserInfoByToken', async (_, thunkAPI) => {
+    try {
+        const response = await UserService.getSmallUserInfoByToken();
 
-            if (response && 'data' in response) {
-                return response.data;
-            } else {
-                return thunkAPI.rejectWithValue('Неверная структура ответа');
-            }
-
-        } catch (error: any) {
-            if (error.response && error.response.data && error.response.data.error) {
-                return thunkAPI.rejectWithValue(error.response.data.error);
-            }
-            return thunkAPI.rejectWithValue('Неизвестная ошибка');
+        if (response && 'data' in response && ("name" in response.data && "pic" in response.data) || ("name" in response.data && "minPicWebp" in response.data)) {
+            return response.data;
+        } else {
+            return thunkAPI.rejectWithValue('Неверная структура ответа');
         }
+
+    } catch (error: any) {
+        if (error.response && error.response.data && 'error' in error.response.data) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+        return thunkAPI.rejectWithValue('Неизвестная ошибка');
     }
-);
+});
