@@ -17,10 +17,6 @@ describe('AuthControllers', () => {
         jest.clearAllMocks();
     });
 
-    afterAll(() => {
-        jest.clearAllMocks();
-    })
-
     describe('registerGuest', () => {
 
         test('должен возвращать guestToken при успешном запросе', async () => {
