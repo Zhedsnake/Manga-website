@@ -14,6 +14,7 @@
     "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"server/src/__tests__/unit/services/mongodb/\"",
     "test-all": "IS_TEST='true' jest",
     "test-bd": "IS_TEST='true' jest --testPathPattern=\"server/src/__tests__/unit/services/mongodb/\"",
+    "test-client-requests": "IS_TEST='true' nodemon --legacy-watch",
     "test-controllers": "IS_TEST='true' jest --testPathPattern=\"(AuthControllerReal).test.ts\""
   },
   "keywords": [],
