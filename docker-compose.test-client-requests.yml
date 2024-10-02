@@ -19,4 +19,4 @@ services:
     volumes:
       - ./server/src:/app/server/src
     container_name: dev-manga_website-server
-    command: ["npm", "run", "dev"]
+    command: ["npm", "run", "test-client-requests"]
