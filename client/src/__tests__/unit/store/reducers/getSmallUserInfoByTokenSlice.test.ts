@@ -1,15 +1,8 @@
-import getSmallUserInfoReducer, { defSmallUserInfo } from '../../../../store/reducers/getSmallUserInfoByTokenSlice';
+import getSmallUserInfoByTokenReducer, { defSmallUserInfo } from '../../../../store/reducers/getSmallUserInfoByTokenSlice';
 import { getSmallUserInfoByToken } from '../../../../store/action-creators/getSmallUserInfoByToken';
-import { GetSmallUserInfoState } from '../../../../types/getSmallUserInfo.ts';
+import { GetSmallUserInfoState } from '../../../../types/getSmallUserInfo';
 
-jest.mock('../../../../api/UserService', () => ({
-    __esModule: true,
-    default: {
-        getSmallUserInfoRequest: jest.fn(),
-    },
-}));
-
-describe('getSmallUserInfoSlice reducer tests', () => {
+describe('getSmallUserInfoByTokenSlice reducer tests', () => {
     const initialState: GetSmallUserInfoState = {
         data: {
             name: '',
@@ -17,32 +10,31 @@ describe('getSmallUserInfoSlice reducer tests', () => {
             minPicWebp: '',
         },
         loading: false,
-        error: '',
+        error: "",
     };
 
     test('должно быть возвращено исходное состояние', () => {
-        expect(getSmallUserInfoReducer(undefined, { type: 'unknown' })).toEqual(initialState);
+        expect(getSmallUserInfoByTokenReducer(undefined, { type: 'unknown' })).toEqual(initialState);
     });
 
     test('должен обрабатывать действие defSmallUserInfo', () => {
         const modernInitialState: GetSmallUserInfoState = {
             data: {
                 name: 'John Doe',
-                pic: 'profile.jpg',
-                minPicWebp: 'profile.webp',
+                pic: 'url_to_pic',
+                minPicWebp: 'url_to_min_pic',
             },
             loading: false,
-            error: 'Ошибка',
+            error: 'Some error',
         };
 
-        const newState = getSmallUserInfoReducer(modernInitialState, defSmallUserInfo());
+        const newState = getSmallUserInfoByTokenReducer(modernInitialState, defSmallUserInfo());
         expect(newState).toEqual(initialState);
     });
 
-    test('должен обрабатывать действие getSmallUserInfo.pending', () => {
+    test('должен обрабатывать действие getSmallUserInfoByToken.pending', () => {
         const action = { type: getSmallUserInfoByToken.pending.type };
-        const newState = getSmallUserInfoReducer(initialState, action);
-
+        const newState = getSmallUserInfoByTokenReducer(initialState, action);
         expect(newState).toEqual({
             data: {
                 name: '',
@@ -54,16 +46,16 @@ describe('getSmallUserInfoSlice reducer tests', () => {
         });
     });
 
-    test('должен обрабатывать действие getSmallUserInfo.fulfilled', () => {
+    test('должен обрабатывать действие getSmallUserInfoByToken.fulfilled', () => {
         const action = {
             type: getSmallUserInfoByToken.fulfilled.type,
-            payload: { name: 'John Doe', pic: 'profile.jpg' },
+            payload: { name: 'Jane Doe', pic: 'url_to_jane_pic' },
         };
-        const newState = getSmallUserInfoReducer(initialState, action);
+        const newState = getSmallUserInfoByTokenReducer(initialState, action);
         expect(newState).toEqual({
             data: {
-                name: 'John Doe',
-                pic: 'profile.jpg',
+                name: 'Jane Doe',
+                pic: 'url_to_jane_pic',
                 minPicWebp: '',
             },
             loading: false,
@@ -71,12 +63,12 @@ describe('getSmallUserInfoSlice reducer tests', () => {
         });
     });
 
-    test('должен обрабатывать действие getSmallUserInfo.rejected', () => {
+    test('должен обрабатывать действие getSmallUserInfoByToken.rejected', () => {
         const action = {
             type: getSmallUserInfoByToken.rejected.type,
-            payload: 'Ошибка получения данных',
+            payload: 'Ошибка получения данных пользователя',
         };
-        const newState = getSmallUserInfoReducer(initialState, action);
+        const newState = getSmallUserInfoByTokenReducer(initialState, action);
         expect(newState).toEqual({
             data: {
                 name: '',
@@ -84,7 +76,7 @@ describe('getSmallUserInfoSlice reducer tests', () => {
                 minPicWebp: '',
             },
             loading: false,
-            error: 'Ошибка получения данных',
+            error: 'Ошибка получения данных пользователя',
         });
     });
 });

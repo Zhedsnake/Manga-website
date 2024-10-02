@@ -12,7 +12,6 @@ const initialState: GetSmallUserInfoState = {
     error: '',
 };
 
-
 const getSmallUserInfoSlice = createSlice({
     name: 'getSmallUserInfo',
     initialState,
@@ -32,20 +31,20 @@ const getSmallUserInfoSlice = createSlice({
             })
             .addCase(getSmallUserInfoByToken.fulfilled, (state, action: PayloadAction<{ name: string; pic?: string; minPicWebp?: string }>) => {
                 state.loading = false;
-                state.error = '';
-
                 state.data.name = action.payload.name;
 
                 if (action.payload.pic) {
                     state.data.pic = action.payload.pic;
                 } else if (action.payload.minPicWebp) {
-                    state.data.pic = action.payload.minPicWebp;
+                    state.data.minPicWebp = action.payload.minPicWebp;
                 }
+
+                state.error = '';
             })
             .addCase(getSmallUserInfoByToken.rejected, (state, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
+                state.error = action.payload || 'Error fetching user info';
                 state.data = { name: '', pic: '', minPicWebp: '' };
-                state.error = action.payload || '';
             });
     },
 });
