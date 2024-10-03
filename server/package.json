@@ -13,7 +13,12 @@
 
     "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"server/src/__tests__/unit/services/mongodb/\"",
     "test-bd": "IS_TEST='true' jest --testPathPattern=\"server/src/__tests__/unit/services/mongodb/\"",
+<<<<<<< HEAD
     "test-client-requests": "IS_TEST='true' IS_TEST_CLIENT_REQUEST='true' nodemon --legacy-watch"
+=======
+
+    "test-client-requests": "IS_TEST_CLIENT_REQUEST='true' nodemon --legacy-watch"
+>>>>>>> fc5e4b8a770a023b2c0e71c07272659374e27ee0
   },
   "keywords": [],
   "author": "",
