@@ -2,13 +2,19 @@ import { Request, Response } from "express";
 import registerRequestTypes from "../types/registerRequestTypes";
 import loginRequestTypes from "../types/loginRequestTypes";
 import AuthService from "../services/busines/AuthService";
+import 'dotenv/config'
 
 
 class AuthControllers {
 
     async registerGuest (req: Request, res: Response) {
+        // if (process.env.IS_TEST_CLIENT_REQUEST && process.env.IS_TEST_CLIENT_REQUEST === "true") {
+        //     console.log("Тест запроса от клиента registerGuest")
+        //     return res.status(201).send({guestToken: "guestToken"});
+        // }
+
         try {
-            const guestToken = await AuthService.getGuestToken();
+            const guestToken: { guestToken: string } | undefined = await AuthService.getGuestToken();
 
             if (guestToken) {
                 return res.status(201).send(guestToken);
