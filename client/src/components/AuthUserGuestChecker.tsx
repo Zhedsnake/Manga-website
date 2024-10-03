@@ -3,6 +3,7 @@ import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
 import {setToken} from "../util/setTocken.ts";
 import {Tokens} from "../util/Tokens.ts";
 import {useAppSelector} from "../hooks/reduxHooks-toolkit/useRedux.ts";
+import {useActions} from "../hooks/useActions";
 
 interface AuthProp {
     children: React.ReactNode;
@@ -21,8 +22,9 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
     // const { userToken: updatedUserToken } = useTypedSelector(state => state.updateUserToken);
     // const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
-    // const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
-    const {users, isLoading, error} = useAppSelector(state => state.)
+    const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
+    const {} = useAppSelector(state => state.updateUserToken)
+    const {userToken: updatedUserToken, loading, error} = useAppSelector(state => state.getGuestToken)
 
     const check = async () => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
