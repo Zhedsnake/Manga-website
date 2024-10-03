@@ -14,18 +14,21 @@ import {authFormErrorReducer} from "./authForm/authFormErrorReducer.ts";
 
 
 export const rootReducer = combineReducers({
-    getGuestToken: getGuestTokenReducer,
     logIn: logInReducer,
     registration: registrationReducer,
+
     authForm: authFormReducer,
     authFormError: authFormErrorReducer,
+
+    getGuestToken: getGuestTokenReducer,
     getSmallUserInfoByToken: getSmallUserInfoByTokenReducer,
     updateUserToken: updateUserTokenReducer,
     getUserInfoByToken: getUserInfoByTokenReducer,
+
+    avatarForm: avatarFormReducer,
     nameForm: nameFormReducer,
     emailForm: emailFormReducer,
     passwordForm: passwordFormReducer,
-    avatarForm: avatarFormReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
