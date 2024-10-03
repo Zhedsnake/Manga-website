@@ -1,15 +1,26 @@
-import axios, {AxiosResponse} from "axios";
-import {API_URL} from "./config.ts";
+import axios, { AxiosError } from 'axios';
+import { API_URL } from './config';
 
-export default class guestService {
-    static async registerGuest(): Promise<AxiosResponse<{ guestToken:string }>> {
-        const response: AxiosResponse<{guestToken:string}> = await axios.post(`${API_URL}/guest`)
-        return response;
+export default class GuestService {
+
+    static async registerGuest() {
+        try {
+            const response = await axios.post(`${API_URL}/guest`);
+            return response;
+        } catch (e) {
+            const error = e as AxiosError<{ error: string }>;
+            throw new Error(error.response?.data?.error || "Неизвестная ошибка при регистрации гостя");
+        }
     }
 
-    // static async removeGuest(guestToken: string): Promise<axios.AxiosResponse<any>> {
-    //     axios.defaults.headers.common['guest-token'] = guestToken
-    //     const response: axios.AxiosResponse<any> = await axios.delete(`${API_URL}/guest`);
-    //     return response;
+    // static async removeGuest(guestToken: string) {
+    //     try {
+    //         axios.defaults.headers.common['guest-token'] = guestToken;
+    //         const response = await axios.delete(`${API_URL}/guest`);
+    //         return response;
+    //     } catch (e) {
+    //         const error = e as AxiosError<{ error: string }>;
+    //         throw new Error(error.response?.data?.error || "Неизвестная ошибка при удалении гостя");
+    //     }
     // }
 }
