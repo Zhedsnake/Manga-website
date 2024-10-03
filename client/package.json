@@ -10,11 +10,10 @@
     "preview": "vite preview",
 
     "test-local": "jest --testPathIgnorePatterns=\"client/src/__tests__/unit/api/\"",
-    "test-local-client-requests": "jest --testPathIgnorePatterns=\"client/src/__tests__/unit/api/\"",
+    "test-local-client-requests": "jest --testPathPattern=\"client/src/__tests__/unit/api/\"",
 
-    "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"client/src/__tests__/unit/api/\"",
-    "test-all": "IS_TEST='true' jest",
-    "test-client-requests": "IS_TEST='true' jest --testPathPattern=\"client/src/__tests__/unit/api/\""
+    "test": "IS_TEST='true' jest --testPathIgnorePatterns=\"client/src/__tests__/integration/\"",
+    "test-client-requests": "IS_TEST='true' jest --testPathPattern=\"client/src/__tests__/integration/api/\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
