@@ -6,7 +6,7 @@ export interface GetUserInfoState {
     registeredAt: string
     birthday?: string
     loading: boolean;
-    error: null | string;
+    error: string;
 }
 
 export enum GetUserInfoActionTypes {
