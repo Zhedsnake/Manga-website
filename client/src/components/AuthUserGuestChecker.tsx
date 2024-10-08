@@ -22,9 +22,11 @@ const AuthUserGuestChecker: React.FC<AuthProp> = ({children}) => {
 
     // const { userToken: updatedUserToken } = useTypedSelector(state => state.updateUserToken);
     // const { guestToken: guestTokenResponse, error: guestTokenError } = useTypedSelector(state => state.getGuestToken);
+
+    const {userToken: updatedUserToken} = useAppSelector(state => state.updateUserToken)
+    const {guestToken: guestTokenResponse, loading, error: guestTokenError} = useAppSelector(state => state.getGuestToken)
+
     const { getGuestToken, defGuestToken, getSmallUserInfoByToken, updateUserToken } = useActions();
-    const {} = useAppSelector(state => state.updateUserToken)
-    const {userToken: updatedUserToken, loading, error} = useAppSelector(state => state.getGuestToken)
 
     const check = async () => {
         const userToken: string | null = localStorage.getItem(Tokens.userToken);
