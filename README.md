@@ -45,9 +45,8 @@
 1. Воспользуйтесь командой в корне проекта для тестирования:
 
     ```bash
-    docker-compose -f docker-compose.dev.yml up -d
+    docker-compose -f docker-compose.test-client.yml up -d
     ```
-2. Перейдите в `http://localhost:4000` в вашем веб-браузере.
 
 ### Node.js 
 

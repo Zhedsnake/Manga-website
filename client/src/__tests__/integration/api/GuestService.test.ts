@@ -1,4 +1,4 @@
-import GuestService from '../../../api/GuestService';
+import GuestService from '../../../api/GuestService.ts';
 
 describe('GuestService (Интеграция)', () => {
     

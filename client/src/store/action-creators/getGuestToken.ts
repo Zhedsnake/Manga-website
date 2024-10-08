@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import guestService from '../../api/GuestService';
+import GuestService from '../../api/GuestService';
 
 export const getGuestToken = createAsyncThunk<string, void, { rejectValue: string }>(
     'guestToken/getGuestToken',
     async (_, thunkAPI) => {
         try {
-            const response = await guestService.registerGuest();
+            const response = await GuestService.registerGuest();
 
             if (response && "data" in response && "guestToken" in response.data) {
                 return response.data.guestToken;

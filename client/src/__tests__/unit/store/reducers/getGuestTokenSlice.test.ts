@@ -2,7 +2,7 @@ import guestTokenReducer, { defGuestToken } from '../../../../store/reducers/get
 import { getGuestToken } from '../../../../store/action-creators/getGuestToken';
 import { GuestTokenState } from '../../../../types/getGuestToken';
 
-jest.mock('../../../../api/GuestService', () => ({
+jest.mock('../../../../api/GuestService.ts', () => ({
     __esModule: true,
     default: {
         registerGuest: jest.fn(),
