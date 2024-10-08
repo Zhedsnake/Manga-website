@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+import {useActions} from "../useActions";
 import {AuthContext, AuthContextType} from "../../contexts/AuthContext";
 import {setToken} from "../../util/setTocken";
 import {Tokens} from "../../util/Tokens";
 import verifyReg from "../../util/Auth/verifyReg";
+import {useAppSelector} from "../reduxHooks-toolkit/useRedux.ts";
+import {setNameError, setEmailError, defAuthFormError} from "../../store/reducers/authForm/authFormErrorSlice";
+import {defAuthForm} from "../../store/reducers/authForm/authFormSlice";
 
 export default function useHandleReg() {
     const {
@@ -13,11 +15,11 @@ export default function useHandleReg() {
 
     const [regErrorState, setRegError] = useState<string>("")
 
-    //! Патом переделать под redux toolkit
-    
-    const {name, email, password} = useTypedSelector(state => state.authForm);
-    const {regToken, regError, regLoading} = useTypedSelector(state => state.registration);
-    const {registrationAction, setDefInputs, setNameErrorAction, setEmailErrorAction, setDefErrorInputs} = useActions();
+    // const {name, email, password} = useTypedSelector(state => state.authForm);
+    // const {regToken, regError, regLoading} = useTypedSelector(state => state.registration);
+    const {name, email, password} = useAppSelector(state => state.authForm);
+    const {regToken, regError, regLoading} = useAppSelector(state => state.registration);
+    const {registration} = useActions();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,21 +30,21 @@ export default function useHandleReg() {
             if ("regError" in verificationResponse) {
                 setRegError(verificationResponse.regError)
             } else if ("nameError" in verificationResponse) {
-                setNameErrorAction(verificationResponse.nameError)
+                setNameError(verificationResponse.nameError)
             } else if ("emailError" in verificationResponse) {
-                setEmailErrorAction(verificationResponse.emailError)
+                setEmailError(verificationResponse.emailError)
             }
 
-            setDefInputs()
+            defAuthForm()
         }
 
         if (name && email && password && !verificationResponse) {
 
-            setDefErrorInputs()
+            defAuthFormError()
 
-            await registrationAction(name, email, password);
+            await registration(name, email, password);
 
-            setDefInputs()
+            defAuthForm()
         }
     };
 
