@@ -2,8 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../contexts/AuthContext.ts";
 import Loader from "../UI/Loader/Loader.tsx";
-import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
 import {Tokens} from "../../util/Tokens.ts";
+import {useAppSelector} from "../../hooks/reduxHooks-toolkit/useRedux.ts";
 
 const LeftPanel: React.FC = () => {
     const {isUser, isAuthLoading} = useContext(AuthContext);
@@ -11,7 +11,8 @@ const LeftPanel: React.FC = () => {
     const [userImg, setUserImg] = useState<string>("")
     const [name, setName] = useState("")
 
-    const { data: smallUserInfoByToken, error: smallUserInfoByTokenError, loading: smallUserInfoByTokenLoading,} = useTypedSelector(state => state.getSmallUserInfoByToken);
+    // const { data: smallUserInfoByToken, error: smallUserInfoByTokenError, loading: smallUserInfoByTokenLoading,} = useTypedSelector(state => state.getSmallUserInfoByToken);
+    const { data: smallUserInfoByToken, loading: smallUserInfoByTokenLoading, error: smallUserInfoByTokenError} = useAppSelector(state => state.getSmallUserInfoByToken);
 
     useEffect(() => {
 
