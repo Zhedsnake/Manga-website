@@ -1,25 +1,27 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import FormGroupDiv from "../UI/formGroupdiv/formGroupdiv";
 import Label from "../UI/label/label";
 import InputAuth from "../UI/inputAuth/InputAuth";
 import ErrorForm from "../UI/errorForm/ErrorForm";
-import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+// import {useActions} from "../../hooks/useActions";
 import useInput from "../../hooks/useInput.ts";
+import {useAppSelector} from "../../hooks/reduxHooks-toolkit/useRedux.ts";
+import {setEmail} from "../../store/reducers/authForm/authFormSlice";
 
 const EmailInput = () => {
     const emailForm = useInput("")
 
     const [emailErrorForm, setEmailErrorForm] = useState('');
 
-    const { emailError } = useTypedSelector(state => state.authFormError);
-    const { email } = useTypedSelector(state => state.authForm);
-    const {setEmailAction} = useActions()
+    // const { emailError } = useTypedSelector(state => state.authFormError);
+    // const { email } = useTypedSelector(state => state.authForm);
+    const { emailError } = useAppSelector(state => state.authFormError);
+    const { email } = useAppSelector(state => state.authForm);
+    // const {setEmailAction} = useActions()
 
 
     useEffect(() => {
-        setEmailAction(emailForm.value)
+        setEmail(emailForm.value)
     }, [emailForm.value])
 
     useEffect(() => {
