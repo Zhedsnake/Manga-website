@@ -1,13 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
-import {useTypedSelector} from "../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
+import {useActions} from "../hooks/useActions";
 import Loader from "../components/UI/Loader/Loader.tsx";
 import {Link} from "react-router-dom";
-import {defUserInfoByToken} from "../store/action-creators/getUserInfoByToken.ts";
+import {useAppSelector} from "../hooks/reduxHooks-toolkit/useRedux.ts";
+import {defUserInfo} from "../store/reducers/getUserInfoByTokenSlice";
 
 const UserProfile: React.FC = () => {
     const [userdataState, setUserdataState] = useState({})
 
+    // const {
+    //     name,
+    //     email,
+    //     pic,
+    //     picWebp,
+    //     registeredAt,
+    //     birthday,
+    //     error: userError,
+    //     loading: userLoading
+    // } = useTypedSelector(state => state.getUserInfoByToken);
     const {
         name,
         email,
@@ -17,11 +27,9 @@ const UserProfile: React.FC = () => {
         birthday,
         error: userError,
         loading: userLoading
-    } = useTypedSelector(state => state.getUserInfoByToken);
-    const {getUserInfoByToken, defUserInfoByToken} = useActions();
+    } = useAppSelector(state => state.getUserInfoByToken);
+    const {getUserInfoByToken} = useActions();
 
-    //! Патом переделать под redux toolkit
-    
     useEffect(() => {
         getUserInfoByToken()
     }, []);
@@ -45,7 +53,7 @@ const UserProfile: React.FC = () => {
 
     useEffect(() => {
         return () => {
-            defUserInfoByToken()
+            defUserInfo()
         };
     }, []);
 
