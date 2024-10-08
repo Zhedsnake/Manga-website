@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from 'react';
-import {useTypedSelector} from "../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
 import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+import {useActions} from "../hooks/useActions";
 import {Tokens} from "../util/Tokens.ts";
+import {useAppSelector} from "../hooks/reduxHooks-toolkit/useRedux.ts";
 
 interface childrenProp {
     children: React.ReactNode;
@@ -14,7 +14,9 @@ const UpdateUserToken : React.FC<childrenProp> = ({children}) => {
         setTokenOutdated
     } = useContext<AuthContextType>(AuthContext);
 
-    const { userToken: updatedUserToken, error: userTokenError } = useTypedSelector(state => state.updateUserToken);
+    // const { userToken: updatedUserToken, error: userTokenError } = useTypedSelector(state => state.updateUserToken);
+    // const { updateUserToken, defUpdateUserToken } = useActions();
+    const { userToken: updatedUserToken, loading, error: userTokenError } = useAppSelector(state => state.updateUserToken);
     const { updateUserToken, defUpdateUserToken } = useActions();
 
     useEffect(() => {
