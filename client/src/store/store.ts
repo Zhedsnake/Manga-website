@@ -1,16 +1,15 @@
-import {configureStore} from "@reduxjs/toolkit";
-// import {postAPI} from "../services/PostService";
-import {rootReducer} from "./reducers";
+import { configureStore } from "@reduxjs/toolkit";
+// import { postAPI } from "../services/PostService";
+import { rootReducer } from "./reducers";
 
-const setupStore = () => {
-    return configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware()
-                // .concat(postAPI.middleware)
-    })
-}
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware()
+    // .concat(postAPI.middleware)
+});
 
-export default setupStore;
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+export default store;
+export type AppStore = typeof store;
+export type AppDispatch = AppStore['dispatch'];
+export type RootState = ReturnType<AppStore['getState']>;
