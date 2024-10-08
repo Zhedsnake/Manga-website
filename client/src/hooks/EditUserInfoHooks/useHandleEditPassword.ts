@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
-import verifyEditPassword from "../../util/Verification/EditUserInfo/verifyEditPassword.ts";
-import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext.ts";
+import {useActions} from "../useActions";
+import verifyEditPassword from "../../util/Verification/EditUserInfo/verifyEditPassword";
+import {EditUserInfoContext, EditUserInfoContextType} from "../../contexts/EditUserInfoContext";
+import {useAppSelector} from "../reduxHooks-toolkit/useRedux";
 
 export default function useHandleEditPassword(oldPassword: string, newPassword: string, oldClear: () => void, newClear: () => void) {
     const {
@@ -11,9 +11,8 @@ export default function useHandleEditPassword(oldPassword: string, newPassword: 
 
     const [error, setError] = useState<string>("")
     
-    //! Патом переделать под redux toolkit
-
-    const {loading: passwordLoading, error: passwordError} = useTypedSelector(state => state.passwordForm);
+    // const {loading: passwordLoading, error: passwordError} = useTypedSelector(state => state.passwordForm);
+    const {loading: passwordLoading, error: passwordError} = useAppSelector(state => state.passwordForm);
     const {editPassword} = useActions();
 
     const handleEditPassword = async (e: React.FormEvent) => {
