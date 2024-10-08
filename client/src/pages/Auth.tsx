@@ -1,13 +1,16 @@
 import React, {useContext, useEffect} from 'react';
-import {AuthContext, AuthContextType} from "../contexts/AuthContext.ts";
-import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
-import Loader from "../components/UI/Loader/Loader.tsx";
-import LogInForm from "../components/Authentification/LogInForm.tsx";
-import FormButton from "../components/UI/formButton/FormButton.tsx";
-import RegForm from "../components/Authentification/RegForm.tsx";
+import {AuthContext, AuthContextType} from "../contexts/AuthContext";
+import Loader from "../components/UI/Loader/Loader";
+import LogInForm from "../components/Authentification/LogInForm";
+import FormButton from "../components/UI/formButton/FormButton";
+import RegForm from "../components/Authentification/RegForm";
 import useInput from "../hooks/useInput.ts";
-import useHandleLogIn from "../hooks/Auth/useHandleLogIn.ts";
+import useHandleLogIn from "../hooks/Auth/useHandleLogIn";
 import useHandleReg from "../hooks/Auth/useHandleReg.ts";
+import { defAuthForm } from '../store/reducers/authForm/authFormSlice';
+import {defLogIn} from '../store/reducers/logIn-Registration/logInSlice';
+import {defRegistration} from '../store/reducers/logIn-Registration/registrationSlice';
+
 
 const Auth: React.FC = () => {
     const {
@@ -22,12 +25,8 @@ const Auth: React.FC = () => {
     const handleLogIn = useHandleLogIn()
     const handleReg = useHandleReg()
 
-    //! Патом переделать под redux toolkit
-    
-    const {defLogIn, defReg, setDefInputs} = useActions();
-
     const handleToggleForm = (prop: boolean) => {
-        setDefInputs()
+        defAuthForm()
         setToggleShowFormPasswords({...defToggleShowFormPasswords});
         loggedEarlier.setValue(prop);
     };
@@ -36,8 +35,8 @@ const Auth: React.FC = () => {
         return () => {
             setToggleShowFormPasswords({...defToggleShowFormPasswords});
             defLogIn()
-            defReg()
-            setDefInputs()
+            defRegistration()
+            defAuthForm()
         };
     }, []);
 
