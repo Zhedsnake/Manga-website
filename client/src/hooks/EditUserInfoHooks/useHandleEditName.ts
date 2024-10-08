@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTypedSelector } from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import { useActions } from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+import { useActions } from "../useActions";
 import verifyEditName from "../../util/Verification/EditUserInfo/verifyEditName";
 import { EditUserInfoContext, EditUserInfoContextType } from "../../contexts/EditUserInfoContext";
+import {useAppSelector} from "../reduxHooks-toolkit/useRedux";
 
 export default function useHandleEditName(name: string, clear: () => void) {
     const { setMessage } = useContext<EditUserInfoContextType>(EditUserInfoContext);
 
     const [error, setError] = useState<string>("");
     
-    //! Патом переделать под redux toolkit
-
-    const { loading: nameLoading, error: nameError } = useTypedSelector(state => state.nameForm);
+    // const { loading: nameLoading, error: nameError } = useTypedSelector(state => state.nameForm);
+    const { loading: nameLoading, error: nameError } = useAppSelector(state => state.nameForm);
     const { editName } = useActions();
 
     const handleEditName = async (e: React.FormEvent) => {
