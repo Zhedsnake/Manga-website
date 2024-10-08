@@ -1,17 +1,16 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useTypedSelector} from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import {useActions} from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
-import verifyEditAvatar from "../../util/Verification/EditUserInfo/verifyEditAvatar.ts";
-import {EditUserInfoContext} from "../../contexts/EditUserInfoContext.ts";
+import {useActions} from "../useActions";
+import verifyEditAvatar from "../../util/Verification/EditUserInfo/verifyEditAvatar";
+import {EditUserInfoContext} from "../../contexts/EditUserInfoContext";
+import {useAppSelector} from "../reduxHooks-toolkit/useRedux";
 
 export default function useHandleEditAvatar(avatar: File | null, clear: () => void) {
     const { setMessage } = useContext(EditUserInfoContext);
 
     const [error, setError] = useState<string>("");
     
-    //! Патом переделать под redux toolkit
-    
-    const { loading: avatarLoading, error: avatarError } = useTypedSelector(state => state.avatarForm);
+    // const { loading: avatarLoading, error: avatarError } = useTypedSelector(state => state.avatarForm);
+    const { loading: avatarLoading, error: avatarError } = useAppSelector(state => state.avatarForm);
     const { editAvatar } = useActions();
 
     const handleEditAvatar = async (e: React.FormEvent) => {
