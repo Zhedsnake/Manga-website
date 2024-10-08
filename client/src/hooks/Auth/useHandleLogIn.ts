@@ -1,21 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTypedSelector } from "../../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import { useActions } from "../../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
+import {useActions} from "../useActions";
 import { AuthContext, AuthContextType } from "../../contexts/AuthContext";
 import verifyLogin from "../../util/Auth/verifyLogin";
 import { setToken } from "../../util/setTocken";
 import { Tokens } from "../../util/Tokens";
+import {useAppSelector} from "../reduxHooks-toolkit/useRedux.ts";
+import {setNameError, setPasswordError, defAuthFormError} from "../../store/reducers/authForm/authFormErrorSlice";
+import {defAuthForm} from "../../store/reducers/authForm/authFormSlice";
 
 export default function useHandleLogIn() {
     const { setIsAuth } = useContext<AuthContextType>(AuthContext);
 
     const [loginError, setLoginError] = useState("");
 
-    //! Патом переделать под redux toolkit
-    
-    const { name, email, password } = useTypedSelector((state) => state.authForm);
-    const { logInToken, logInError, logInLoading } = useTypedSelector((state) => state.logIn);
-    const { logInAction, setDefInputs, setNameErrorAction, setPasswordErrorAction, setDefErrorInputs } = useActions();
+    // const { name, email, password } = useTypedSelector((state) => state.authForm);
+    // const { logInToken, logInError, logInLoading } = useTypedSelector((state) => state.logIn);
+    const { name, email, password } = useAppSelector((state) => state.authForm);
+    const { logInToken, logInError, logInLoading } = useAppSelector((state) => state.logIn);
+
+    const { logIn } = useActions();
 
     const handleLogIn = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,18 +33,18 @@ export default function useHandleLogIn() {
             if ("loginError" in verificationResponse) {
                 setLoginError(verificationResponse.loginError);
             } else if ("nameError" in verificationResponse) {
-                setNameErrorAction(verificationResponse.nameError);
+                setNameError(verificationResponse.nameError);
             } else if ("passwordError" in verificationResponse) {
-                setPasswordErrorAction(verificationResponse.passwordError);
+                setPasswordError(verificationResponse.passwordError);
             }
 
-            setDefInputs();
+            defAuthForm();
         }
 
         if (name && email && password && !verificationResponse) {
-            setDefErrorInputs();
-            await logInAction(name, password);
-            setDefInputs();
+            defAuthFormError();
+            await logIn(name, password);
+            defAuthForm();
         }
     };
 
