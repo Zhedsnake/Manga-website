@@ -1,12 +1,15 @@
 import React, {useContext, useEffect} from 'react';
-import {useTypedSelector} from "../../../buffer/client/src/hooks/reduxHooks/useTypedSelector.ts";
-import EditName from "../components/EditUserInfo/EditName.tsx";
-import EditEmail from "../components/EditUserInfo/EditEmail.tsx";
-import {useActions} from "../../../buffer/client/src/hooks/reduxHooks/useActions.ts";
-import EditPassword from "../components/EditUserInfo/EditPassword.tsx";
-import EditAvatar from "../components/EditUserInfo/EditAvatar.tsx";
+import EditName from "../components/EditUserInfo/EditName";
+import EditEmail from "../components/EditUserInfo/EditEmail";
+import EditPassword from "../components/EditUserInfo/EditPassword";
+import EditAvatar from "../components/EditUserInfo/EditAvatar";
 import {Link} from "react-router-dom";
-import {EditUserInfoContext, EditUserInfoContextType} from "../contexts/EditUserInfoContext.ts";
+import {EditUserInfoContext, EditUserInfoContextType} from "../contexts/EditUserInfoContext";
+import {useAppSelector} from "../hooks/reduxHooks-toolkit/useRedux";
+import {defEditAvatar} from "../store/reducers/editUserInfo/avatarFormSlice";
+import {defEditName} from "../store/reducers/editUserInfo/nameFormSlice";
+import {defEditEmail} from "../store/reducers/editUserInfo/emailFormSlice";
+import {defEditPassword} from "../store/reducers/editUserInfo/passwordFormSlice";
 
 const EditUserProfile : React.FC = () => {
     const {
@@ -14,14 +17,15 @@ const EditUserProfile : React.FC = () => {
         setMessage
     } = useContext<EditUserInfoContextType>(EditUserInfoContext);
 
-    //! Патом переделать под redux toolkit
+    // const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
+    // const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
+    // const {message: passwordMessage, error: passwordError} = useTypedSelector(state => state.passwordForm);
+    // const {message: avatarMessage, error: avatarError} = useTypedSelector(state => state.avatarForm);
     
-    const {message: nameMessage, error: nameError} = useTypedSelector(state => state.nameForm);
-    const {message: emailMessage, error: emailError} = useTypedSelector(state => state.emailForm);
-    const {message: passwordMessage, error: passwordError} = useTypedSelector(state => state.passwordForm);
-    const {message: avatarMessage, error: avatarError} = useTypedSelector(state => state.avatarForm);
-    const {defEditAvatar, defEditName, defEditEmail, defEditPassword} = useActions();
-
+    const {message: nameMessage, error: nameError} = useAppSelector(state => state.nameForm);
+    const {message: emailMessage, error: emailError} = useAppSelector(state => state.emailForm);
+    const {message: passwordMessage, error: passwordError} = useAppSelector(state => state.passwordForm);
+    const {message: avatarMessage, error: avatarError} = useAppSelector(state => state.avatarForm);
 
     useEffect(() => {
         if (avatarMessage) {
