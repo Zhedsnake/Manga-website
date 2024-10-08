@@ -3,7 +3,6 @@ import FormGroupDiv from "../UI/formGroupdiv/formGroupdiv";
 import Label from "../UI/label/label";
 import InputAuth from "../UI/inputAuth/InputAuth";
 import ErrorForm from "../UI/errorForm/ErrorForm";
-// import {useActions} from "../../hooks/useActions";
 import useInput from "../../hooks/useInput.ts";
 import {useAppSelector} from "../../hooks/reduxHooks-toolkit/useRedux.ts";
 import {setEmail} from "../../store/reducers/authForm/authFormSlice";
